@@ -155,7 +155,7 @@
       "path": "miniprogram/pages",
       "layer": "miniprogram",
       "seam": "page",
-      "role": "六个页面：home / me / discover / device / device-info / part。页面只做视图与事件绑定。"
+      "role": "页面：设备列表（tab）/ 设备详情 / 灯链详情 / 场景 / 我的。页面只做视图与事件绑定。"
     },
     {
       "path": "miniprogram/app.wxss",
@@ -239,7 +239,7 @@
       "path": "miniprogram/utils/control/discover-unit.ts",
       "layer": "miniprogram",
       "seam": "page",
-      "role": "连接页的视图模型与交互单元，纯函数。"
+      "role": "设备列表页搜索下拉的视图模型与交互单元，纯函数。"
     },
     {
       "path": "miniprogram/tests/session/fake-transport.ts",
