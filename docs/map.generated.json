@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T17:33:59.589Z",
+  "generatedAt": "2026-11-07T17:34:35.055Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "4b0bf2d",
-    "subject": "merge: 小程序协议 + 会话层 + 页面视图模型（#5 前半）",
-    "date": "2026-11-08T01:28:37+08:00",
+    "sha": "3a0ea35",
+    "subject": "chore: 同步面板",
+    "date": "2026-11-08T01:33:59+08:00",
     "branch": "spec-v1",
     "dirty": true
   },
@@ -1097,9 +1097,9 @@
       "purpose": "当前状态。唯一允许写「现在在哪 / 下一步」的地方，原地重写，不追加历史。",
       "status": "生效",
       "hasFrontmatter": true,
-      "lines": 36,
-      "bytes": 1452,
-      "hash": "1ab9740ce612437e",
+      "lines": 40,
+      "bytes": 1950,
+      "hash": "01eadf00e229d0fc",
       "isAdr": false,
       "isAgentDoc": false
     },
@@ -1119,7 +1119,7 @@
   ],
   "docStats": {
     "count": 12,
-    "lines": 1247,
+    "lines": 1251,
     "withoutFrontmatter": 0,
     "adrCount": 4
   },
@@ -1296,7 +1296,7 @@
     "docs": 12,
     "tests": 18,
     "binary": 0,
-    "lines": 15952,
+    "lines": 15956,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
@@ -1561,8 +1561,8 @@
         "name": "status.md",
         "dir": "docs",
         "ext": ".md",
-        "size": 1452,
-        "lines": 35,
+        "size": 1950,
+        "lines": 39,
         "binary": false,
         "isDoc": true,
         "isTest": false,
