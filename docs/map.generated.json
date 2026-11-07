@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T16:03:07.479Z",
+  "generatedAt": "2026-11-07T16:04:20.785Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,10 +7,10 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "5ab7ec2",
-    "subject": "chore: 同步面板",
-    "date": "2026-11-07T23:46:56+08:00",
-    "branch": "ticket/03-firmware-host-kernel",
+    "sha": "8a2f371",
+    "subject": "merge: 02 固件 host 内核 (#3)",
+    "date": "2026-11-08T00:03:33+08:00",
+    "branch": "spec-v1",
     "dirty": true
   },
   "tasks": {
@@ -1338,8 +1338,8 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 68474,
-        "lines": 2327,
+        "size": 71564,
+        "lines": 2462,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -2117,6 +2117,141 @@
         {
           "short": "1137773",
           "subject": "chore: scaffold agent skills configuration"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "id": "8a2f371",
+      "title": "feat(firmware): host 内核——帧编解码、分片重组、命令 reducer",
+      "date": "2026-11-08T00:03:33+08:00",
+      "commits": 4,
+      "pr": null,
+      "branch": null,
+      "sha": "8a2f371aac7fb634347f45173c031e050096634c",
+      "short": "8a2f371",
+      "body": "",
+      "files": [
+        {
+          "path": "docs/map.generated.json",
+          "add": 401,
+          "del": 125
+        },
+        {
+          "path": "firmware/test/test_command.c",
+          "add": 383,
+          "del": 0
+        },
+        {
+          "path": "firmware/test/test_protocol.c",
+          "add": 243,
+          "del": 0
+        },
+        {
+          "path": "firmware/main/command.c",
+          "add": 130,
+          "del": 0
+        },
+        {
+          "path": "scripts/test-firmware.mjs",
+          "add": 111,
+          "del": 0
+        },
+        {
+          "path": "firmware/main/protocol.c",
+          "add": 77,
+          "del": 0
+        },
+        {
+          "path": "firmware/test/test_harness.h",
+          "add": 70,
+          "del": 0
+        },
+        {
+          "path": "firmware/main/command.h",
+          "add": 64,
+          "del": 0
+        },
+        {
+          "path": "firmware/main/chunk_reasm.c",
+          "add": 59,
+          "del": 0
+        },
+        {
+          "path": "firmware/main/protocol_gen.h",
+          "add": 26,
+          "del": 26
+        },
+        {
+          "path": "scripts/map.test.mjs",
+          "add": 40,
+          "del": 11
+        },
+        {
+          "path": "docs/map.json",
+          "add": 41,
+          "del": 6
+        },
+        {
+          "path": "firmware/main/protocol.h",
+          "add": 42,
+          "del": 0
+        },
+        {
+          "path": "firmware/main/chunk_reasm.h",
+          "add": 36,
+          "del": 0
+        },
+        {
+          "path": "firmware/test/test_harness.c",
+          "add": 36,
+          "del": 0
+        },
+        {
+          "path": "scripts/map.mjs",
+          "add": 19,
+          "del": 7
+        },
+        {
+          "path": ".gitattributes",
+          "add": 16,
+          "del": 0
+        },
+        {
+          "path": "firmware/test/main.c",
+          "add": 12,
+          "del": 0
+        },
+        {
+          "path": "package.json",
+          "add": 4,
+          "del": 2
+        },
+        {
+          "path": "scripts/gen-protocol.mjs",
+          "add": 2,
+          "del": 2
+        }
+      ],
+      "fileCount": 20,
+      "additions": 1812,
+      "deletions": 179,
+      "commitList": [
+        {
+          "short": "8a2f371",
+          "subject": "merge: 02 固件 host 内核 (#3)"
+        },
+        {
+          "short": "99dad2c",
+          "subject": "feat(firmware): host 内核——帧编解码、分片重组、命令 reducer"
+        },
+        {
+          "short": "5ab7ec2",
+          "subject": "chore: 同步面板"
+        },
+        {
+          "short": "77d58ab",
+          "subject": "chore: 生成物强制 LF，gen:check 在 Windows 上才可能通过"
         }
       ]
     }
