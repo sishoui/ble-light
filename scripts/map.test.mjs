@@ -106,24 +106,53 @@ test("模块声明能匹配到真实文件并统计行数", () => {
 
 /* ---------------- 健康检查 ---------------- */
 
-test("健康检查：没有产品代码时接缝缺失只是警告", () => {
+test("健康检查：已有产品代码的接缝缺测试是 error，没开始的接缝只是 warn", () => {
   const map = runMap();
   const seams = map.health.issues.filter((i) => i.kind === "seam-untested");
-  // 这个仓库还没写产品代码，五个接缝都应被点名，但级别是 warn
-  assert.equal(seams.length, 5, `期望 5 条 seam-untested，实际 ${seams.length}`);
-  for (const s of seams) assert.equal(s.level, "warn", `${s.message} 应为 warn`);
+
+  // 判定依据是「这个接缝有没有产品代码」，不是全仓有没有代码
+  const codePaths = new Set(
+    map.files.list
+      .filter((f) => !f.isDoc && !f.isTest && !f.binary)
+      .map((f) => f.path),
+  );
+  const hasCode = (seam) => {
+    const prefixes = {
+      protocol: ["firmware/main/protocol.c", "firmware/main/chunk_reasm.c", "miniprogram/utils/protocol/"],
+      reducer: ["firmware/main/command.c"],
+      render: ["firmware/main/led_render.c", "firmware/main/effects.c", "firmware/main/scene_compose.c"],
+      session: ["miniprogram/utils/ble/", "miniprogram/utils/control/session.ts"],
+      page: ["miniprogram/pages/", "miniprogram/components/"],
+    }[seam] ?? [];
+    return [...codePaths].some((p) => prefixes.some((x) => p.startsWith(x)));
+  };
+
+  for (const s of seams) {
+    const m = /\((\w+)\)/.exec(s.message);
+    assert.ok(m, `无法从「${s.message}」里识别接缝名`);
+    const expected = hasCode(m[1]) ? "error" : "warn";
+    assert.equal(s.level, expected, `${m[1]} 有代码=${hasCode(m[1])}，级别应为 ${expected}`);
+  }
+
+  // 已经测过的接缝不该出现在名单里
+  const tested = new Set(map.tests.map((t) => t.seam).filter(Boolean));
+  for (const s of seams) {
+    const m = /\((\w+)\)/.exec(s.message);
+    if (m) assert.ok(!tested.has(m[1]), `接缝 ${m[1]} 已有测试却仍被点名`);
+  }
 });
 
-test("健康检查：有产品代码但接缝没测试时必须报错", () => {
-  // 造一个最小产品代码文件，门禁应当从 warn 升到 error
-  const probe = join(REPO, "firmware", "main", "_probe.c");
+test("健康检查：给没测试的接缝写产品代码会让门禁从 warn 升为 error", () => {
+  // render 接缝尚未实现，先造一个最小模块，它必须立刻变红
+  const probe = join(REPO, "firmware", "main", "led_render.c");
   try {
-    mkdirSync(dirname(probe), { recursive: true });
     writeFileSync(probe, "void probe(void) {}\n", "utf8");
     const map = runMap();
-    const seams = map.health.issues.filter((i) => i.kind === "seam-untested");
-    assert.equal(seams.length, 5, `期望 5 条 seam-untested，实际 ${seams.length}`);
-    for (const s of seams) assert.equal(s.level, "error", `${s.message} 应为 error`);
+    const render = map.health.issues.find(
+      (i) => i.kind === "seam-untested" && i.message.includes("(render)"),
+    );
+    assert.ok(render, "render 接缝有代码后应被点名");
+    assert.equal(render.level, "error", "有产品代码的接缝缺测试必须是 error");
     assert.ok(map.health.errors > 0, "有代码时健康检查应报错");
   } finally {
     rmSync(probe, { force: true });

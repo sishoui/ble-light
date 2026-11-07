@@ -106,11 +106,11 @@ function genHeader() {
     "/* commands */",
   ];
   for (const c of spec.commands) {
-    lines.push(`#define CMD_${c.name.toUpperCase().replace(/([a-z])([A-Z])/g, "$1_$2")} ${c.code}u`);
+    lines.push(`#define CMD_${snake(c.name)} ${c.code}u`);
   }
   lines.push("", "/* reports */");
   for (const r of spec.reports) {
-    lines.push(`#define RPT_${r.name.toUpperCase().replace(/([a-z])([A-Z])/g, "$1_$2")} ${r.code}u`);
+    lines.push(`#define RPT_${snake(r.name)} ${r.code}u`);
   }
   lines.push("", "/* result codes */");
   for (const r of spec.resultCodes) {

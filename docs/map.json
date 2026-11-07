@@ -7,10 +7,40 @@
     "repo": "sishoui/ble-light"
   },
   "layers": [
-    { "id": "firmware", "name": "固件", "blurb": "ESP-IDF v6.1 + NimBLE，跑在 ESP32-C3FH4 上", "dirs": ["firmware"] },
-    { "id": "miniprogram", "name": "小程序", "blurb": "微信小程序原生 + TypeScript，手机侧全部逻辑", "dirs": ["miniprogram"] },
-    { "id": "docs", "name": "文档", "blurb": "每个事实只有一个家", "dirs": ["docs"] },
-    { "id": "tooling", "name": "工具", "blurb": "生成器、探针、压测、面板", "dirs": ["scripts", "tools", "panel"] }
+    {
+      "id": "firmware",
+      "name": "固件",
+      "blurb": "ESP-IDF v6.1 + NimBLE，跑在 ESP32-C3FH4 上",
+      "dirs": [
+        "firmware"
+      ]
+    },
+    {
+      "id": "miniprogram",
+      "name": "小程序",
+      "blurb": "微信小程序原生 + TypeScript，手机侧全部逻辑",
+      "dirs": [
+        "miniprogram"
+      ]
+    },
+    {
+      "id": "docs",
+      "name": "文档",
+      "blurb": "每个事实只有一个家",
+      "dirs": [
+        "docs"
+      ]
+    },
+    {
+      "id": "tooling",
+      "name": "工具",
+      "blurb": "生成器、探针、压测、面板",
+      "dirs": [
+        "scripts",
+        "tools",
+        "panel"
+      ]
+    }
   ],
   "modules": [
     {
@@ -206,7 +236,10 @@
       "docs/agents/issue-tracker.md",
       "docs/agents/domain.md"
     ],
-    "docsAllowedPrefixes": ["docs/adr/", "docs/design/"],
+    "docsAllowedPrefixes": [
+      "docs/adr/",
+      "docs/design/"
+    ],
     "bannedDocPatterns": [
       "handoff",
       "pending-tasks",
@@ -225,7 +258,9 @@
       "page": "页面处理器"
     },
     "toolingTestSeam": "tooling",
-    "toolingTestPaths": ["scripts/"],
+    "toolingTestPaths": [
+      "scripts/"
+    ],
     "requireFrontmatter": true
   }
 }

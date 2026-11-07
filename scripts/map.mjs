@@ -39,6 +39,9 @@ const BINARY_EXT = new Set([
 
 const TEST_HINT = /(^|[\\/])(tests?|__tests__|spec)([\\/]|$)|\.(test|spec)\.[cm]?[jt]sx?$|^test_.*\.c$|_test\.(c|cc|cpp)$/;
 
+/** 测试目录里的脚手架（harness、runner）不是用例，不参与「接缝有测试」的判定。 */
+const TEST_SUPPORT = /(^|[\\/])(test_harness\.[ch]|main\.c|helpers?\.[cm]?[jt]s)$/;
+
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
 }
@@ -352,7 +355,7 @@ function collectTests(config) {
   for (const r of roots) {
     for (const abs of walk(join(ROOT, r))) {
       const p = rel(abs);
-      if (TEST_HINT.test(p)) files.push(abs);
+      if (TEST_HINT.test(p) && !TEST_SUPPORT.test(p)) files.push(abs);
     }
   }
   return files.map((abs) => {
@@ -463,18 +466,27 @@ function checkHealth(config, docs, tests, files) {
     issues.push({ level: "error", kind: "status-too-long", path: "docs/status.md", message: `${status.lines} 行，上限 ${config.rules.maxStatusLines}` });
   }
 
-  // 每个接缝必须至少有一个测试文件。没有产品代码时只是提醒，
-  // 一旦写下第一行产品代码，缺少测试就是错误——门禁随之启用。
-  const seamLevel = productCode.length > 0 ? "error" : "warn";
+  // 每个接缝必须至少有一个测试文件。门禁按接缝单独判定：
+  // 该接缝已经有产品代码却没有测试 = error；还没写代码的接缝 = warn。
+  // 全仓一把尺会把「还没开始的票」也算成错误，那等于逼人写空测试。
+  const seamProductPaths = {
+    protocol: [/^firmware\/main\/(protocol|chunk_reasm)\.c$/, /^miniprogram\/utils\/protocol\//],
+    reducer: [/^firmware\/main\/command\.c$/],
+    render: [/^firmware\/main\/(led_render|effects|scene_compose)\.c$/],
+    session: [/^miniprogram\/utils\/(ble|control)\/.*\.ts$/],
+    page: [/^miniprogram\/(pages|components)\//, /^miniprogram\/utils\/control\/(view-model|.*-unit)\.ts$/],
+  };
   for (const [seam, label] of Object.entries(seams)) {
     const covering = tests.filter((t) => t.seam === seam);
     if (covering.length === 0) {
+      const patterns = seamProductPaths[seam] ?? [];
+      const hasCode = productCode.some((f) => patterns.some((re) => re.test(f.path)));
       issues.push({
-        level: seamLevel,
+        level: hasCode ? "error" : "warn",
         kind: "seam-untested",
         path: null,
-        message: productCode.length > 0
-          ? `接缝「${label}」(${seam}) 没有任何测试文件`
+        message: hasCode
+          ? `接缝「${label}」(${seam}) 已有产品代码但没有任何测试文件`
           : `接缝「${label}」(${seam}) 暂无测试（还没有产品代码，门禁未启用）`,
       });
     }
