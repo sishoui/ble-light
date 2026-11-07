@@ -1,3 +1,4 @@
+/** 面板的状态与类型：读取 map.generated.json、按路径取文件内容、格式化工具。 */
 import { computed, ref } from "vue";
 
 export interface DocEntry {
@@ -17,6 +18,7 @@ export interface DocEntry {
 export interface TestEntry {
   path: string;
   name: string;
+  description: string | null;
   lines: number;
   cases: number;
   asserts: number;
@@ -26,6 +28,7 @@ export interface TestEntry {
 
 export interface FileEntry {
   path: string;
+  name: string;
   dir: string;
   ext: string;
   size: number;
@@ -34,6 +37,15 @@ export interface FileEntry {
   isDoc: boolean;
   isTest: boolean;
   module: string | null;
+  description: string | null;
+}
+
+export interface FileContent {
+  path: string;
+  text: string;
+  truncated: boolean;
+  lines: number;
+  bytes: number;
 }
 
 export interface ModuleEntry {
@@ -161,4 +173,20 @@ export function fmtBytes(n: number) {
   if (n < 1024) return `${n} B`;
   if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`;
   return `${(n / 1024 / 1024).toFixed(1)} MB`;
+}
+
+const contentCache = new Map<string, FileContent>();
+
+/** 读文件内容。缓存按路径存，同一个文件只请求一次。 */
+export async function fetchFile(path: string): Promise<FileContent> {
+  const hit = contentCache.get(path);
+  if (hit) return hit;
+  const res = await fetch(`/api/file?path=${encodeURIComponent(path)}`, { cache: "no-store" });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({ error: res.statusText }));
+    throw new Error(body.error ?? `读取失败（${res.status}）`);
+  }
+  const data = (await res.json()) as FileContent;
+  contentCache.set(path, data);
+  return data;
 }

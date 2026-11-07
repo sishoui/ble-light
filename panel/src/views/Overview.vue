@@ -1,4 +1,5 @@
 <script setup lang="ts">
+/** 总览：KPI、分层、验收进度、五个接缝、健康检查、最近迭代。 */
 import { computed } from "vue";
 import { fmtNum, fmtDateTime, type MapData } from "../store";
 

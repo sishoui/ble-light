@@ -1,4 +1,5 @@
 <script setup lang="ts">
+/** 迭代：按时间倒序列出每次合并，可展开看提交列表与逐文件增删。 */
 import { computed, ref } from "vue";
 import { fmtDate, fmtNum, type Iteration, type MapData } from "../store";
 

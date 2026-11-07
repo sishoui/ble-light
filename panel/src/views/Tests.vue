@@ -1,10 +1,13 @@
 <script setup lang="ts">
+/** 测试：按接缝分组，显示每个测试文件的职责、用例数、断言数与违规提示。 */
 import { computed, ref } from "vue";
 import { fmtNum, type MapData } from "../store";
+import FileViewer from "./FileViewer.vue";
 
 const props = defineProps<{ data: MapData }>();
 const q = ref("");
 const seamFilter = ref<string | null>(null);
+const viewing = ref<string | null>(null);
 
 const SEAMS: Record<string, string> = {
   protocol: "协议编解码",
@@ -95,16 +98,28 @@ const totals = computed(() => ({
           <table>
             <thead>
               <tr>
-                <th>文件</th>
+                <th>文件与职责</th>
                 <th style="width:80px" class="r">用例</th>
                 <th style="width:80px" class="r">断言</th>
                 <th style="width:70px" class="r">行数</th>
-                <th style="width:160px">提示</th>
+                <th style="width:140px">提示</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="t in tests" :key="t.path">
-                <td class="mono tpath">{{ t.path }}</td>
+              <tr
+                v-for="t in tests"
+                :key="t.path"
+                class="trow"
+                role="button"
+                tabindex="0"
+                @click="viewing = t.path"
+                @keydown.enter="viewing = t.path"
+              >
+                <td>
+                  <div class="mono tpath">{{ t.path }}</div>
+                  <div v-if="t.description" class="tdesc">{{ t.description }}</div>
+                  <div v-else class="tdesc none">未写文件头注释——加一段说明它测什么</div>
+                </td>
                 <td class="num r">{{ t.cases }}</td>
                 <td class="num r">{{ t.asserts }}</td>
                 <td class="num r faint">{{ t.lines }}</td>
@@ -120,6 +135,8 @@ const totals = computed(() => ({
         </div>
       </section>
     </template>
+
+    <FileViewer v-if="viewing" :path="viewing" @close="viewing = null" />
   </div>
 </template>
 
@@ -163,5 +180,9 @@ h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
 .ghead .faint { font-size: 11.5px; }
 
 .tpath { font-size: 11.5px; word-break: break-all; }
+.trow { cursor: pointer; }
+.trow:focus-visible { outline: 2px solid #3d5a75; outline-offset: -2px; }
+.tdesc { font-size: 11.5px; color: var(--ink-3); line-height: 1.55; margin-top: 3px; }
+.tdesc.none { color: var(--warn); opacity: 0.75; }
 .r { text-align: right; }
 </style>

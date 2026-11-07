@@ -1,10 +1,13 @@
 <script setup lang="ts">
+/** 文档：卡片式列出每份文档的路径、状态、一句话职责、行数，点击可看内容。 */
 import { computed, ref } from "vue";
 import { fmtNum, type MapData } from "../store";
+import FileViewer from "./FileViewer.vue";
 
 const props = defineProps<{ data: MapData }>();
 const q = ref("");
 const filter = ref<"all" | "core" | "adr">("all");
+const viewing = ref<string | null>(null);
 
 const list = computed(() => {
   const needle = q.value.trim().toLowerCase();
@@ -58,7 +61,15 @@ function statusTone(s: string | null) {
     <div v-if="!list.length" class="empty card">没有匹配的文档。</div>
 
     <div v-else class="grid">
-      <article v-for="d in list" :key="d.path" :class="['card doc', { adr: d.isAdr }]">
+      <article
+        v-for="d in list"
+        :key="d.path"
+        :class="['card', 'doc', { adr: d.isAdr }]"
+        role="button"
+        tabindex="0"
+        @click="viewing = d.path"
+        @keydown.enter="viewing = d.path"
+      >
         <div class="dhead">
           <span class="mono dpath">{{ d.path }}</span>
           <span v-if="d.status" :class="['chip', statusTone(d.status)]">{{ d.status }}</span>
@@ -70,9 +81,12 @@ function statusTone(s: string | null) {
           <div class="dbar">
             <div class="bar"><i :style="{ width: `${Math.max(4, (d.lines / maxLines) * 100)}%` }" /></div>
           </div>
+          <span class="open">查看 →</span>
         </div>
       </article>
     </div>
+
+    <FileViewer v-if="viewing" :path="viewing" @close="viewing = null" />
   </div>
 </template>
 
@@ -99,8 +113,9 @@ h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
 .empty { padding: 40px; text-align: center; color: var(--ink-3); font-size: 13px; }
 
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 12px; }
-.doc { padding: 15px 17px; display: grid; gap: 6px; align-content: start; transition: border-color 140ms; }
-.doc:hover { border-color: #34404d; }
+.doc { padding: 15px 17px; display: grid; gap: 6px; align-content: start; transition: border-color 140ms; cursor: pointer; }
+.doc:hover { border-color: #3d5a75; }
+.doc:focus-visible { outline: 2px solid #3d5a75; outline-offset: 1px; }
 .doc.adr { background: #12151a; }
 
 .dhead { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
@@ -111,4 +126,6 @@ h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
 .dbar { flex: 1; }
 .dbar .bar { height: 3px; }
 .dbar .bar > i { background: #3d5a75; }
+.open { color: var(--ink-3); opacity: 0; transition: opacity 140ms, color 140ms; }
+.doc:hover .open { opacity: 1; color: var(--accent-soft); }
 </style>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+/** 面板外壳：左侧导航（五个视图）+ 右侧内容区；读取 map.generated.json 并分发视图。 */
 import { onMounted, ref } from "vue";
 import { loadMap, useMap, fmtDateTime } from "./store";
 import Overview from "./views/Overview.vue";

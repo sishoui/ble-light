@@ -24,6 +24,7 @@ const IGNORE_DIRS = new Set([
 const TEXT_EXT = new Set([
   ".c", ".h", ".ts", ".js", ".mjs", ".vue", ".json", ".md", ".css",
   ".wxml", ".wxss", ".py", ".cmd", ".bat", ".yml", ".yaml", ".toml", ".csv",
+  ".html", ".txt", ".gitignore", ".gitattributes",
 ]);
 
 const BINARY_EXT = new Set([
@@ -235,6 +236,108 @@ function collectDocs(config) {
   return docs.sort((a, b) => a.path.localeCompare(b.path));
 }
 
+/**
+ * 从文件头读「这个文件做什么」。
+ * 优先取紧跟头部注释/文档块的第一段有意义文字，不要求任何特殊标记。
+ */
+function describeFile(text, path) {
+  const ext = path.slice(path.lastIndexOf("."));
+
+  // 跳过 shebang，否则所有 /* ... */ 开头的脚本都读不到注释
+  const src = text.replace(/^#![^\n]*\n/, "");
+
+  // JSON 没有注释，读约定字段
+  if (ext === ".json") {
+    try {
+      const obj = JSON.parse(src);
+      const d = obj.$comment ?? obj.description ?? null;
+      if (typeof d === "string" && d.trim()) return clip(d.trim());
+    } catch {
+      /* 解析失败就走通用路径 */
+    }
+  }
+
+  // .vue：注释在 <script setup> 里
+  if (ext === ".vue") {
+    const m = /<script[^>]*>\s*(\/\*\*?[\s\S]*?\*\/)/.exec(src);
+    if (m) {
+      const body = m[1].replace(/^\/\*\*?/, "").replace(/\*\/$/, "")
+        .split(/\r?\n/).map((l) => l.replace(/^\s*\*?\s?/, "").trim()).filter(Boolean);
+      if (body.length) return clip(body.join(" "));
+    }
+  }
+
+  // JSDoc/块注释开头的 /** ... */ 或 /* ... */
+  const block = /^\s*\/\*\*?([\s\S]*?)\*\//.exec(src);
+  if (block) {
+    const body = block[1]
+      .split(/\r?\n/)
+      .map((l) => l.replace(/^\s*\*?\s?/, "").trim())
+      .filter((l) => l && !l.startsWith("@"));
+    const prose = body.filter((l) => !/^[{}()[\];]/.test(l) && !/^(import|export|const|let|function|class)\b/.test(l));
+    if (prose.length) return clip(prose.join(" "));
+  }
+
+  // 头部 // 行注释（C / TS）
+  const lines = src.split(/\r?\n/).slice(0, 30);
+  const commentLines = [];
+  for (const line of lines) {
+    const t = line.trim();
+    if (!t) {
+      if (commentLines.length) break;
+      continue;
+    }
+    if (t.startsWith("//")) {
+      const body = t.replace(/^\/\/+/, "").trim();
+      if (body) commentLines.push(body);
+      continue;
+    }
+    if (commentLines.length) break;
+    if (/^(import|export|const|let|var|function|class|package|#include|#define|<!doctype|<html)/i.test(t)) break;
+  }
+  if (commentLines.length) return clip(commentLines.join(" "));
+
+  // CSS / HTML 块注释
+  if (ext === ".css" || ext === ".html") {
+    const c = /^\s*\/\*([\s\S]*?)\*\/|^<!--([\s\S]*?)-->/.exec(src);
+    if (c) {
+      const raw = c[1] ?? c[2] ?? "";
+      const body = raw.split(/\r?\n/).map((l) => l.replace(/^\s*\*?\s?/, "").trim()).filter(Boolean);
+      if (body.length) return clip(body.join(" "));
+    }
+  }
+
+  // HTML 的 <!-- --> 可能在 <!doctype> 之后
+  const htmlComment = /<!--([\s\S]*?)-->/.exec(src.slice(0, 400));
+  if (htmlComment) {
+    const body = htmlComment[1].split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+    if (body.length) return clip(body.join(" "));
+  }
+
+  // 生成的 JSON 没有注释也没有描述字段，用文件名说明
+  if (ext === ".json") {
+    return `JSON 数据文件${path.includes("generated") || path.includes("vectors") ? "（生成物，不要手改）" : ""}`;
+  }
+
+  // 点文件：本身就是「忽略规则」这份数据
+  if (path === ".gitignore") {
+    return "Git 忽略规则：node_modules、构建产物、报告与临时目录不进仓库。";
+  }
+
+  // markdown 用第一个标题
+  if (ext === ".md") {
+    const h = /^#\s+(.+)$/m.exec(src);
+    if (h) return clip(h[1].trim());
+  }
+
+  return null;
+}
+
+function clip(s, max = 220) {
+  const one = s.replace(/\s+/g, " ").trim();
+  return one.length > max ? `${one.slice(0, max - 1)}…` : one;
+}
+
 function collectTests(config) {
   const roots = ["firmware", "miniprogram", "panel", "scripts", "tests", "src"];
   const toolingPaths = config.rules?.toolingTestPaths ?? [];
@@ -281,7 +384,16 @@ function collectTests(config) {
       }
       if (/toHaveBeenCalled|toBeCalled/.test(text)) violations.push("asserts-call");
     }
-    return { path, name: path.split("/").pop(), lines: text.split("\n").length, cases, asserts, seam, violations };
+    return {
+      path,
+      name: path.split("/").pop(),
+      description: describeFile(text, path),
+      lines: text.split("\n").length,
+      cases,
+      asserts,
+      seam,
+      violations,
+    };
   }).sort((a, b) => a.path.localeCompare(b.path));
 }
 
@@ -289,18 +401,25 @@ function collectFiles(config) {
   const modulePaths = new Set(config.modules.map((m) => m.path));
   const files = walk(ROOT).map((abs) => {
     const path = rel(abs);
+    const lastSlash = path.lastIndexOf("/");
     const ext = path.slice(path.lastIndexOf("."));
     const size = statSync(abs).size;
+    const isText = TEXT_EXT.has(ext);
+    const isDoc = path.startsWith("docs/") && ext === ".md";
+    const isTest = TEST_HINT.test(path);
+    const text = isText ? readFileSync(abs, "utf8") : null;
     return {
       path,
-      dir: path.includes("/") ? path.slice(0, path.lastIndexOf("/")) : ".",
+      name: lastSlash >= 0 ? path.slice(lastSlash + 1) : path,
+      dir: lastSlash >= 0 ? path.slice(0, lastSlash) : ".",
       ext,
       size,
-      lines: TEXT_EXT.has(ext) ? lineCount(abs) : null,
+      lines: isText ? lineCount(abs) : null,
       binary: BINARY_EXT.has(ext),
-      isDoc: path.startsWith("docs/") && ext === ".md",
-      isTest: TEST_HINT.test(path),
+      isDoc,
+      isTest,
       module: modulePaths.has(path) ? path : null,
+      description: text ? describeFile(text, path) : null,
     };
   });
   return files.sort((a, b) => a.path.localeCompare(b.path));

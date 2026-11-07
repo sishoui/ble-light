@@ -1,11 +1,14 @@
 <script setup lang="ts">
+/** 文件：按模块或按目录浏览全仓，显示每份文件的职责，点击可看内容。 */
 import { computed, ref } from "vue";
 import { fmtBytes, fmtNum, type MapData } from "../store";
+import FileViewer from "./FileViewer.vue";
 
 const props = defineProps<{ data: MapData }>();
 const q = ref("");
 const view = ref<"modules" | "tree">("modules");
 const kind = ref<"all" | "code" | "doc" | "test" | "binary">("all");
+const viewing = ref<string | null>(null);
 
 const layerName = computed(() => {
   const m: Record<string, string> = {};
@@ -111,14 +114,26 @@ const maxDir = computed(() => Math.max(1, ...Object.values(props.data.files.byDi
         <div class="card">
           <table>
             <tbody>
-              <tr v-for="f in files" :key="f.path">
-                <td class="mono fpath">
-                  {{ f.path.slice(dir === "." ? 0 : dir.length + 1) }}
-                  <span v-if="f.isDoc" class="chip acc tag">文档</span>
-                  <span v-else-if="f.isTest" class="chip warn tag">测试</span>
-                  <span v-else-if="f.binary" class="chip tag">二进制</span>
+              <tr
+                v-for="f in files"
+                :key="f.path"
+                class="frow"
+                :class="{ 'no-open': f.binary }"
+                role="button"
+                :tabindex="f.binary ? -1 : 0"
+                @click="!f.binary && (viewing = f.path)"
+                @keydown.enter="!f.binary && (viewing = f.path)"
+              >
+                <td>
+                  <div class="mono fpath">
+                    {{ f.path.slice(dir === "." ? 0 : dir.length + 1) }}
+                    <span v-if="f.isDoc" class="chip acc tag">文档</span>
+                    <span v-else-if="f.isTest" class="chip warn tag">测试</span>
+                    <span v-else-if="f.binary" class="chip tag">二进制</span>
+                  </div>
+                  <div v-if="f.description" class="fdesc">{{ f.description }}</div>
                 </td>
-                <td class="num r faint" style="width:80px">{{ f.lines != null ? `${fmtNum(f.lines)} 行` : fmtBytes(f.size) }}</td>
+                <td class="num r faint" style="width:84px">{{ f.lines != null ? `${fmtNum(f.lines)} 行` : fmtBytes(f.size) }}</td>
                 <td class="num r faint" style="width:74px">{{ fmtBytes(f.size) }}</td>
               </tr>
             </tbody>
@@ -126,6 +141,8 @@ const maxDir = computed(() => Math.max(1, ...Object.values(props.data.files.byDi
         </div>
       </section>
     </div>
+
+    <FileViewer v-if="viewing" :path="viewing" @close="viewing = null" />
   </div>
 </template>
 
@@ -179,6 +196,10 @@ h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
 .dbar .bar { height: 2px; }
 .dbar .bar > i { background: #33414f; }
 .fpath { font-size: 11.5px; word-break: break-all; }
+.fdesc { font-size: 11px; color: var(--ink-3); line-height: 1.5; margin-top: 2px; max-width: 70ch; }
+.frow { cursor: pointer; }
+.frow:focus-visible { outline: 2px solid #3d5a75; outline-offset: -2px; }
+.frow.no-open { cursor: default; }
 .tag { margin-left: 8px; font-size: 10px; padding: 0 6px; }
 .r { text-align: right; }
 </style>

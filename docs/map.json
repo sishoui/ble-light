@@ -152,6 +152,18 @@
       "role": "从 docs/protocol.json 生成 C 头、TS 常量、测试向量、文档表格段。"
     },
     {
+      "path": "scripts/file-api.mjs",
+      "layer": "tooling",
+      "seam": null,
+      "role": "面板的文件读取入口：白名单 + 路径归一化 + 二进制与大小拦截。"
+    },
+    {
+      "path": "scripts/highlight.mjs",
+      "layer": "tooling",
+      "seam": null,
+      "role": "单趟扫描的极简语法高亮，供面板的文件查看器使用。"
+    },
+    {
       "path": "docs/protocol.json",
       "layer": "docs",
       "seam": "protocol",
