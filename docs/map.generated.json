@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T15:44:21.103Z",
+  "generatedAt": "2026-11-07T15:46:35.685Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,10 +7,10 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "348bacf",
-    "subject": "docs: 接缝已定，不必再确认",
-    "date": "2026-11-07T23:23:02+08:00",
-    "branch": "ticket/02-protocol-fields",
+    "sha": "77d58ab",
+    "subject": "chore: 生成物强制 LF，gen:check 在 Windows 上才可能通过",
+    "date": "2026-11-07T23:45:18+08:00",
+    "branch": "spec-v1",
     "dirty": true
   },
   "tasks": {
@@ -892,8 +892,8 @@
       "status": "生效",
       "hasFrontmatter": true,
       "lines": 56,
-      "bytes": 2277,
-      "hash": "b1c08403fc5181c0",
+      "bytes": 2222,
+      "hash": "ac90612a31a869b9",
       "isAdr": false,
       "isAgentDoc": false
     },
@@ -905,8 +905,8 @@
       "status": "生效",
       "hasFrontmatter": true,
       "lines": 38,
-      "bytes": 1429,
-      "hash": "29f48640b9283f76",
+      "bytes": 1392,
+      "hash": "99bd2e076c4f2637",
       "isAdr": true,
       "isAgentDoc": false
     },
@@ -918,8 +918,8 @@
       "status": "生效",
       "hasFrontmatter": true,
       "lines": 50,
-      "bytes": 2177,
-      "hash": "93ba38b50f14d6f0",
+      "bytes": 2128,
+      "hash": "ac25c0ba6d2ecc35",
       "isAdr": true,
       "isAgentDoc": false
     },
@@ -931,8 +931,8 @@
       "status": "生效",
       "hasFrontmatter": true,
       "lines": 54,
-      "bytes": 2166,
-      "hash": "2fabad1d59af8509",
+      "bytes": 2113,
+      "hash": "320a242eb77650c4",
       "isAdr": true,
       "isAgentDoc": false
     },
@@ -944,8 +944,8 @@
       "status": "生效",
       "hasFrontmatter": true,
       "lines": 33,
-      "bytes": 1079,
-      "hash": "6494731bdd0ed212",
+      "bytes": 1047,
+      "hash": "04c48e42e9fdef21",
       "isAdr": true,
       "isAgentDoc": false
     },
@@ -957,8 +957,8 @@
       "status": "生效",
       "hasFrontmatter": true,
       "lines": 57,
-      "bytes": 2212,
-      "hash": "92ebc9a3b79962f0",
+      "bytes": 2156,
+      "hash": "20b0b9d40c8cc953",
       "isAdr": false,
       "isAgentDoc": true
     },
@@ -970,8 +970,8 @@
       "status": "生效",
       "hasFrontmatter": true,
       "lines": 56,
-      "bytes": 5242,
-      "hash": "589c660b727a54fd",
+      "bytes": 5187,
+      "hash": "080a57404b97d02b",
       "isAdr": false,
       "isAgentDoc": true
     },
@@ -983,8 +983,8 @@
       "status": "生效",
       "hasFrontmatter": true,
       "lines": 203,
-      "bytes": 7431,
-      "hash": "e6553415829e3946",
+      "bytes": 7229,
+      "hash": "03f26ab78a0875d3",
       "isAdr": false,
       "isAgentDoc": false
     },
@@ -996,8 +996,8 @@
       "status": "生效",
       "hasFrontmatter": true,
       "lines": 44,
-      "bytes": 1200,
-      "hash": "aced48254f1967ec",
+      "bytes": 1157,
+      "hash": "c3570ef60c3262ea",
       "isAdr": false,
       "isAgentDoc": false
     },
@@ -1022,8 +1022,8 @@
       "status": "生效",
       "hasFrontmatter": true,
       "lines": 36,
-      "bytes": 1487,
-      "hash": "d36f35e0df966023",
+      "bytes": 1452,
+      "hash": "1ab9740ce612437e",
       "isAdr": false,
       "isAgentDoc": false
     },
@@ -1035,8 +1035,8 @@
       "status": "生效",
       "hasFrontmatter": true,
       "lines": 209,
-      "bytes": 9156,
-      "hash": "48bb700c0b672a93",
+      "bytes": 8948,
+      "hash": "e8fa5ce2f1eab3dc",
       "isAdr": false,
       "isAgentDoc": false
     }
@@ -1115,13 +1115,14 @@
     "unseamed": 0
   },
   "files": {
-    "total": 51,
-    "code": 34,
+    "total": 52,
+    "code": 35,
     "docs": 12,
     "tests": 5,
     "binary": 0,
-    "lines": 10110,
+    "lines": 10126,
     "byExt": {
+      ".gitattributes": 1,
       ".gitignore": 1,
       ".md": 15,
       ".json": 8,
@@ -1134,7 +1135,7 @@
       ".mjs": 11
     },
     "byDir": {
-      ".": 6,
+      ".": 7,
       "docs": 9,
       "docs/adr": 4,
       "docs/agents": 2,
@@ -1148,6 +1149,19 @@
       "scripts": 11
     },
     "list": [
+      {
+        "path": ".gitattributes",
+        "name": ".gitattributes",
+        "dir": ".",
+        "ext": ".gitattributes",
+        "size": 649,
+        "lines": 16,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": null
+      },
       {
         "path": ".gitignore",
         "name": ".gitignore",
@@ -1166,7 +1180,7 @@
         "name": "AGENTS.md",
         "dir": ".",
         "ext": ".md",
-        "size": 7847,
+        "size": 7687,
         "lines": 160,
         "binary": false,
         "isDoc": false,
@@ -1179,7 +1193,7 @@
         "name": "acceptance.md",
         "dir": "docs",
         "ext": ".md",
-        "size": 2277,
+        "size": 2222,
         "lines": 55,
         "binary": false,
         "isDoc": true,
@@ -1192,7 +1206,7 @@
         "name": "0001-domain-model.md",
         "dir": "docs/adr",
         "ext": ".md",
-        "size": 1429,
+        "size": 1392,
         "lines": 37,
         "binary": false,
         "isDoc": true,
@@ -1205,7 +1219,7 @@
         "name": "0002-single-source-docs.md",
         "dir": "docs/adr",
         "ext": ".md",
-        "size": 2177,
+        "size": 2128,
         "lines": 49,
         "binary": false,
         "isDoc": true,
@@ -1218,7 +1232,7 @@
         "name": "0003-five-seams.md",
         "dir": "docs/adr",
         "ext": ".md",
-        "size": 2166,
+        "size": 2113,
         "lines": 53,
         "binary": false,
         "isDoc": true,
@@ -1231,7 +1245,7 @@
         "name": "0004-no-backend-v1.md",
         "dir": "docs/adr",
         "ext": ".md",
-        "size": 1079,
+        "size": 1047,
         "lines": 32,
         "binary": false,
         "isDoc": true,
@@ -1244,7 +1258,7 @@
         "name": "domain.md",
         "dir": "docs/agents",
         "ext": ".md",
-        "size": 2212,
+        "size": 2156,
         "lines": 56,
         "binary": false,
         "isDoc": true,
@@ -1257,7 +1271,7 @@
         "name": "issue-tracker.md",
         "dir": "docs/agents",
         "ext": ".md",
-        "size": 5242,
+        "size": 5187,
         "lines": 55,
         "binary": false,
         "isDoc": true,
@@ -1270,7 +1284,7 @@
         "name": "design.md",
         "dir": "docs",
         "ext": ".md",
-        "size": 7431,
+        "size": 7229,
         "lines": 202,
         "binary": false,
         "isDoc": true,
@@ -1283,7 +1297,7 @@
         "name": "README.md",
         "dir": "docs/design",
         "ext": ".md",
-        "size": 1200,
+        "size": 1157,
         "lines": 43,
         "binary": false,
         "isDoc": true,
@@ -1296,8 +1310,8 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 59340,
-        "lines": 2051,
+        "size": 62215,
+        "lines": 2161,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -1309,7 +1323,7 @@
         "name": "map.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 8076,
+        "size": 7845,
         "lines": 231,
         "binary": false,
         "isDoc": false,
@@ -1335,7 +1349,7 @@
         "name": "protocol.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 18971,
+        "size": 18566,
         "lines": 405,
         "binary": false,
         "isDoc": false,
@@ -1361,7 +1375,7 @@
         "name": "status.md",
         "dir": "docs",
         "ext": ".md",
-        "size": 1487,
+        "size": 1452,
         "lines": 35,
         "binary": false,
         "isDoc": true,
@@ -1374,7 +1388,7 @@
         "name": "testing.md",
         "dir": "docs",
         "ext": ".md",
-        "size": 9156,
+        "size": 8948,
         "lines": 208,
         "binary": false,
         "isDoc": true,
@@ -1400,7 +1414,7 @@
         "name": "GLOSSARY.md",
         "dir": ".",
         "ext": ".md",
-        "size": 2834,
+        "size": 2787,
         "lines": 47,
         "binary": false,
         "isDoc": false,
@@ -1413,7 +1427,7 @@
         "name": "app.wxss",
         "dir": "miniprogram",
         "ext": ".wxss",
-        "size": 2700,
+        "size": 2604,
         "lines": 96,
         "binary": false,
         "isDoc": false,
@@ -1439,7 +1453,7 @@
         "name": "package-lock.json",
         "dir": ".",
         "ext": ".json",
-        "size": 662,
+        "size": 635,
         "lines": 27,
         "binary": false,
         "isDoc": false,
@@ -1452,7 +1466,7 @@
         "name": "package.json",
         "dir": ".",
         "ext": ".json",
-        "size": 752,
+        "size": 730,
         "lines": 22,
         "binary": false,
         "isDoc": false,
@@ -1478,7 +1492,7 @@
         "name": "package-lock.json",
         "dir": "panel",
         "ext": ".json",
-        "size": 45665,
+        "size": 44289,
         "lines": 1376,
         "binary": false,
         "isDoc": false,
@@ -1491,7 +1505,7 @@
         "name": "package.json",
         "dir": "panel",
         "ext": ".json",
-        "size": 421,
+        "size": 402,
         "lines": 19,
         "binary": false,
         "isDoc": false,
@@ -1517,7 +1531,7 @@
         "name": "main.ts",
         "dir": "panel/src",
         "ext": ".ts",
-        "size": 193,
+        "size": 187,
         "lines": 6,
         "binary": false,
         "isDoc": false,
@@ -1530,7 +1544,7 @@
         "name": "store.ts",
         "dir": "panel/src",
         "ext": ".ts",
-        "size": 6019,
+        "size": 5789,
         "lines": 230,
         "binary": false,
         "isDoc": false,
@@ -1647,7 +1661,7 @@
         "name": "vite.config.ts",
         "dir": "panel",
         "ext": ".ts",
-        "size": 2251,
+        "size": 2191,
         "lines": 60,
         "binary": false,
         "isDoc": false,
@@ -1660,7 +1674,7 @@
         "name": "README.md",
         "dir": ".",
         "ext": ".md",
-        "size": 1835,
+        "size": 1787,
         "lines": 48,
         "binary": false,
         "isDoc": false,
@@ -1673,7 +1687,7 @@
         "name": "file-api.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 3188,
+        "size": 3098,
         "lines": 90,
         "binary": false,
         "isDoc": false,
@@ -1686,7 +1700,7 @@
         "name": "file-api.test.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 3530,
+        "size": 3429,
         "lines": 101,
         "binary": false,
         "isDoc": false,
@@ -1699,7 +1713,7 @@
         "name": "gen-protocol.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 21131,
+        "size": 20540,
         "lines": 591,
         "binary": false,
         "isDoc": false,
@@ -1712,7 +1726,7 @@
         "name": "highlight.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 3055,
+        "size": 2956,
         "lines": 99,
         "binary": false,
         "isDoc": false,
@@ -1725,7 +1739,7 @@
         "name": "highlight.test.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 3767,
+        "size": 3660,
         "lines": 107,
         "binary": false,
         "isDoc": false,
@@ -1738,7 +1752,7 @@
         "name": "map.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 29285,
+        "size": 28503,
         "lines": 782,
         "binary": false,
         "isDoc": false,
@@ -1751,7 +1765,7 @@
         "name": "map.test.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 14991,
+        "size": 14598,
         "lines": 393,
         "binary": false,
         "isDoc": false,
@@ -1764,7 +1778,7 @@
         "name": "markdown.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 4396,
+        "size": 4263,
         "lines": 133,
         "binary": false,
         "isDoc": false,
@@ -1777,7 +1791,7 @@
         "name": "markdown.test.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 6768,
+        "size": 6593,
         "lines": 175,
         "binary": false,
         "isDoc": false,
@@ -1803,7 +1817,7 @@
         "name": "tasks.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 3405,
+        "size": 3293,
         "lines": 112,
         "binary": false,
         "isDoc": false,
@@ -1816,18 +1830,114 @@
   "iterations": [
     {
       "index": 1,
-      "id": "348bacf",
-      "title": "初始提交",
-      "date": "2026-11-07T23:23:02+08:00",
-      "commits": 9,
+      "id": "3e084c0",
+      "title": "feat(protocol): 补齐逐字节字段表，生成物与向量同步",
+      "date": "2026-11-07T23:44:58+08:00",
+      "commits": 11,
       "pr": null,
       "branch": null,
-      "sha": "348bacf0dab9e473d903769b639a5b8bbb077571",
+      "sha": "3e084c080f89e0d3ec18dda3ce60c2b8f2be5f89",
+      "short": "3e084c0",
       "body": "",
-      "files": []
+      "files": [
+        {
+          "path": "docs/protocol-vectors.json",
+          "add": 694,
+          "del": 1
+        },
+        {
+          "path": "docs/protocol.json",
+          "add": 296,
+          "del": 39
+        },
+        {
+          "path": "firmware/main/protocol_gen.h",
+          "add": 280,
+          "del": 8
+        },
+        {
+          "path": "docs/protocol.md",
+          "add": 238,
+          "del": 13
+        },
+        {
+          "path": "docs/map.generated.json",
+          "add": 128,
+          "del": 105
+        },
+        {
+          "path": "scripts/gen-protocol.mjs",
+          "add": 230,
+          "del": 3
+        },
+        {
+          "path": "miniprogram/utils/protocol/constants.gen.ts",
+          "add": 176,
+          "del": 0
+        },
+        {
+          "path": "scripts/protocol-gen.test.mjs",
+          "add": 155,
+          "del": 0
+        },
+        {
+          "path": "scripts/map.mjs",
+          "add": 3,
+          "del": 1
+        }
+      ],
+      "fileCount": 9,
+      "additions": 2200,
+      "deletions": 170,
+      "commitList": [
+        {
+          "short": "3e084c0",
+          "subject": "merge: 01 协议 payload 逐字节定义 (#2)"
+        },
+        {
+          "short": "3286d39",
+          "subject": "feat(protocol): 补齐逐字节字段表，生成物与向量同步"
+        },
+        {
+          "short": "348bacf",
+          "subject": "docs: 接缝已定，不必再确认"
+        },
+        {
+          "short": "3153baf",
+          "subject": "feat: 设计流程（Pixso 确认制）+ 苹果风格设计规范"
+        },
+        {
+          "short": "b95021c",
+          "subject": "feat(panel): 任务视图 + 收尾门禁，任务完成必须同步面板"
+        },
+        {
+          "short": "8e976b6",
+          "subject": "docs: 规格 v1 发布到 #1，状态跟上"
+        },
+        {
+          "short": "ba86676",
+          "subject": "feat(panel): Markdown 文档渲染预览，可切回原文"
+        },
+        {
+          "short": "4c932f7",
+          "subject": "feat(panel): 文件职责描述 + 点击查看内容"
+        },
+        {
+          "short": "0e1a6c1",
+          "subject": "feat: 测试配方定稿 + 协议单一真相"
+        },
+        {
+          "short": "c3a6ff4",
+          "subject": "feat: 治理文档骨架 + 项目管理面板"
+        },
+        {
+          "short": "1137773",
+          "subject": "chore: scaffold agent skills configuration"
+        }
+      ]
     }
   ],
-  "iterationNote": "尚无合并提交，按单次提交计",
+  "iterationNote": null,
   "acceptance": [
     {
       "id": "H1",
