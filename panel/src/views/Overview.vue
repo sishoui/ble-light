@@ -11,7 +11,7 @@ const accPct = computed(() => (acc.value.total ? Math.round((acc.value.done / ac
 const seamLabels = computed(() => {
   const labels: Record<string, string> = {
     protocol: "协议编解码", reducer: "命令 reducer", render: "渲染合成",
-    session: "会话层", page: "页面处理器",
+    session: "会话层", page: "页面处理器", tooling: "工具",
   };
   return Object.entries(props.data.testStats.bySeam).map(([k, v]) => ({ key: k, label: labels[k] ?? k, count: v }));
 });

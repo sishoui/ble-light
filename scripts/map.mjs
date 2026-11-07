@@ -235,8 +235,10 @@ function collectDocs(config) {
   return docs.sort((a, b) => a.path.localeCompare(b.path));
 }
 
-function collectTests() {
+function collectTests(config) {
   const roots = ["firmware", "miniprogram", "panel", "scripts", "tests", "src"];
+  const toolingPaths = config.rules?.toolingTestPaths ?? [];
+  const toolingSeam = config.rules?.toolingTestSeam ?? null;
   const files = [];
   for (const r of roots) {
     for (const abs of walk(join(ROOT, r))) {
@@ -247,24 +249,38 @@ function collectTests() {
   return files.map((abs) => {
     const text = readFileSync(abs, "utf8");
     const path = rel(abs);
+    const isTooling = toolingPaths.some((tp) => path.startsWith(tp));
     const isC = path.endsWith(".c");
     const cases = isC
       ? (text.match(/^\s*RUN_TEST\s*\(/gm) ?? []).length
       : (text.match(/^\s*(?:it|test)\s*\(/gm) ?? []).length;
     const asserts = isC
       ? (text.match(/\b(?:TEST_ASSERT\w*|assert)\s*\(/g) ?? []).length
-      : (text.match(/\bexpect\s*\(/g) ?? []).length;
-    const seam =
-      /protocol|codec|frame|chunk|commands/.test(path) ? "protocol" :
-      /command|reducer|state/.test(path) ? "reducer" :
-      /render|effect|pixel|gamma/.test(path) ? "render" :
-      /session|transport|ble|control/.test(path) ? "session" :
-      /page|component|view/.test(path) ? "page" : null;
-    const violations = [];
-    if (/readFileSync|readFile\(/.test(text) && /\.(ts|js|mjs|vue|wxml|wxss)/.test(text)) {
-      if (/source\b|\.ts["'`]|\.wxml|\.wxss/.test(text)) violations.push("reads-source");
+      : (text.match(/\bexpect\s*\(|\bassert\.\w+\s*\(/g) ?? []).length;
+
+    // 工具测试验的是生成器本身，读源码是它的正当手段，不算违规
+    let seam = null;
+    if (isTooling && toolingSeam) {
+      seam = toolingSeam;
+    } else if (/protocol|codec|frame|chunk|commands/.test(path)) {
+      seam = "protocol";
+    } else if (/command|reducer|state/.test(path)) {
+      seam = "reducer";
+    } else if (/render|effect|pixel|gamma/.test(path)) {
+      seam = "render";
+    } else if (/session|transport|ble|control/.test(path)) {
+      seam = "session";
+    } else if (/page|component|view/.test(path)) {
+      seam = "page";
     }
-    if (/toHaveBeenCalled|toBeCalled/.test(text)) violations.push("asserts-call");
+
+    const violations = [];
+    if (!isTooling) {
+      if (/readFileSync|readFile\(/.test(text) && /\.(ts|js|mjs|vue|wxml|wxss)/.test(text)) {
+        if (/source\b|\.ts["'`]|\.wxml|\.wxss/.test(text)) violations.push("reads-source");
+      }
+      if (/toHaveBeenCalled|toBeCalled/.test(text)) violations.push("asserts-call");
+    }
     return { path, name: path.split("/").pop(), lines: text.split("\n").length, cases, asserts, seam, violations };
   }).sort((a, b) => a.path.localeCompare(b.path));
 }
@@ -290,10 +306,22 @@ function collectFiles(config) {
   return files.sort((a, b) => a.path.localeCompare(b.path));
 }
 
-function checkHealth(config, docs, tests) {
+function checkHealth(config, docs, tests, files) {
   const issues = [];
   const allowed = new Set(config.rules.docsAllowed);
   const prefixes = config.rules.docsAllowedPrefixes ?? [];
+  const seams = config.rules.testSeams ?? {};
+
+  // 生成物不是产品代码
+  const productCode = files.filter(
+    (f) =>
+      !f.isDoc && !f.isTest && !f.binary &&
+      !/\.gen\.|_gen\./.test(f.path) &&
+      (/^firmware\/main\//.test(f.path) ||
+        /^miniprogram\/utils\//.test(f.path) ||
+        /^miniprogram\/pages\//.test(f.path) ||
+        /^miniprogram\/components\//.test(f.path)),
+  );
 
   for (const d of docs) {
     if (d.isAgentDoc) continue;
@@ -310,9 +338,39 @@ function checkHealth(config, docs, tests) {
     issues.push({ level: "error", kind: "status-too-long", path: "docs/status.md", message: `${status.lines} 行，上限 ${config.rules.maxStatusLines}` });
   }
 
+  // 每个接缝必须至少有一个测试文件。没有产品代码时只是提醒，
+  // 一旦写下第一行产品代码，缺少测试就是错误——门禁随之启用。
+  const seamLevel = productCode.length > 0 ? "error" : "warn";
+  for (const [seam, label] of Object.entries(seams)) {
+    const covering = tests.filter((t) => t.seam === seam);
+    if (covering.length === 0) {
+      issues.push({
+        level: seamLevel,
+        kind: "seam-untested",
+        path: null,
+        message: productCode.length > 0
+          ? `接缝「${label}」(${seam}) 没有任何测试文件`
+          : `接缝「${label}」(${seam}) 暂无测试（还没有产品代码，门禁未启用）`,
+      });
+    }
+  }
+
+  // 有测试但不属于任何接缝 → 它没有家，要么归位要么删掉
+  for (const t of tests) {
+    if (!t.seam) {
+      issues.push({ level: "warn", kind: "test-unseamed", path: t.path, message: "测试不属于任何接缝" });
+    }
+  }
+
+  // 生成物必须与协议源同步
+  if (files.some((f) => f.path === "docs/protocol-vectors.json")) {
+    const stale = checkGenerated();
+    if (stale) issues.push({ level: "error", kind: "generated-stale", path: "docs/protocol.json", message: stale });
+  }
+
   for (const t of tests) {
     for (const v of t.violations) {
-      issues.push({ level: "warn", kind: `test-${v}`, path: t.path, message: v === "reads-source" ? "疑似读源码做断言" : "疑似断言方法被调用" });
+      issues.push({ level: "error", kind: `test-${v}`, path: t.path, message: v === "reads-source" ? "读源码做断言" : "断言方法被调用" });
     }
   }
 
@@ -323,10 +381,24 @@ function checkHealth(config, docs, tests) {
     else dupes.set(key, d.path);
   }
 
-  const code = walk(join(ROOT, "firmware")).length + walk(join(ROOT, "miniprogram")).length;
-  if (code === 0) issues.push({ level: "info", kind: "no-code", path: null, message: "还没有产品代码" });
+  if (productCode.length === 0) {
+    issues.push({ level: "info", kind: "no-code", path: null, message: "还没有产品代码，接缝门禁暂未启用" });
+  }
 
   return issues;
+}
+
+/** 生成物过期时返回说明，否则 null。 */
+function checkGenerated() {
+  try {
+    execFileSync(process.execPath, [join(ROOT, "scripts", "gen-protocol.mjs"), "--check"], {
+      cwd: ROOT, encoding: "utf8", stdio: "pipe",
+    });
+    return null;
+  } catch (e) {
+    const out = `${e.stdout ?? ""}${e.stderr ?? ""}`.trim();
+    return out || "生成物与 docs/protocol.json 不一致，跑 npm run gen";
+  }
 }
 
 function main() {
@@ -336,13 +408,13 @@ function main() {
   }
   const config = readJson(MAP_JSON);
   const docs = collectDocs(config);
-  const tests = collectTests();
+  const tests = collectTests(config);
   const files = collectFiles(config);
   const { iterations, note } = collectIterations();
   const acceptance = existsSync(join(ROOT, "docs", "acceptance.md"))
     ? parseAcceptance(readFileSync(join(ROOT, "docs", "acceptance.md"), "utf8"))
     : [];
-  const issues = checkHealth(config, docs, tests);
+  const issues = checkHealth(config, docs, tests, files);
 
   const byExt = {};
   const byDir = {};
@@ -381,7 +453,11 @@ function main() {
       cases: tests.reduce((n, t) => n + t.cases, 0),
       asserts: tests.reduce((n, t) => n + t.asserts, 0),
       lines: tests.reduce((n, t) => n + t.lines, 0),
-      bySeam: Object.fromEntries(Object.keys(config.rules.testSeams).map((k) => [k, tests.filter((t) => t.seam === k).length])),
+      bySeam: Object.fromEntries(
+        [...Object.keys(config.rules.testSeams), config.rules.toolingTestSeam]
+          .filter(Boolean)
+          .map((k) => [k, tests.filter((t) => t.seam === k).length]),
+      ),
       unseamed: tests.filter((t) => !t.seam).length,
     },
     files: {

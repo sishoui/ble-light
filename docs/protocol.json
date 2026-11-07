@@ -1,0 +1,148 @@
+{
+  "$comment": "协议的唯一真相。docs/protocol.md 的表格段、firmware/main/protocol_gen.h、miniprogram/utils/protocol/constants.gen.ts、docs/protocol-vectors.json 全部由 scripts/gen-protocol.mjs 从这里生成。不要直接改生成物。",
+  "version": 1,
+  "frame": {
+    "magic": "0xA6",
+    "version": "0x01",
+    "headerBytes": 8,
+    "maxPayload": 232,
+    "maxFrame": 240,
+    "crc": {
+      "algorithm": "CCITT-FALSE",
+      "polynomial": "0x1021",
+      "initial": "0xFFFF",
+      "reflectInput": false,
+      "reflectOutput": false,
+      "xorOutput": "0x0000",
+      "check": "0x29B1"
+    }
+  },
+  "chunking": {
+    "ctrlBytes": 1,
+    "firstBit": 7,
+    "lastBit": 6,
+    "seqMask": "0x3F",
+    "singleChunkCtrl": "0xC0",
+    "reassemblyTimeoutMs": 1000,
+    "preferredMtu": 247,
+    "androidRequestedMtu": 185,
+    "maxChunkData": 179,
+    "minChunkData": 19
+  },
+  "gatt": {
+    "service": "6c756d65-6e00-4b1e-9a3c-000000000001",
+    "rx": "6c756d65-6e00-4b1e-9a3c-000000000002",
+    "tx": "6c756d65-6e00-4b1e-9a3c-000000000003",
+    "state": "6c756d65-6e00-4b1e-9a3c-000000000004",
+    "advertisedNamePrefix": "BleLight-"
+  },
+  "limits": {
+    "maxLeds": 100,
+    "maxStrips": 8,
+    "maxParts": 8,
+    "maxPartSegs": 8,
+    "maxSteps": 8,
+    "maxScenes": 3,
+    "maxLayers": 2,
+    "nameBytes": 24,
+    "stepMinMs": 100,
+    "stepMaxMs": 60000,
+    "layerLevelMax": 100,
+    "layerBytes": 9,
+    "stateBytes": 32,
+    "layoutPartBytes": 29,
+    "layoutReportBytes": 45,
+    "sceneStepBytes": 24,
+    "sceneNameBytes": 26
+  },
+  "buildConfig": {
+    "maxBrightnessDefault": 200
+  },
+  "commands": [
+    { "code": "0x01", "name": "SetPower", "payloadBytes": 1, "fields": ["power"], "desc": "整机开关 0/1" },
+    { "code": "0x02", "name": "SetBrightness", "payloadBytes": 1, "fields": ["brightness"], "desc": "0-255，按构建期上限钳位" },
+    { "code": "0x05", "name": "QueryState", "payloadBytes": 0, "fields": [], "desc": "ACK 后补 StateReport" },
+    { "code": "0x06", "name": "SetLedCount", "payloadBytes": 3, "fields": ["strip_id", "count_lo", "count_hi"], "desc": "1-100，异步重建句柄，ACK 可能延迟" },
+    { "code": "0x07", "name": "SelfTest", "payloadBytes": 0, "fields": [], "desc": "红→绿→蓝→白各 500ms" },
+    { "code": "0x1B", "name": "SetStripPower", "payloadBytes": 2, "fields": ["strip_id", "on"], "desc": "单链开关" },
+    { "code": "0x1C", "name": "QueryStripConfig", "payloadBytes": 0, "fields": [], "desc": "ACK 后补 StripConfigReport" },
+    { "code": "0x1D", "name": "QueryDeviceInfo", "payloadBytes": 0, "fields": [], "desc": "ACK 后补 DeviceInfoReport" },
+    { "code": "0x20", "name": "LayoutWrite", "payloadBytes": 2, "fields": ["strip_id", "part_count"], "desc": "声明部位数并清空该链" },
+    { "code": "0x21", "name": "LayoutPart", "payloadBytes": 29, "fields": ["strip_id", "part_id", "name_len", "name", "seg_count", "phase"], "desc": "部位头，name 固定 24 字节" },
+    { "code": "0x22", "name": "LayoutSeg", "payloadBytes": 5, "fields": ["strip_id", "part_id", "seg_id", "start", "end"], "desc": "闭区间灯珠段" },
+    { "code": "0x23", "name": "LayoutCommit", "payloadBytes": 0, "fields": [], "desc": "整份校验并立即落盘" },
+    { "code": "0x24", "name": "QueryLayout", "payloadBytes": 1, "fields": ["strip_id"], "desc": "逐部位报告 + LayoutListEnd" },
+    { "code": "0x25", "name": "ScenePart", "payloadBytes": 6, "fields": ["scene_id", "strip_id", "part_id", "step_count", "loop", "on"], "desc": "step_count 变化才清空步骤" },
+    { "code": "0x26", "name": "SceneStep", "payloadBytes": 24, "fields": ["scene_id", "strip_id", "part_id", "step_index", "duration", "layer0", "layer1"], "desc": "单步增量写入" },
+    { "code": "0x27", "name": "SceneName", "payloadBytes": 26, "fields": ["scene_id", "name_len", "name"], "desc": "name 固定 24 字节" },
+    { "code": "0x28", "name": "ActivateScene", "payloadBytes": 1, "fields": ["scene_id"], "desc": "硬切 + 全部播放头重置到第 1 步" },
+    { "code": "0x29", "name": "QueryScene", "payloadBytes": 1, "fields": ["scene_id"], "desc": "逐部位、逐步骤报告 + SceneListEnd" }
+  ],
+  "reports": [
+    { "code": "0x80", "name": "ACK", "payloadBytes": 2, "fields": ["command", "result"], "desc": "seq 回显" },
+    { "code": "0x81", "name": "Event", "payloadBytes": 2, "fields": ["event_code", "detail"], "desc": "seq 恒 0" },
+    { "code": "0x82", "name": "StateReport", "payloadBytes": 32, "fields": [], "desc": "同 State 布局" },
+    { "code": "0x87", "name": "StripConfigReport", "payloadBytes": 24, "fields": [], "desc": "8 × [strip_id, gpio, flags]" },
+    { "code": "0x88", "name": "DeviceInfoReport", "payloadBytes": 15, "fields": [], "desc": "版本 / hw_id / 各上限 / caps" },
+    { "code": "0x89", "name": "LayoutReport", "payloadBytes": 45, "fields": [], "desc": "单部位明细" },
+    { "code": "0x8A", "name": "LayoutListEnd", "payloadBytes": 2, "fields": ["strip_id", "part_mask"], "desc": "多帧收尾" },
+    { "code": "0x8B", "name": "ScenePartReport", "payloadBytes": 6, "fields": [], "desc": "同 ScenePart 载荷" },
+    { "code": "0x8C", "name": "SceneStepReport", "payloadBytes": 24, "fields": [], "desc": "同 SceneStep 载荷" },
+    { "code": "0x8D", "name": "SceneListEnd", "payloadBytes": 26, "fields": ["scene_id", "name_len", "name"], "desc": "多帧收尾，带场景名" }
+  ],
+  "retired": [
+    { "code": "0x03", "name": "SetColor", "since": "v2" },
+    { "code": "0x04", "name": "SetAll", "since": "v2" },
+    { "code": "0x10", "name": "SetSegment", "since": "v1" },
+    { "code": "0x11", "name": "ClearSegment", "since": "v1" },
+    { "code": "0x12", "name": "QueryStrip", "since": "v1" },
+    { "code": "0x13", "name": "SetPlayback", "since": "v1" },
+    { "code": "0x1E", "name": "ClearScript", "since": "v1" }
+  ],
+  "effects": [
+    { "type": "0x00", "name": "静态", "params": ["hue", "sat", 0, 0, 0], "desc": "常亮" },
+    { "type": "0x01", "name": "呼吸", "params": ["hue", "sat", "period_ms", "floor_pct", "wave_flags"], "desc": "波形 bit1-2" },
+    { "type": "0x02", "name": "彩虹", "params": ["hue", "sat", "period_ms", "span", "reverse_flag"], "desc": "方向 bit0" },
+    { "type": "0x03", "name": "流星", "params": ["hue", "sat", "period_ms", "tail", "comet_flags"], "desc": "方向 / 实色 / 头数" },
+    { "type": "0x04", "name": "爆闪", "params": ["hue", "sat", "period_ms", "duty", 0], "desc": "flags 必须 0" },
+    { "type": "0x05", "name": "心跳", "params": ["hue", "sat", "period_ms", "pulse", "double_flag"], "desc": "双脉冲 bit0" },
+    { "type": "0x06", "name": "熄灭", "params": [0, 0, 0, 0, 0], "desc": "永不发光" },
+    { "type": "0x07", "name": "随机闪烁", "params": ["hue", "sat", "period_ms", "density", 0], "desc": "flags 必须 0" },
+    { "type": "0xFF", "name": "空层", "params": [0, 0, 0, 0, 0], "desc": "只能作叠加层" }
+  ],
+  "state": {
+    "bytes": 32,
+    "fields": [
+      { "offset": 0, "name": "power", "bytes": 1 },
+      { "offset": 1, "name": "brightness", "bytes": 1 },
+      { "offset": 2, "name": "max_brightness", "bytes": 1 },
+      { "offset": 3, "name": "strip_count", "bytes": 1 },
+      { "offset": 4, "name": "strip_power_mask", "bytes": 1 },
+      { "offset": 5, "name": "active_scene", "bytes": 1 },
+      { "offset": 6, "name": "layout_valid", "bytes": 1 },
+      { "offset": 7, "name": "reserved", "bytes": 1 },
+      { "offset": 8, "name": "led_count", "bytes": 16, "array": 8, "element": "u16le" },
+      { "offset": 24, "name": "part_count", "bytes": 8, "array": 8, "element": "u8" }
+    ]
+  },
+  "resultCodes": [
+    { "code": "0x00", "name": "OK" },
+    { "code": "0x01", "name": "InvalidParam" },
+    { "code": "0x02", "name": "UnknownCommand" },
+    { "code": "0x03", "name": "BadChecksum" },
+    { "code": "0x04", "name": "BadLength" },
+    { "code": "0x05", "name": "Busy" },
+    { "code": "0x06", "name": "StorageFailed" },
+    { "code": "0x07", "name": "UnsupportedVersion" },
+    { "code": "0x08", "name": "BadMagic" },
+    { "code": "0x09", "name": "InternalError" }
+  ],
+  "validationOrder": ["UnknownCommand", "BadLength", "InvalidParam"],
+  "persistence": [
+    { "key": "state", "magic": "LMEN", "version": 1, "bytes": 32, "maxBytes": 32, "debounceMs": 500 },
+    { "key": "layout", "magic": "LML1", "version": 1, "bytes": 2824, "maxBytes": 4096, "debounceMs": 0 },
+    { "key": "scene0", "magic": "LMS1", "version": 1, "bytes": 0, "maxBytes": 12288, "debounceMs": 2000 },
+    { "key": "scene1", "magic": "LMS1", "version": 1, "bytes": 0, "maxBytes": 12288, "debounceMs": 2000 },
+    { "key": "scene2", "magic": "LMS1", "version": 1, "bytes": 0, "maxBytes": 12288, "debounceMs": 2000 }
+  ]
+}

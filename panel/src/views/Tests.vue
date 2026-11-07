@@ -12,6 +12,7 @@ const SEAMS: Record<string, string> = {
   render: "渲染合成",
   session: "会话层",
   page: "页面处理器",
+  tooling: "工具",
 };
 
 const list = computed(() => {

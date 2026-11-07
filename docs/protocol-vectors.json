@@ -1,0 +1,331 @@
+{
+  "generatedFrom": "docs/protocol.json",
+  "generator": "scripts/gen-protocol.mjs",
+  "protocolVersion": 1,
+  "count": 34,
+  "vectors": [
+    {
+      "kind": "crc",
+      "name": "crc16_check_string",
+      "input_ascii": "123456789",
+      "expect_crc": "29 b1"
+    },
+    {
+      "kind": "frame",
+      "name": "frame_set_power_on",
+      "command": "SetPower",
+      "seq": 1,
+      "payload": [
+        1
+      ],
+      "expect_hex": "a6 01 01 01 01 00 01 b0 2b"
+    },
+    {
+      "kind": "frame",
+      "name": "frame_set_brightness_128",
+      "command": "SetBrightness",
+      "seq": 2,
+      "payload": [
+        128
+      ],
+      "expect_hex": "a6 01 02 02 01 00 80 17 df"
+    },
+    {
+      "kind": "frame",
+      "name": "frame_query_state",
+      "command": "QueryState",
+      "seq": 3,
+      "payload": [],
+      "expect_hex": "a6 01 05 03 00 00 9d 2d"
+    },
+    {
+      "kind": "frame",
+      "name": "frame_set_led_count_strip0_64",
+      "command": "SetLedCount",
+      "seq": 4,
+      "payload": [
+        0,
+        64,
+        0
+      ],
+      "expect_hex": "a6 01 06 04 03 00 00 40 00 fd 59"
+    },
+    {
+      "kind": "frame",
+      "name": "frame_activate_scene_1",
+      "command": "ActivateScene",
+      "seq": 5,
+      "payload": [
+        1
+      ],
+      "expect_hex": "a6 01 28 05 01 00 01 89 41"
+    },
+    {
+      "kind": "frame_shape",
+      "name": "frame_shape_SetPower",
+      "command": "SetPower",
+      "payloadBytes": 1,
+      "expect_total_bytes": 9,
+      "expect_hex": "a6 01 01 00 01 00 01 04 5d"
+    },
+    {
+      "kind": "frame_shape",
+      "name": "frame_shape_SetBrightness",
+      "command": "SetBrightness",
+      "payloadBytes": 1,
+      "expect_total_bytes": 9,
+      "expect_hex": "a6 01 02 00 01 00 01 d6 b3"
+    },
+    {
+      "kind": "frame_shape",
+      "name": "frame_shape_QueryState",
+      "command": "QueryState",
+      "payloadBytes": 0,
+      "expect_total_bytes": 8,
+      "expect_hex": "a6 01 05 00 00 00 cd 74"
+    },
+    {
+      "kind": "frame_shape",
+      "name": "frame_shape_SetLedCount",
+      "command": "SetLedCount",
+      "payloadBytes": 3,
+      "expect_total_bytes": 11,
+      "expect_hex": "a6 01 06 00 03 00 01 02 03 a1 33"
+    },
+    {
+      "kind": "frame_shape",
+      "name": "frame_shape_SelfTest",
+      "command": "SelfTest",
+      "payloadBytes": 0,
+      "expect_total_bytes": 8,
+      "expect_hex": "a6 01 07 00 00 00 a5 99"
+    },
+    {
+      "kind": "frame_shape",
+      "name": "frame_shape_SetStripPower",
+      "command": "SetStripPower",
+      "payloadBytes": 2,
+      "expect_total_bytes": 10,
+      "expect_hex": "a6 01 1b 00 02 00 01 02 40 a8"
+    },
+    {
+      "kind": "frame_shape",
+      "name": "frame_shape_QueryStripConfig",
+      "command": "QueryStripConfig",
+      "payloadBytes": 0,
+      "expect_total_bytes": 8,
+      "expect_hex": "a6 01 1c 00 00 00 1d 9c"
+    },
+    {
+      "kind": "frame_shape",
+      "name": "frame_shape_QueryDeviceInfo",
+      "command": "QueryDeviceInfo",
+      "payloadBytes": 0,
+      "expect_total_bytes": 8,
+      "expect_hex": "a6 01 1d 00 00 00 a9 ea"
+    },
+    {
+      "kind": "frame_shape",
+      "name": "frame_shape_LayoutWrite",
+      "command": "LayoutWrite",
+      "payloadBytes": 2,
+      "expect_total_bytes": 10,
+      "expect_hex": "a6 01 20 00 02 00 01 02 6e 44"
+    },
+    {
+      "kind": "frame_shape",
+      "name": "frame_shape_LayoutPart",
+      "command": "LayoutPart",
+      "payloadBytes": 29,
+      "expect_total_bytes": 37,
+      "expect_hex": "a6 01 21 00 1d 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 23 16"
+    },
+    {
+      "kind": "frame_shape",
+      "name": "frame_shape_LayoutSeg",
+      "command": "LayoutSeg",
+      "payloadBytes": 5,
+      "expect_total_bytes": 13,
+      "expect_hex": "a6 01 22 00 05 00 01 02 03 04 05 5a f3"
+    },
+    {
+      "kind": "frame_shape",
+      "name": "frame_shape_LayoutCommit",
+      "command": "LayoutCommit",
+      "payloadBytes": 0,
+      "expect_total_bytes": 8,
+      "expect_hex": "a6 01 23 00 00 00 1a 64"
+    },
+    {
+      "kind": "frame_shape",
+      "name": "frame_shape_QueryLayout",
+      "command": "QueryLayout",
+      "payloadBytes": 1,
+      "expect_total_bytes": 9,
+      "expect_hex": "a6 01 24 00 01 00 01 e7 76"
+    },
+    {
+      "kind": "frame_shape",
+      "name": "frame_shape_ScenePart",
+      "command": "ScenePart",
+      "payloadBytes": 6,
+      "expect_total_bytes": 14,
+      "expect_hex": "a6 01 25 00 06 00 01 02 03 04 05 06 35 31"
+    },
+    {
+      "kind": "frame_shape",
+      "name": "frame_shape_SceneStep",
+      "command": "SceneStep",
+      "payloadBytes": 24,
+      "expect_total_bytes": 32,
+      "expect_hex": "a6 01 26 00 18 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 d6 c2"
+    },
+    {
+      "kind": "frame_shape",
+      "name": "frame_shape_SceneName",
+      "command": "SceneName",
+      "payloadBytes": 26,
+      "expect_total_bytes": 34,
+      "expect_hex": "a6 01 27 00 1a 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 2a 91"
+    },
+    {
+      "kind": "frame_shape",
+      "name": "frame_shape_ActivateScene",
+      "command": "ActivateScene",
+      "payloadBytes": 1,
+      "expect_total_bytes": 9,
+      "expect_hex": "a6 01 28 00 01 00 01 cc fd"
+    },
+    {
+      "kind": "frame_shape",
+      "name": "frame_shape_QueryScene",
+      "command": "QueryScene",
+      "payloadBytes": 1,
+      "expect_total_bytes": 9,
+      "expect_hex": "a6 01 29 00 01 00 01 9d 57"
+    },
+    {
+      "kind": "retired",
+      "name": "retired_SetColor",
+      "command": "SetColor",
+      "code": "0x03",
+      "expect_result": "UnknownCommand"
+    },
+    {
+      "kind": "retired",
+      "name": "retired_SetAll",
+      "command": "SetAll",
+      "code": "0x04",
+      "expect_result": "UnknownCommand"
+    },
+    {
+      "kind": "retired",
+      "name": "retired_SetSegment",
+      "command": "SetSegment",
+      "code": "0x10",
+      "expect_result": "UnknownCommand"
+    },
+    {
+      "kind": "retired",
+      "name": "retired_ClearSegment",
+      "command": "ClearSegment",
+      "code": "0x11",
+      "expect_result": "UnknownCommand"
+    },
+    {
+      "kind": "retired",
+      "name": "retired_QueryStrip",
+      "command": "QueryStrip",
+      "code": "0x12",
+      "expect_result": "UnknownCommand"
+    },
+    {
+      "kind": "retired",
+      "name": "retired_SetPlayback",
+      "command": "SetPlayback",
+      "code": "0x13",
+      "expect_result": "UnknownCommand"
+    },
+    {
+      "kind": "retired",
+      "name": "retired_ClearScript",
+      "command": "ClearScript",
+      "code": "0x1E",
+      "expect_result": "UnknownCommand"
+    },
+    {
+      "kind": "state",
+      "name": "state_example_one_strip_30_leds",
+      "expect_hex": "01 80 c8 01 01 00 01 00 1e 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 02 00 00 00 00 00 00 00",
+      "expect_bytes": 32,
+      "decoded": {
+        "power": 1,
+        "brightness": 128,
+        "max_brightness": 200,
+        "strip_count": 1,
+        "strip_power_mask": 1,
+        "active_scene": 0,
+        "layout_valid": 1,
+        "led_count": [
+          30,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "part_count": [
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "kind": "limits",
+      "name": "limits_match",
+      "expect": {
+        "maxLeds": 100,
+        "maxStrips": 8,
+        "maxParts": 8,
+        "maxPartSegs": 8,
+        "maxSteps": 8,
+        "maxScenes": 3,
+        "maxLayers": 2,
+        "nameBytes": 24,
+        "stepMinMs": 100,
+        "stepMaxMs": 60000,
+        "layerLevelMax": 100,
+        "layerBytes": 9,
+        "stateBytes": 32,
+        "layoutPartBytes": 29,
+        "layoutReportBytes": 45,
+        "sceneStepBytes": 24,
+        "sceneNameBytes": 26
+      }
+    },
+    {
+      "kind": "layer",
+      "name": "layer_static_red_level_100",
+      "bytes": [
+        "0x00",
+        "0x00",
+        "0x00",
+        "0x00",
+        "0x00",
+        "0x00",
+        "0x00",
+        "0x00",
+        "0x64"
+      ],
+      "expect_len": 9
+    }
+  ]
+}

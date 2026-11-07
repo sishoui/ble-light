@@ -37,15 +37,23 @@
 
 ### 测试
 
-- 只测**五个接缝**：协议编解码 / 命令 reducer / 渲染合成 / 会话层 / 页面处理器
+- 只测**五个接缝**：协议编解码 / 命令 reducer / 渲染合成 / 会话层 / 页面处理器。**配方见 `docs/testing.md`**
 - 三条禁令：**不读源码做断言**、**不 mock 自证**、**不拿 fixture 快照当行为测试**
+- 测试与实现同 commit；**新增测试必须先看见它红**，PR 里贴变红输出
 - 测试红了先问「行为变了吗」。行为没变就是接缝选错了，改接缝，**不删测试**
-- 协议向量只有一份 `docs/protocol-vectors.json`，固件与小程序共跑
+- 协议向量只有一份 `docs/protocol-vectors.json`，由生成器产出，固件与小程序共跑
+- 页面文件里不许有可测逻辑：逻辑抽到 `utils/control/*-unit.ts`，页面只做转发
+
+### 协议
+
+- **唯一真相是 `docs/protocol.json`**。改协议只改它，然后 `npm run gen`
+- 生成物四个，全部带 GENERATED 头，**不许手改**：`firmware/main/protocol_gen.h`、`miniprogram/utils/protocol/constants.gen.ts`、`docs/protocol-vectors.json`、`docs/protocol.md` 的表格段
+- `npm run gen:check` 校验生成物与源一致，`map:check` 也会拦
 
 ### 代码
 
 - 固件单向依赖：`ble_link → command → led_engine → led_render`，不许反向
-- reducer 是纯函数，不碰 NVS / BLE / 硬件
+- reducer 是纯函数，不碰 NVS / BLE / 硬件；副作用以 `intents` 返回
 - 页面不直接碰传输层，只走 `session`
 
 ### 流程
@@ -58,12 +66,15 @@
 ## 项目管理面板
 
 ```bash
-npm run map      # 扫描仓库 → docs/map.generated.json
-npm run panel    # http://localhost:5180
-npm run map:check # 健康检查，有 error 退出码 1
+npm run gen       # 从 protocol.json 生成四个产物
+npm run gen:check # 生成物与源是否一致
+npm run map       # 扫描仓库 → docs/map.generated.json
+npm run test      # 测生成器本身（20 个用例）
+npm run check     # gen:check + map:check，提交前必跑
+npm run panel     # http://localhost:5180
 ```
 
-**每次改动后必须跑 `npm run map` 并提交 `docs/map.generated.json`。** 面板里没有一个手抄的数字，全部来自这次扫描。
+**每次改动后必须跑 `npm run check` 和 `npm run map`，并提交 `docs/map.generated.json`。** 面板里没有一个手抄的数字，全部来自这次扫描。
 
 新增/删除/移动文件时：
 
@@ -79,9 +90,14 @@ npm run map:check # 健康检查，有 error 退出码 1
 | `doc-no-frontmatter` | 缺 `purpose` / `status` |
 | `banned-doc-name` | 文件名命中 `handoff` / `protocol-v[0-9]` / `-old` 等 |
 | `status-too-long` | `docs/status.md` 超过 60 行 |
-| `test-reads-source` | 测试疑似读源码做断言 |
-| `test-asserts-call` | 测试疑似断言方法被调用 |
+| `seam-untested` | 某个接缝没有任何测试文件。**有产品代码后升为 error** |
+| `generated-stale` | 生成物与 `protocol.json` 不一致 |
+| `test-reads-source` | 测试读源码做断言 |
+| `test-asserts-call` | 测试断言方法被调用 |
+| `test-unseamed` | 测试不属于任何接缝 |
 | `duplicate-title` | 两份文档标题重复，可能重复建设 |
+
+`scripts/` 下的工具测试归 `tooling` 接缝，不适用「不读源码」禁令——它验的就是源码与生成物。
 
 ## Agent skills
 

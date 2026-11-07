@@ -5,8 +5,12 @@
   "type": "module",
   "description": "微信小程序 BLE 直连控制 ESP32-C3 驱动的 WS2812B 灯带",
   "scripts": {
+    "gen": "node scripts/gen-protocol.mjs",
+    "gen:check": "node scripts/gen-protocol.mjs --check",
     "map": "node scripts/map.mjs",
     "map:check": "node scripts/map.mjs --strict",
+    "test": "node --test scripts/*.test.mjs",
+    "check": "npm run gen:check && npm run map:check",
     "panel": "npm --prefix panel run dev",
     "panel:build": "npm --prefix panel run build",
     "setup": "npm --prefix panel install"

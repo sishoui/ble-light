@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T12:48:21.184Z",
+  "generatedAt": "2026-11-07T13:34:01.306Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "1137773",
-    "subject": "chore: scaffold agent skills configuration",
-    "date": "2026-11-07T19:55:56+08:00",
+    "sha": "c3a6ff4",
+    "subject": "feat: 治理文档骨架 + 项目管理面板",
+    "date": "2026-11-07T20:50:15+08:00",
     "branch": "main"
   },
   "layers": [
@@ -219,10 +219,12 @@
       "layer": "miniprogram",
       "seam": "protocol",
       "role": "帧构造与解析、分片、命令构造器与解析器、常量与类型。",
-      "exists": false,
-      "fileCount": 0,
-      "lines": 0,
-      "files": [],
+      "exists": true,
+      "fileCount": 1,
+      "lines": 94,
+      "files": [
+        "miniprogram/utils/protocol/constants.gen.ts"
+      ],
       "testCount": 0
     },
     {
@@ -276,9 +278,48 @@
       "role": "扫描仓库生成 docs/map.generated.json：文件、文档、测试、迭代、健康检查。",
       "exists": true,
       "fileCount": 1,
-      "lines": 426,
+      "lines": 502,
       "files": [
         "scripts/map.mjs"
+      ],
+      "testCount": 0
+    },
+    {
+      "path": "scripts/map.test.mjs",
+      "layer": "tooling",
+      "seam": "tooling",
+      "role": "测生成器本身：扫描正确性、六类健康检查、协议向量与常量一致性。",
+      "exists": true,
+      "fileCount": 1,
+      "lines": 267,
+      "files": [
+        "scripts/map.test.mjs"
+      ],
+      "testCount": 1
+    },
+    {
+      "path": "scripts/gen-protocol.mjs",
+      "layer": "tooling",
+      "seam": "protocol",
+      "role": "从 docs/protocol.json 生成 C 头、TS 常量、测试向量、文档表格段。",
+      "exists": true,
+      "fileCount": 1,
+      "lines": 364,
+      "files": [
+        "scripts/gen-protocol.mjs"
+      ],
+      "testCount": 0
+    },
+    {
+      "path": "docs/protocol.json",
+      "layer": "docs",
+      "seam": "protocol",
+      "role": "协议的唯一真相：命令、报告、上限、层、状态、持久化。",
+      "exists": true,
+      "fileCount": 1,
+      "lines": 148,
+      "files": [
+        "docs/protocol.json"
       ],
       "testCount": 0
     },
@@ -289,7 +330,7 @@
       "role": "Vue 3 项目管理面板，只读 map.generated.json。",
       "exists": true,
       "fileCount": 13,
-      "lines": 2736,
+      "lines": 2737,
       "files": [
         "panel/index.html",
         "panel/package-lock.json",
@@ -407,9 +448,9 @@
       "purpose": "协议契约。字节布局的唯一权威，文件名永不带版本号。",
       "status": "草案",
       "hasFrontmatter": true,
-      "lines": 143,
-      "bytes": 5643,
-      "hash": "3353c00c6aa0ec70",
+      "lines": 167,
+      "bytes": 6262,
+      "hash": "1cb8b4138c4edbfb",
       "isAdr": false,
       "isAgentDoc": false
     },
@@ -420,9 +461,9 @@
       "purpose": "当前状态。唯一允许写「现在在哪 / 下一步」的地方，原地重写，不追加历史。",
       "status": "生效",
       "hasFrontmatter": true,
-      "lines": 34,
-      "bytes": 1152,
-      "hash": "aa7456f6165bcfd1",
+      "lines": 36,
+      "bytes": 1386,
+      "hash": "3257c7ce8eccbe07",
       "isAdr": false,
       "isAgentDoc": false
     },
@@ -430,63 +471,77 @@
       "path": "docs/testing.md",
       "name": "testing.md",
       "title": "测试",
-      "purpose": "测试分层、五个接缝、三条禁令。定义「测什么」与「在哪测」。",
+      "purpose": "测试配方。五个接缝各自的写法、工具、文件位置、一个用例长什么样、什么算违规。",
       "status": "生效",
       "hasFrontmatter": true,
-      "lines": 44,
-      "bytes": 2397,
-      "hash": "d2ec6da7e3b376e6",
+      "lines": 205,
+      "bytes": 8619,
+      "hash": "fbe1e0806f61106d",
       "isAdr": false,
       "isAgentDoc": false
     }
   ],
   "docStats": {
     "count": 10,
-    "lines": 565,
+    "lines": 752,
     "withoutFrontmatter": 0,
     "adrCount": 4
   },
-  "tests": [],
+  "tests": [
+    {
+      "path": "scripts/map.test.mjs",
+      "name": "map.test.mjs",
+      "lines": 268,
+      "cases": 20,
+      "asserts": 36,
+      "seam": "tooling",
+      "violations": []
+    }
+  ],
   "testStats": {
-    "files": 0,
-    "cases": 0,
-    "asserts": 0,
-    "lines": 0,
+    "files": 1,
+    "cases": 20,
+    "asserts": 36,
+    "lines": 268,
     "bySeam": {
       "protocol": 0,
       "reducer": 0,
       "render": 0,
       "session": 0,
-      "page": 0
+      "page": 0,
+      "tooling": 1
     },
     "unseamed": 0
   },
   "files": {
-    "total": 31,
-    "code": 21,
+    "total": 37,
+    "code": 26,
     "docs": 10,
-    "tests": 0,
+    "tests": 1,
     "binary": 0,
-    "lines": 5139,
+    "lines": 6876,
     "byExt": {
       ".gitignore": 1,
       ".md": 13,
-      ".json": 5,
+      ".json": 7,
+      ".h": 1,
+      ".ts": 4,
       ".html": 1,
       ".vue": 6,
-      ".ts": 3,
       ".css": 1,
-      ".mjs": 1
+      ".mjs": 3
     },
     "byDir": {
       ".": 5,
-      "docs": 6,
+      "docs": 8,
       "docs/adr": 4,
       "docs/agents": 2,
+      "firmware/main": 1,
+      "miniprogram/utils/protocol": 1,
       "panel": 4,
       "panel/src": 4,
       "panel/src/views": 5,
-      "scripts": 1
+      "scripts": 3
     },
     "list": [
       {
@@ -504,8 +559,8 @@
         "path": "AGENTS.md",
         "dir": ".",
         "ext": ".md",
-        "size": 4086,
-        "lines": 94,
+        "size": 5264,
+        "lines": 110,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -592,8 +647,8 @@
         "path": "docs/map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 25460,
-        "lines": 1040,
+        "size": 29565,
+        "lines": 1191,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -603,19 +658,41 @@
         "path": "docs/map.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 6070,
-        "lines": 179,
+        "size": 6782,
+        "lines": 200,
         "binary": false,
         "isDoc": false,
         "isTest": false,
         "module": null
       },
       {
+        "path": "docs/protocol-vectors.json",
+        "dir": "docs",
+        "ext": ".json",
+        "size": 8265,
+        "lines": 331,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "docs/protocol.json",
+        "dir": "docs",
+        "ext": ".json",
+        "size": 8778,
+        "lines": 148,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": "docs/protocol.json"
+      },
+      {
         "path": "docs/protocol.md",
         "dir": "docs",
         "ext": ".md",
-        "size": 5643,
-        "lines": 142,
+        "size": 6262,
+        "lines": 166,
         "binary": false,
         "isDoc": true,
         "isTest": false,
@@ -625,8 +702,8 @@
         "path": "docs/status.md",
         "dir": "docs",
         "ext": ".md",
-        "size": 1152,
-        "lines": 33,
+        "size": 1386,
+        "lines": 35,
         "binary": false,
         "isDoc": true,
         "isTest": false,
@@ -636,10 +713,21 @@
         "path": "docs/testing.md",
         "dir": "docs",
         "ext": ".md",
-        "size": 2397,
-        "lines": 43,
+        "size": 8619,
+        "lines": 204,
         "binary": false,
         "isDoc": true,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "firmware/main/protocol_gen.h",
+        "dir": "firmware/main",
+        "ext": ".h",
+        "size": 2319,
+        "lines": 77,
+        "binary": false,
+        "isDoc": false,
         "isTest": false,
         "module": null
       },
@@ -655,11 +743,22 @@
         "module": null
       },
       {
+        "path": "miniprogram/utils/protocol/constants.gen.ts",
+        "dir": "miniprogram/utils/protocol",
+        "ext": ".ts",
+        "size": 1840,
+        "lines": 94,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null
+      },
+      {
         "path": "package.json",
         "dir": ".",
         "ext": ".json",
-        "size": 415,
-        "lines": 14,
+        "size": 618,
+        "lines": 18,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -779,7 +878,7 @@
         "path": "panel/src/views/Overview.vue",
         "dir": "panel/src/views",
         "ext": ".vue",
-        "size": 10450,
+        "size": 10469,
         "lines": 241,
         "binary": false,
         "isDoc": false,
@@ -790,8 +889,8 @@
         "path": "panel/src/views/Tests.vue",
         "dir": "panel/src/views",
         "ext": ".vue",
-        "size": 6111,
-        "lines": 166,
+        "size": 6132,
+        "lines": 167,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -820,28 +919,50 @@
         "module": null
       },
       {
+        "path": "scripts/gen-protocol.mjs",
+        "dir": "scripts",
+        "ext": ".mjs",
+        "size": 11998,
+        "lines": 364,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": "scripts/gen-protocol.mjs"
+      },
+      {
         "path": "scripts/map.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 15448,
-        "lines": 426,
+        "size": 18102,
+        "lines": 502,
         "binary": false,
         "isDoc": false,
         "isTest": false,
         "module": "scripts/map.mjs"
+      },
+      {
+        "path": "scripts/map.test.mjs",
+        "dir": "scripts",
+        "ext": ".mjs",
+        "size": 10428,
+        "lines": 267,
+        "binary": false,
+        "isDoc": false,
+        "isTest": true,
+        "module": "scripts/map.test.mjs"
       }
     ]
   },
   "iterations": [
     {
       "index": 1,
-      "id": "1137773",
+      "id": "c3a6ff4",
       "title": "初始提交",
-      "date": "2026-11-07T19:55:56+08:00",
-      "commits": 1,
+      "date": "2026-11-07T20:50:15+08:00",
+      "commits": 2,
       "pr": null,
       "branch": null,
-      "sha": "11377736d5b368077ebdd35ef8fdf977aef287b3",
+      "sha": "c3a6ff4830c6978606dada53c60a4ed10fc049b0",
       "body": "",
       "files": []
     }
@@ -1027,14 +1148,44 @@
   "health": {
     "issues": [
       {
+        "level": "warn",
+        "kind": "seam-untested",
+        "path": null,
+        "message": "接缝「协议编解码」(protocol) 暂无测试（还没有产品代码，门禁未启用）"
+      },
+      {
+        "level": "warn",
+        "kind": "seam-untested",
+        "path": null,
+        "message": "接缝「命令 reducer」(reducer) 暂无测试（还没有产品代码，门禁未启用）"
+      },
+      {
+        "level": "warn",
+        "kind": "seam-untested",
+        "path": null,
+        "message": "接缝「渲染合成」(render) 暂无测试（还没有产品代码，门禁未启用）"
+      },
+      {
+        "level": "warn",
+        "kind": "seam-untested",
+        "path": null,
+        "message": "接缝「会话层」(session) 暂无测试（还没有产品代码，门禁未启用）"
+      },
+      {
+        "level": "warn",
+        "kind": "seam-untested",
+        "path": null,
+        "message": "接缝「页面处理器」(page) 暂无测试（还没有产品代码，门禁未启用）"
+      },
+      {
         "level": "info",
         "kind": "no-code",
         "path": null,
-        "message": "还没有产品代码"
+        "message": "还没有产品代码，接缝门禁暂未启用"
       }
     ],
     "errors": 0,
-    "warnings": 0,
+    "warnings": 5,
     "ok": true
   }
 }

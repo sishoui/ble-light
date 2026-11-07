@@ -6,8 +6,12 @@ version: 1
 
 # 协议
 
-> 唯一真相。改任何字节 = 本文件 + `docs/protocol-vectors.json` + 两端实现同一个 commit。
-> 历史版本见 git log，不保留 `protocol-v*.md`。
+> **本文档的表格段由 `scripts/gen-protocol.mjs` 从 [`protocol.json`](protocol.json) 生成。**
+> 唯一真相是 `protocol.json`，不要手改标记之间的内容。
+>
+> 改协议 = 改 `protocol.json` + 跑 `npm run gen` + 两端实现同一个 commit。
+> 生成物：`firmware/main/protocol_gen.h`、`miniprogram/utils/protocol/constants.gen.ts`、
+> `docs/protocol-vectors.json`、本文档的表格段。历史版本见 git log，不保留 `protocol-v*.md`。
 
 ## 1. 链路
 
@@ -38,69 +42,87 @@ magic 0xA6 | version 0x01 | command | seq | length (u16 LE) | payload | crc16 (u
 
 ## 4. 上限
 
-| 常量 | 值 | 常量 | 值 |
-|---|---:|---|---:|
-| 灯珠 / 链 | 100 | 步骤 / 部位 | 8 |
-| 链 | 8 | 层 / 步 | 2 |
-| 部位 / 链 | 8 | 场景 | 3 |
-| 段 / 部位 | 8 | 名称字节 | 24 |
-| 步长 | 100–60000 ms | 亮度上限 | 200（构建期） |
+<!-- GENERATED:limits -->
+| 常量 | 值 |
+|---|---:|
+| maxLeds | 100 |
+| maxStrips | 8 |
+| maxParts | 8 |
+| maxPartSegs | 8 |
+| maxSteps | 8 |
+| maxScenes | 3 |
+| maxLayers | 2 |
+| nameBytes | 24 |
+| stepMinMs | 100 |
+| stepMaxMs | 60000 |
+| layerLevelMax | 100 |
+| layerBytes | 9 |
+| stateBytes | 32 |
+| layoutPartBytes | 29 |
+| layoutReportBytes | 45 |
+| sceneStepBytes | 24 |
+| sceneNameBytes | 26 |
+<!-- /GENERATED:limits -->
 
 ## 5. 命令
 
-| 码 | 名称 | 载荷 | 说明 |
-|---|---|---|---|
-| `0x01` | `SetPower` | 1 | 整机开关 |
-| `0x02` | `SetBrightness` | 1 | 0–255，按构建期上限钳位 |
-| `0x05` | `QueryState` | 0 | ACK 后补 `StateReport` |
-| `0x06` | `SetLedCount` | 3 | `strip_id, count_lo, count_hi` |
+<!-- GENERATED:commands -->
+| 码 | 名称 | 载荷字节 | 说明 |
+|---|---|---:|---|
+| `0x01` | `SetPower` | 1 | 整机开关 0/1 |
+| `0x02` | `SetBrightness` | 1 | 0-255，按构建期上限钳位 |
+| `0x05` | `QueryState` | 0 | ACK 后补 StateReport |
+| `0x06` | `SetLedCount` | 3 | 1-100，异步重建句柄，ACK 可能延迟 |
 | `0x07` | `SelfTest` | 0 | 红→绿→蓝→白各 500ms |
-| `0x1B` | `SetStripPower` | 2 | `strip_id, on` |
-| `0x1C` | `QueryStripConfig` | 0 | ACK 后补 `StripConfigReport` |
-| `0x1D` | `QueryDeviceInfo` | 0 | ACK 后补 `DeviceInfoReport` |
-| `0x20` | `LayoutWrite` | 2 | `strip_id, part_count`，清空该链部位 |
-| `0x21` | `LayoutPart` | 29 | `strip_id, part_id, name_len, name[24], seg_count, phase` |
-| `0x22` | `LayoutSeg` | 5 | `strip_id, part_id, seg_id, start, end` |
+| `0x1B` | `SetStripPower` | 2 | 单链开关 |
+| `0x1C` | `QueryStripConfig` | 0 | ACK 后补 StripConfigReport |
+| `0x1D` | `QueryDeviceInfo` | 0 | ACK 后补 DeviceInfoReport |
+| `0x20` | `LayoutWrite` | 2 | 声明部位数并清空该链 |
+| `0x21` | `LayoutPart` | 29 | 部位头，name 固定 24 字节 |
+| `0x22` | `LayoutSeg` | 5 | 闭区间灯珠段 |
 | `0x23` | `LayoutCommit` | 0 | 整份校验并立即落盘 |
-| `0x24` | `QueryLayout` | 1 | 逐部位报告 + `LayoutListEnd` |
-| `0x25` | `ScenePart` | 6 | `scene_id, strip_id, part_id, step_count, loop, on` |
-| `0x26` | `SceneStep` | 24 | `scene_id, strip_id, part_id, step_index, duration(u16), layer0[9], layer1[9]` |
-| `0x27` | `SceneName` | 26 | `scene_id, name_len, name[24]` |
-| `0x28` | `ActivateScene` | 1 | 硬切 + 全部部位播放头重置到第 1 步 |
-| `0x29` | `QueryScene` | 1 | 逐部位、逐步骤报告 + `SceneListEnd` |
-
-**退役码永不复用。** 收到未定义命令一律回 `0x02 UnknownCommand`。
+| `0x24` | `QueryLayout` | 1 | 逐部位报告 + LayoutListEnd |
+| `0x25` | `ScenePart` | 6 | step_count 变化才清空步骤 |
+| `0x26` | `SceneStep` | 24 | 单步增量写入 |
+| `0x27` | `SceneName` | 26 | name 固定 24 字节 |
+| `0x28` | `ActivateScene` | 1 | 硬切 + 全部播放头重置到第 1 步 |
+| `0x29` | `QueryScene` | 1 | 逐部位、逐步骤报告 + SceneListEnd |
+<!-- /GENERATED:commands -->
 
 ## 6. 报告
 
-| 码 | 名称 | 载荷 |
-|---|---|---|
-| `0x80` | `ACK` | 2：`[原命令字, 结果码]`，seq 回显 |
-| `0x81` | `Event` | 2：`[event_code, detail]`，seq 恒 0 |
-| `0x82` | `StateReport` | 32 |
-| `0x87` | `StripConfigReport` | 24：8 × `[strip_id, gpio, flags]` |
-| `0x88` | `DeviceInfoReport` | 15 |
-| `0x89` | `LayoutReport` | 45 |
-| `0x8A` | `LayoutListEnd` | 2：`[strip_id, part_mask]` |
-| `0x8B` | `ScenePartReport` | 6 |
-| `0x8C` | `SceneStepReport` | 24 |
-| `0x8D` | `SceneListEnd` | 26：`[scene_id, name_len, name[24]]` |
+<!-- GENERATED:reports -->
+| 码 | 名称 | 载荷字节 | 说明 |
+|---|---|---:|---|
+| `0x80` | `ACK` | 2 | seq 回显 |
+| `0x81` | `Event` | 2 | seq 恒 0 |
+| `0x82` | `StateReport` | 32 | 同 State 布局 |
+| `0x87` | `StripConfigReport` | 24 | 8 × [strip_id, gpio, flags] |
+| `0x88` | `DeviceInfoReport` | 15 | 版本 / hw_id / 各上限 / caps |
+| `0x89` | `LayoutReport` | 45 | 单部位明细 |
+| `0x8A` | `LayoutListEnd` | 2 | 多帧收尾 |
+| `0x8B` | `ScenePartReport` | 6 | 同 ScenePart 载荷 |
+| `0x8C` | `SceneStepReport` | 24 | 同 SceneStep 载荷 |
+| `0x8D` | `SceneListEnd` | 26 | 多帧收尾，带场景名 |
+<!-- /GENERATED:reports -->
 
 ## 7. 层
 
 定宽 **9 字节**：`type(1) | param[7] | level(1)`。`level` 0–100 是本层母亮度，0 = 不出光。
 
-| type | 名称 | param[0..1] | param[2..3] | param[4] | param[5] | param[6] |
-|---|---|---|---|---|---|---|
-| `0x00` | 静态 | hue | sat | 0 | 0 | 0 |
-| `0x01` | 呼吸 | hue | sat | period_ms | 最低亮 % | 波形 flags |
-| `0x02` | 彩虹 | hue | sat | period_ms | span | 方向 flags |
-| `0x03` | 流星 | hue | sat | period_ms | tail | 方向/实色/头数 flags |
-| `0x04` | 爆闪 | hue | sat | period_ms | duty | 0 |
-| `0x05` | 心跳 | hue | sat | period_ms | pulse | 双脉冲 flag |
-| `0x06` | 熄灭 | 0 | 0 | 0 | 0 | 0 |
-| `0x07` | 随机闪烁 | hue | sat | period_ms | 同时亮比例 | 0 |
-| `0xFF` | 空层 | 0 | 0 | 0 | 0 | 0 |
+<!-- GENERATED:effects -->
+| type | 名称 | param[0..6] | 说明 |
+|---|---|---|---|
+| `0x00` | 静态 | hue / sat / 0 / 0 / 0 | 常亮 |
+| `0x01` | 呼吸 | hue / sat / period_ms / floor_pct / wave_flags | 波形 bit1-2 |
+| `0x02` | 彩虹 | hue / sat / period_ms / span / reverse_flag | 方向 bit0 |
+| `0x03` | 流星 | hue / sat / period_ms / tail / comet_flags | 方向 / 实色 / 头数 |
+| `0x04` | 爆闪 | hue / sat / period_ms / duty / 0 | flags 必须 0 |
+| `0x05` | 心跳 | hue / sat / period_ms / pulse / double_flag | 双脉冲 bit0 |
+| `0x06` | 熄灭 | 0 / 0 / 0 / 0 / 0 | 永不发光 |
+| `0x07` | 随机闪烁 | hue / sat / period_ms / density / 0 | flags 必须 0 |
+| `0xFF` | 空层 | 0 / 0 / 0 / 0 / 0 | 只能作叠加层 |
+<!-- /GENERATED:effects -->
 
 两层叠加规则：空层 → 覆盖；非空 → 按 `level` 相加合成。
 
@@ -133,7 +155,9 @@ State 不含部位开关、播放位置、颜色摘要；明细走 `QueryLayout`
 
 ## 10. 结果码
 
-`0x00 OK` / `0x01 InvalidParam` / `0x02 UnknownCommand` / `0x03 BadChecksum` / `0x04 BadLength` / `0x05 Busy` / `0x06 StorageFailed` / `0x07 UnsupportedVersion` / `0x08 BadMagic` / `0x09 InternalError`
+<!-- GENERATED:resultCodes -->
+`0x00` OK / `0x01` InvalidParam / `0x02` UnknownCommand / `0x03` BadChecksum / `0x04` BadLength / `0x05` Busy / `0x06` StorageFailed / `0x07` UnsupportedVersion / `0x08` BadMagic / `0x09` InternalError
+<!-- /GENERATED:resultCodes -->
 
 校验顺序固定：命令字（`0x02`）→ 载荷长度（`0x04`）→ 载荷取值（`0x01`）。
 

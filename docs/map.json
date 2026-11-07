@@ -140,6 +140,24 @@
       "role": "扫描仓库生成 docs/map.generated.json：文件、文档、测试、迭代、健康检查。"
     },
     {
+      "path": "scripts/map.test.mjs",
+      "layer": "tooling",
+      "seam": "tooling",
+      "role": "测生成器本身：扫描正确性、六类健康检查、协议向量与常量一致性。"
+    },
+    {
+      "path": "scripts/gen-protocol.mjs",
+      "layer": "tooling",
+      "seam": "protocol",
+      "role": "从 docs/protocol.json 生成 C 头、TS 常量、测试向量、文档表格段。"
+    },
+    {
+      "path": "docs/protocol.json",
+      "layer": "docs",
+      "seam": "protocol",
+      "role": "协议的唯一真相：命令、报告、上限、层、状态、持久化。"
+    },
+    {
       "path": "panel",
       "layer": "tooling",
       "seam": null,
@@ -150,6 +168,7 @@
     "docsDir": "docs",
     "docsAllowed": [
       "docs/protocol.md",
+      "docs/protocol.json",
       "docs/status.md",
       "docs/testing.md",
       "docs/acceptance.md",
@@ -174,6 +193,8 @@
       "session": "会话层",
       "page": "页面处理器"
     },
+    "toolingTestSeam": "tooling",
+    "toolingTestPaths": ["scripts/"],
     "requireFrontmatter": true
   }
 }
