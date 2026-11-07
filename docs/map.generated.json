@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T18:35:42.213Z",
+  "generatedAt": "2026-11-07T20:10:16.961Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "55cda9e",
-    "subject": "feat(design): 页面结构重构——设备列表 → 设备详情 → 灯链详情下钻",
-    "date": "2026-11-08T02:33:03+08:00",
+    "sha": "2ee3607",
+    "subject": "docs(map): 页面清单跟上新结构——设备列表/详情/灯链详情",
+    "date": "2026-11-08T02:35:50+08:00",
     "branch": "spec-v1",
     "dirty": true
   },
@@ -758,7 +758,7 @@
       "role": "设计变量的可执行副本：颜色、圆角、间距、动效与字号表。权威定义在 docs/design.md。",
       "exists": true,
       "fileCount": 1,
-      "lines": 145,
+      "lines": 146,
       "files": [
         "miniprogram/app.wxss"
       ],
@@ -1058,9 +1058,9 @@
       "purpose": "视觉语言的唯一权威。颜色、字体、间距、圆角、动效、文案与禁令。",
       "status": "生效",
       "hasFrontmatter": true,
-      "lines": 259,
-      "bytes": 12245,
-      "hash": "0bcc25af2bc9abb9",
+      "lines": 285,
+      "bytes": 13870,
+      "hash": "f14887e57f684339",
       "isAdr": false,
       "isAgentDoc": false
     },
@@ -1097,9 +1097,9 @@
       "purpose": "当前状态。唯一允许写「现在在哪 / 下一步」的地方，原地重写，不追加历史。",
       "status": "生效",
       "hasFrontmatter": true,
-      "lines": 42,
-      "bytes": 2172,
-      "hash": "5eb3f23cb0ac70ae",
+      "lines": 43,
+      "bytes": 2243,
+      "hash": "f887250c0cc3b95e",
       "isAdr": false,
       "isAgentDoc": false
     },
@@ -1119,7 +1119,7 @@
   ],
   "docStats": {
     "count": 12,
-    "lines": 1290,
+    "lines": 1317,
     "withoutFrontmatter": 0,
     "adrCount": 4
   },
@@ -1296,7 +1296,7 @@
     "docs": 12,
     "tests": 18,
     "binary": 0,
-    "lines": 16022,
+    "lines": 16050,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
@@ -1470,8 +1470,8 @@
         "name": "design.md",
         "dir": "docs",
         "ext": ".md",
-        "size": 12245,
-        "lines": 258,
+        "size": 13870,
+        "lines": 284,
         "binary": false,
         "isDoc": true,
         "isTest": false,
@@ -1496,7 +1496,7 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 99551,
+        "size": 99602,
         "lines": 3416,
         "binary": false,
         "isDoc": false,
@@ -1561,8 +1561,8 @@
         "name": "status.md",
         "dir": "docs",
         "ext": ".md",
-        "size": 2172,
-        "lines": 41,
+        "size": 2243,
+        "lines": 42,
         "binary": false,
         "isDoc": true,
         "isTest": false,
@@ -2029,8 +2029,8 @@
         "name": "app.wxss",
         "dir": "miniprogram",
         "ext": ".wxss",
-        "size": 4433,
-        "lines": 145,
+        "size": 4602,
+        "lines": 146,
         "binary": false,
         "isDoc": false,
         "isTest": false,

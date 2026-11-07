@@ -40,6 +40,7 @@ page {
   /* 间距（8pt 网格 = 16rpx 倍数） */
   --space-page: 32rpx;
   --space-card: 48rpx;
+  --space-list: 16rpx;
   --space-control: 32rpx;
   --space-gap: 16rpx;
   --space-block: 48rpx;
