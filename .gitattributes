@@ -1,0 +1,16 @@
+# 生成物一律 LF。生成器写 LF，git 若再转 CRLF，gen:check 在 Windows 上永远红。
+firmware/main/protocol_gen.h            text eol=lf
+miniprogram/utils/protocol/constants.gen.ts text eol=lf
+docs/protocol-vectors.json              text eol=lf
+docs/protocol.md                        text eol=lf
+docs/protocol.json                      text eol=lf
+
+# 其余文本按仓库统一的 LF 走，避免各机器 autocrlf 不同导致的假冲突
+*.md      text eol=lf
+*.mjs     text eol=lf
+*.ts      text eol=lf
+*.json    text eol=lf
+*.c       text eol=lf
+*.h       text eol=lf
+*.wxss    text eol=lf
+*.wxml    text eol=lf
