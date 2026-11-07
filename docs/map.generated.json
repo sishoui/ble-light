@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T14:56:45.558Z",
+  "generatedAt": "2026-11-07T15:22:39.731Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "b95021c",
-    "subject": "feat(panel): 任务视图 + 收尾门禁，任务完成必须同步面板",
-    "date": "2026-11-07T22:38:34+08:00",
+    "sha": "3153baf",
+    "subject": "feat: 设计流程（Pixso 确认制）+ 苹果风格设计规范",
+    "date": "2026-11-07T22:57:05+08:00",
     "branch": "main",
     "dirty": true
   },
@@ -35,7 +35,7 @@
           "total": 12
         },
         "closedAt": null,
-        "updatedAt": "2026-11-07T14:06:09Z",
+        "updatedAt": "2026-11-07T15:18:59Z",
         "url": "https://github.com/sishoui/ble-light/issues/1"
       },
       {
@@ -192,7 +192,7 @@
           "total": 0
         },
         "closedAt": null,
-        "updatedAt": "2026-11-07T14:12:55Z",
+        "updatedAt": "2026-11-07T15:19:39Z",
         "url": "https://github.com/sishoui/ble-light/issues/5"
       },
       {
@@ -229,7 +229,7 @@
           "total": 0
         },
         "closedAt": null,
-        "updatedAt": "2026-11-07T14:13:10Z",
+        "updatedAt": "2026-11-07T15:19:45Z",
         "url": "https://github.com/sishoui/ble-light/issues/6"
       },
       {
@@ -266,7 +266,7 @@
           "total": 0
         },
         "closedAt": null,
-        "updatedAt": "2026-11-07T14:13:14Z",
+        "updatedAt": "2026-11-07T15:19:48Z",
         "url": "https://github.com/sishoui/ble-light/issues/7"
       },
       {
@@ -334,7 +334,7 @@
           "total": 0
         },
         "closedAt": null,
-        "updatedAt": "2026-11-07T14:13:22Z",
+        "updatedAt": "2026-11-07T15:19:51Z",
         "url": "https://github.com/sishoui/ble-light/issues/9"
       },
       {
@@ -365,7 +365,7 @@
           "total": 0
         },
         "closedAt": null,
-        "updatedAt": "2026-11-07T14:13:26Z",
+        "updatedAt": "2026-11-07T15:19:54Z",
         "url": "https://github.com/sishoui/ble-light/issues/10"
       },
       {
@@ -396,7 +396,7 @@
           "total": 0
         },
         "closedAt": null,
-        "updatedAt": "2026-11-07T14:13:30Z",
+        "updatedAt": "2026-11-07T15:19:56Z",
         "url": "https://github.com/sishoui/ble-light/issues/11"
       },
       {
@@ -464,7 +464,7 @@
           "total": 0
         },
         "closedAt": null,
-        "updatedAt": "2026-11-07T14:14:33Z",
+        "updatedAt": "2026-11-07T15:19:41Z",
         "url": "https://github.com/sishoui/ble-light/issues/13"
       }
     ],
@@ -1034,16 +1034,16 @@
       "purpose": "测试配方。五个接缝各自的写法、工具、文件位置、一个用例长什么样、什么算违规。",
       "status": "生效",
       "hasFrontmatter": true,
-      "lines": 205,
-      "bytes": 8619,
-      "hash": "fbe1e0806f61106d",
+      "lines": 209,
+      "bytes": 8948,
+      "hash": "e8fa5ce2f1eab3dc",
       "isAdr": false,
       "isAgentDoc": false
     }
   ],
   "docStats": {
     "count": 12,
-    "lines": 999,
+    "lines": 1003,
     "withoutFrontmatter": 0,
     "adrCount": 4
   },
@@ -1110,7 +1110,7 @@
     "docs": 12,
     "tests": 4,
     "binary": 0,
-    "lines": 10127,
+    "lines": 10131,
     "byExt": {
       ".gitignore": 1,
       ".md": 15,
@@ -1286,7 +1286,7 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 58092,
+        "size": 58085,
         "lines": 2028,
         "binary": false,
         "isDoc": false,
@@ -1364,8 +1364,8 @@
         "name": "testing.md",
         "dir": "docs",
         "ext": ".md",
-        "size": 8619,
-        "lines": 204,
+        "size": 8948,
+        "lines": 208,
         "binary": false,
         "isDoc": true,
         "isTest": false,
@@ -1793,13 +1793,13 @@
   "iterations": [
     {
       "index": 1,
-      "id": "b95021c",
+      "id": "3153baf",
       "title": "初始提交",
-      "date": "2026-11-07T22:38:34+08:00",
-      "commits": 7,
+      "date": "2026-11-07T22:57:05+08:00",
+      "commits": 8,
       "pr": null,
       "branch": null,
-      "sha": "b95021cd80b06e95a6a5d74390bff055f5292453",
+      "sha": "3153baf0ebb0a1b864ef1ef78b7f69fa1af103d4",
       "body": "",
       "files": []
     }
