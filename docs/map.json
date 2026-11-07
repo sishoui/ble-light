@@ -170,6 +170,12 @@
       "role": "Markdown 预览：剥 frontmatter、丢原始 HTML、链接协议白名单、标题生成锚点。"
     },
     {
+      "path": "scripts/tasks.mjs",
+      "layer": "tooling",
+      "seam": null,
+      "role": "从 GitHub 拉任务图：父票、阻塞边、子项完成度与前沿判定。"
+    },
+    {
       "path": "docs/protocol.json",
       "layer": "docs",
       "seam": "protocol",

@@ -100,11 +100,49 @@ export interface HealthIssue {
   message: string;
 }
 
+export interface TaskRef {
+  number: number;
+  title: string;
+  state: string;
+}
+
+export interface Task {
+  number: number;
+  title: string;
+  state: string;
+  labels: string[];
+  parent: { number: number; title: string } | null;
+  blockedBy: TaskRef[];
+  blocking: TaskRef[];
+  openBlockers: number;
+  ready: boolean;
+  isParent: boolean;
+  children: { total: number; completed: number; percentCompleted: number };
+  closedAt: string | null;
+  updatedAt: string | null;
+  url: string;
+}
+
+export interface TaskData {
+  ok: boolean;
+  error?: string;
+  tasks?: Task[];
+  stats?: {
+    total: number;
+    open: number;
+    closed: number;
+    ready: number;
+    readyList: number[];
+    progress: number;
+  };
+}
+
 export interface MapData {
   generatedAt: string;
   generator: string;
   project: { name: string; tagline: string; repo: string };
-  head: { sha: string; subject: string; date: string; branch: string } | null;
+  head: { sha: string; subject: string; date: string; branch: string; dirty?: boolean } | null;
+  tasks: TaskData;
   layers: { id: string; name: string; blurb: string; dirs: string[] }[];
   modules: ModuleEntry[];
   docs: DocEntry[];

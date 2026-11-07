@@ -1,18 +1,20 @@
 <script setup lang="ts">
-/** 面板外壳：左侧导航（五个视图）+ 右侧内容区；读取 map.generated.json 并分发视图。 */
+/** 面板外壳：左侧导航（六个视图）+ 右侧内容区；读取 map.generated.json 并分发视图。 */
 import { onMounted, ref } from "vue";
 import { loadMap, useMap, fmtDateTime } from "./store";
 import Overview from "./views/Overview.vue";
 import Iterations from "./views/Iterations.vue";
+import Tasks from "./views/Tasks.vue";
 import Docs from "./views/Docs.vue";
 import Tests from "./views/Tests.vue";
 import Files from "./views/Files.vue";
 
 const { data, error, loading } = useMap();
-const tab = ref<"overview" | "iterations" | "docs" | "tests" | "files">("overview");
+const tab = ref<"overview" | "iterations" | "tasks" | "docs" | "tests" | "files">("overview");
 
 const tabs = [
   { id: "overview", label: "总览", hint: "项目现状与健康" },
+  { id: "tasks", label: "任务", hint: "做到哪一步了" },
   { id: "iterations", label: "迭代", hint: "每次改了什么" },
   { id: "docs", label: "文档", hint: "每份文档管什么" },
   { id: "tests", label: "测试", hint: "测什么、属于哪个接缝" },
@@ -46,6 +48,9 @@ onMounted(loadMap);
           <span v-else-if="t.id === 'tests' && data" class="ncount">{{ data.testStats.files }}</span>
           <span v-else-if="t.id === 'files' && data" class="ncount">{{ data.files.total }}</span>
           <span v-else-if="t.id === 'iterations' && data" class="ncount">{{ data.iterations.length }}</span>
+          <span v-else-if="t.id === 'tasks' && data?.tasks?.stats" class="ncount">
+            {{ data.tasks.stats.closed }}/{{ data.tasks.stats.total }}
+          </span>
         </button>
       </nav>
 
@@ -79,6 +84,7 @@ onMounted(loadMap);
       <template v-else>
         <Overview v-if="tab === 'overview'" :data="data" @go="tab = $event" />
         <Iterations v-else-if="tab === 'iterations'" :data="data" />
+        <Tasks v-else-if="tab === 'tasks'" :data="data" />
         <Docs v-else-if="tab === 'docs'" :data="data" />
         <Tests v-else-if="tab === 'tests'" :data="data" />
         <Files v-else-if="tab === 'files'" :data="data" />

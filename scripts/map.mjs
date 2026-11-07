@@ -10,10 +10,15 @@ import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
+import { collectTasks, ghAvailable } from "./tasks.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const MAP_JSON = join(ROOT, "docs", "map.json");
-const OUT = join(ROOT, "docs", "map.generated.json");
+// --out：让测试写到别处，不污染真实产物。
+const outArg = process.argv.indexOf("--out");
+const OUT = outArg !== -1 && process.argv[outArg + 1]
+  ? resolve(process.argv[outArg + 1])
+  : join(ROOT, "docs", "map.generated.json");
 
 const IGNORE_DIRS = new Set([
   ".git", "node_modules", "dist", ".vite", "__pycache__", ".pytest_cache",
@@ -542,11 +547,29 @@ function main() {
     byDir[f.dir] = (byDir[f.dir] ?? 0) + 1;
   }
 
+  const worktreeDirty = git(["status", "--porcelain"]).length > 0;
+  // --skip-tasks：测试与离线环境用。任务图来自网络，不该让每次扫描都等它。
+  const skipTasks = process.argv.includes("--skip-tasks");
+  const tasks = skipTasks
+    ? { ok: false, error: "本次扫描跳过了任务图（--skip-tasks）" }
+    : ghAvailable()
+      ? collectTasks()
+      : { ok: false, error: "gh 未登录，任务图不可用" };
+
   const payload = {
     generatedAt: new Date().toISOString(),
     generator: "scripts/map.mjs",
     project: config.project,
-    head: gitAvailable() ? { sha: git(["rev-parse", "--short", "HEAD"]), subject: git(["log", "-1", "--pretty=%s"]), date: git(["log", "-1", "--pretty=%aI"]), branch: git(["rev-parse", "--abbrev-ref", "HEAD"]) } : null,
+    head: gitAvailable()
+      ? {
+          sha: git(["rev-parse", "--short", "HEAD"]),
+          subject: git(["log", "-1", "--pretty=%s"]),
+          date: git(["log", "-1", "--pretty=%aI"]),
+          branch: git(["rev-parse", "--abbrev-ref", "HEAD"]),
+          dirty: worktreeDirty,
+        }
+      : null,
+    tasks,
     layers: config.layers,
     modules: config.modules.map((m) => {
       const matching = files.filter((f) => f.path === m.path || f.path.startsWith(`${m.path}/`));
@@ -608,14 +631,106 @@ function main() {
     },
   };
 
-  writeFileSync(OUT, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
+  const serialized = `${JSON.stringify(payload, null, 2)}\n`;
+  const isCheck = process.argv.includes("--strict");
+  const previous = existsSync(OUT) ? readFileSync(OUT, "utf8") : null;
+
+  // --strict 不写盘：只比对。否则「检查自己刚写的产物」是循环论证。
+  if (isCheck) {
+    // generatedAt 每次都变，不参与比对；否则永远误报。
+    if (stableJson(previous) !== stableJson(serialized)) {
+      const fresh = JSON.parse(serialized);
+      issues.push({
+        level: "error",
+        kind: "panel-stale",
+        path: "docs/map.generated.json",
+        message: staleSummary(previous, fresh),
+      });
+      payload.health.issues = issues;
+      payload.health.errors = issues.filter((i) => i.level === "error").length;
+      payload.health.warnings = issues.filter((i) => i.level === "warn").length;
+      payload.health.ok = payload.health.errors === 0;
+    }
+    for (const i of issues) console.log(`  ${i.level.toUpperCase()}  ${i.path ?? "-"}  ${i.message}`);
+    if (payload.health.errors > 0) process.exit(1);
+    console.log("面板数据与仓库一致");
+    return;
+  }
+
+  writeFileSync(OUT, serialized, "utf8");
   console.log(`map.generated.json  ${files.length} 文件 / ${docs.length} 文档 / ${tests.length} 测试 / ${iterations.length} 迭代`);
   if (issues.length) {
     for (const i of issues) console.log(`  ${i.level.toUpperCase()}  ${i.path ?? "-"}  ${i.message}`);
   } else {
     console.log("  健康检查通过");
   }
-  if (process.argv.includes("--strict") && payload.health.errors > 0) process.exit(1);
+}
+
+/** 去掉易变字段后的规范化 JSON，用于比对「实质内容是否相同」。 */
+function stableJson(text) {
+  if (!text) return null;
+  try {
+    const obj = JSON.parse(text);
+    delete obj.generatedAt;
+    if (obj.head) delete obj.head.dirty;
+    // 面板产物自己会变：去掉它的条目，否则一致时也永远报落后
+    if (Array.isArray(obj.files?.list)) {
+      obj.files.list = obj.files.list.filter((f) => f.path !== "docs/map.generated.json");
+    }
+    return JSON.stringify(obj);
+  } catch {
+    return text;
+  }
+}
+
+/** 指出面板数据落后在哪，而不是只说「不一致」。 */
+function staleSummary(previousJson, fresh) {
+  if (!previousJson) return "面板数据不存在，跑 npm run sync";
+  let prev;
+  try {
+    prev = JSON.parse(previousJson);
+  } catch {
+    return "面板数据损坏，跑 npm run sync";
+  }
+
+  const diffs = [];
+  const cmp = (label, a, b) => {
+    if (a !== b) diffs.push(`${label} ${a ?? "?"} → ${b}`);
+  };
+  cmp("文件数", prev.files?.total, fresh.files?.total);
+  cmp("文档数", prev.docStats?.count, fresh.docStats?.count);
+  cmp("测试文件", prev.testStats?.files, fresh.testStats?.files);
+  cmp("用例数", prev.testStats?.cases, fresh.testStats?.cases);
+  cmp("迭代数", prev.iterations?.length, fresh.iterations?.length);
+  cmp("任务数", prev.tasks?.stats?.total, fresh.tasks?.stats?.total);
+  cmp("健康错误", prev.health?.errors, fresh.health?.errors);
+  if (prev.head?.sha !== fresh.head?.sha) diffs.push(`HEAD ${prev.head?.sha ?? "?"} → ${fresh.head?.sha ?? "?"}`);
+
+  // 找出具体变动的文件（新增、删除、行数、大小、描述）
+  // 面板产物自己不参与比对——它每次生成都会变，否则永远报「落后」。
+  const IGNORE = new Set(["docs/map.generated.json"]);
+  const prevFiles = new Map((prev.files?.list ?? []).filter((f) => !IGNORE.has(f.path)).map((f) => [f.path, f]));
+  const nextFiles = new Map((fresh.files?.list ?? []).filter((f) => !IGNORE.has(f.path)).map((f) => [f.path, f]));
+  const added = [...nextFiles.keys()].filter((p) => !prevFiles.has(p));
+  const removed = [...prevFiles.keys()].filter((p) => !nextFiles.has(p));
+  const changed = [];
+  for (const [p, nf] of nextFiles) {
+    const pf = prevFiles.get(p);
+    if (!pf) continue;
+    if (pf.lines !== nf.lines || pf.size !== nf.size || pf.description !== nf.description) changed.push(p);
+  }
+  if (added.length) diffs.push(`新增 ${added.slice(0, 3).join(", ")}${added.length > 3 ? ` 等 ${added.length} 个` : ""}`);
+  if (removed.length) diffs.push(`删除 ${removed.slice(0, 3).join(", ")}${removed.length > 3 ? ` 等 ${removed.length} 个` : ""}`);
+  if (changed.length) diffs.push(`改动 ${changed.slice(0, 3).join(", ")}${changed.length > 3 ? ` 等 ${changed.length} 个` : ""}`);
+
+  // 任务状态变化
+  const prevTasks = new Map((prev.tasks?.tasks ?? []).map((t) => [t.number, t.state]));
+  const changedTasks = (fresh.tasks?.tasks ?? []).filter((t) => prevTasks.has(t.number) && prevTasks.get(t.number) !== t.state);
+  if (changedTasks.length) diffs.push(`任务状态变化 ${changedTasks.map((t) => `#${t.number}`).join(", ")}`);
+
+  return diffs.length
+    ? `面板数据落后：${diffs.join("；")}。跑 npm run sync`
+    : "面板数据与仓库不一致。跑 npm run sync";
 }
 
 main();

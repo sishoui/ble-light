@@ -66,15 +66,28 @@
 ## 项目管理面板
 
 ```bash
+npm run sync      # 一条命令做完所有重生成（gen + map）
 npm run gen       # 从 protocol.json 生成四个产物
 npm run gen:check # 生成物与源是否一致
-npm run map       # 扫描仓库 → docs/map.generated.json
-npm run test      # 测生成器本身（20 个用例）
+npm run map       # 扫描仓库 + 拉 GitHub 任务 → docs/map.generated.json
+npm run test      # 测生成器本身
 npm run check     # gen:check + map:check，提交前必跑
 npm run panel     # http://localhost:5180
 ```
 
-**每次改动后必须跑 `npm run check` 和 `npm run map`，并提交 `docs/map.generated.json`。** 面板里没有一个手抄的数字，全部来自这次扫描。
+### 收尾清单（每个任务都必须做）
+
+**「任务完成」的定义包含更新面板。** 没同步就等于没完成。
+
+1. 跑 `npm run sync`
+2. 跑 `npm run test` 和 `npm run check`，全绿
+3. 提交 `docs/map.generated.json`
+4. 如果动了 issue 状态（关闭、标记阻塞解除），再跑一次 `npm run map` 让任务图跟上
+
+`npm run check` 会拦住忘记同步：面板数据落后时它退 1，并指出**具体是哪个文件变了**，例如
+`面板数据落后：改动 scripts/markdown.mjs。跑 npm run sync`。
+
+面板里没有一个手抄的数字——文件、文档、测试、迭代、任务全部来自扫描与 GitHub API。
 
 新增/删除/移动文件时：
 
@@ -92,6 +105,7 @@ npm run panel     # http://localhost:5180
 | `status-too-long` | `docs/status.md` 超过 60 行 |
 | `seam-untested` | 某个接缝没有任何测试文件。**有产品代码后升为 error** |
 | `generated-stale` | 生成物与 `protocol.json` 不一致 |
+| `panel-stale` | 面板数据落后于仓库，会指出具体变动的文件 |
 | `test-reads-source` | 测试读源码做断言 |
 | `test-asserts-call` | 测试断言方法被调用 |
 | `test-unseamed` | 测试不属于任何接缝 |

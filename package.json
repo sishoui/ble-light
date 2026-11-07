@@ -11,6 +11,7 @@
     "map:check": "node scripts/map.mjs --strict",
     "test": "node --test scripts/*.test.mjs",
     "check": "npm run gen:check && npm run map:check",
+    "sync": "npm run gen && npm run map",
     "panel": "npm --prefix panel run dev",
     "panel:build": "npm --prefix panel run build",
     "setup": "npm --prefix panel install"

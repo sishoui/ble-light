@@ -1,13 +1,18 @@
 <script setup lang="ts">
-/** 总览：KPI、分层、验收进度、五个接缝、健康检查、最近迭代。 */
+/** 总览：KPI、任务进度、分层、验收进度、五个接缝、健康检查、最近迭代。 */
 import { computed } from "vue";
 import { fmtNum, fmtDateTime, type MapData } from "../store";
 
 const props = defineProps<{ data: MapData }>();
-const emit = defineEmits<{ go: [tab: "iterations" | "docs" | "tests" | "files"] }>();
+const emit = defineEmits<{ go: [tab: "iterations" | "tasks" | "docs" | "tests" | "files"] }>();
 
 const acc = computed(() => props.data.acceptanceStats);
 const accPct = computed(() => (acc.value.total ? Math.round((acc.value.done / acc.value.total) * 100) : 0));
+
+const taskStats = computed(() => props.data.tasks?.stats ?? null);
+const readyTasks = computed(() =>
+  (props.data.tasks?.tasks ?? []).filter((t) => t.ready && !t.isParent),
+);
 
 const seamLabels = computed(() => {
   const labels: Record<string, string> = {
@@ -49,6 +54,19 @@ const healthTone = computed(() => (props.data.health.ok ? "ok" : "err"));
     </header>
 
     <section class="kpis">
+      <button class="kpi card" @click="emit('tasks')">
+        <div class="klabel">任务</div>
+        <div class="kval num">
+          {{ taskStats ? `${taskStats.closed}/${taskStats.total}` : "—" }}
+        </div>
+        <div class="kfoot">
+          <template v-if="taskStats && taskStats.ready > 0">
+            <span class="ready-dot" />{{ taskStats.ready }} 项可开工
+          </template>
+          <template v-else-if="taskStats">无待办</template>
+          <template v-else>任务图不可用</template>
+        </div>
+      </button>
       <button class="kpi card" @click="emit('iterations')">
         <div class="klabel">迭代</div>
         <div class="kval num">{{ data.iterations.length }}</div>
@@ -72,6 +90,25 @@ const healthTone = computed(() => (props.data.health.ok ? "ok" : "err"));
         <div class="kval num">{{ data.files.total }}</div>
         <div class="kfoot">{{ fmtNum(data.files.lines) }} 行 · {{ data.files.binary }} 个二进制</div>
       </button>
+    </section>
+
+    <section v-if="readyTasks.length" class="card block funnel">
+      <div class="bhead">
+        <h2>前沿：可以立即开工</h2>
+        <button class="link" @click="emit('tasks')">全部任务 →</button>
+      </div>
+      <a
+        v-for="t in readyTasks"
+        :key="t.number"
+        :href="t.url"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="frow"
+      >
+        <span class="mono fnum">#{{ t.number }}</span>
+        <span class="ftitle">{{ t.title }}</span>
+        <span class="chip ok">可开工</span>
+      </a>
     </section>
 
     <div class="cols">
@@ -187,7 +224,7 @@ const healthTone = computed(() => (props.data.health.ok ? "ok" : "err"));
 h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
 .lede { color: var(--ink-2); font-size: 13px; margin-top: 2px; }
 
-.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
 .kpi { padding: 16px 18px; text-align: left; transition: border-color 140ms, transform 140ms; }
 .kpi:hover { border-color: #34404d; transform: translateY(-1px); }
 .klabel { font-size: 11.5px; color: var(--ink-3); letter-spacing: 0.03em; }
@@ -233,6 +270,23 @@ h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
 .lrow { display: flex; align-items: center; gap: 10px; }
 .ltitle { font-size: 13.5px; }
 .lmeta2 { font-size: 11.5px; }
+
+.ready-dot {
+  display: inline-block; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--ok); margin-right: 5px; vertical-align: middle;
+}
+
+.funnel .bhead { margin-bottom: 10px; }
+.frow {
+  display: grid; grid-template-columns: 54px 1fr auto;
+  align-items: center; gap: 12px;
+  padding: 9px 4px; border-bottom: 1px solid var(--line-soft);
+  transition: background 120ms;
+}
+.frow:last-child { border-bottom: none; }
+.frow:hover { background: var(--surface-2); }
+.fnum { font-size: 11.5px; color: var(--ink-3); }
+.ftitle { font-size: 13px; }
 
 @media (max-width: 1100px) {
   .kpis { grid-template-columns: 1fr 1fr; }

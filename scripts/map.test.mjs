@@ -9,7 +9,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -17,16 +17,29 @@ import { fileURLToPath } from "node:url";
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, "..");
 const GEN = join(HERE, "gen-protocol.mjs");
+/** 测试写到临时文件，绝不覆盖真实的面板产物。 */
+const TMP_OUT = join(mkdtempSync(join(tmpdir(), "map-out-")), "map.generated.json");
 
-/** 只在真实的仓库上跑一次，拿到产物做断言。 */
+/** 跑到临时产物，读回来做断言。不碰 docs/map.generated.json。 */
 function runMap() {
-  execFileSync(process.execPath, [join(HERE, "map.mjs")], { cwd: REPO, encoding: "utf8" });
-  const out = execFileSync(
+  execFileSync(
     process.execPath,
-    ["-e", "process.stdout.write(require('fs').readFileSync('docs/map.generated.json','utf8'))"],
+    [join(HERE, "map.mjs"), "--skip-tasks", "--out", TMP_OUT],
     { cwd: REPO, encoding: "utf8" },
   );
-  return JSON.parse(out);
+  return JSON.parse(readFileSync(TMP_OUT, "utf8"));
+}
+
+/**
+ * 只跑 map 本身。strict 必须比对真实产物且不跳任务，
+ * 否则测的是临时文件，什么也没验证。
+ */
+function runMapOnly(args = []) {
+  const strict = args.includes("--strict");
+  const base = strict
+    ? [join(HERE, "map.mjs"), ...args]
+    : [join(HERE, "map.mjs"), "--skip-tasks", "--out", TMP_OUT, ...args];
+  return execFileSync(process.execPath, base, { cwd: REPO, encoding: "utf8", stdio: "pipe" });
 }
 
 /* ---------------- 扫描正确性 ---------------- */
@@ -140,6 +153,49 @@ test("健康检查：status.md 不超过 60 行", () => {
   const map = runMap();
   const tooLong = map.health.issues.filter((i) => i.kind === "status-too-long");
   assert.deepEqual(tooLong, []);
+});
+
+/* ---------------- 面板新鲜度 ---------------- */
+
+test("--strict 在一致时退出码 0", () => {
+  runMap();
+  assert.doesNotThrow(() => {
+    runMapOnly(["--strict"]);
+  });
+});
+
+test("--strict 在文件改动后退 1，并指出是哪个文件", () => {
+  runMap();
+  const probe = join(REPO, "README.md");
+  const original = readFileSync(probe, "utf8");
+  try {
+    writeFileSync(probe, `${original}\n<!-- probe -->\n`, "utf8");
+    let failed = false;
+    let output = "";
+    try {
+      runMapOnly(["--strict"]);
+    } catch (e) {
+      failed = true;
+      output = `${e.stdout ?? ""}${e.stderr ?? ""}`;
+    }
+    assert.equal(failed, true, "--strict 本应失败");
+    assert.match(output, /panel-stale|面板数据落后/);
+    assert.match(output, /README\.md/, "应当指出是 README.md 变了");
+  } finally {
+    writeFileSync(probe, original, "utf8");
+    runMap();
+  }
+});
+
+test("--strict 不会因为面板产物自身变化而误报", () => {
+  runMap();
+  // 连跑两次：第二次必须仍通过，证明 generatedAt 与产物自身条目未参与比对
+  assert.doesNotThrow(() => {
+    runMapOnly(["--strict"]);
+  });
+  assert.doesNotThrow(() => {
+    runMapOnly(["--strict"]);
+  });
 });
 
 /* ---------------- 违规检测（用临时文件模拟） ---------------- */
