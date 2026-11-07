@@ -341,11 +341,11 @@ test("协议生成器：CRC16 检查串算出 0x29B1", () => {
       const fs = require("fs");
       const v = JSON.parse(fs.readFileSync("docs/protocol-vectors.json", "utf8"));
       const c = v.vectors.find(x => x.name === "crc16_check_string");
-      process.stdout.write(c.expect_crc);
+      process.stdout.write(String(c.expect_crc_hex));
     `],
     { cwd: REPO, encoding: "utf8" },
   );
-  assert.equal(out, "29 b1");
+  assert.equal(out, "0x29B1");
 });
 
 test("协议生成器：SetPower 帧的 CRC 可被独立复算", () => {

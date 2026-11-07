@@ -8,7 +8,8 @@
       "kind": "crc",
       "name": "crc16_check_string",
       "input_ascii": "123456789",
-      "expect_crc": "29 b1"
+      "expect_crc": 10673,
+      "expect_crc_hex": "0x29B1"
     },
     {
       "kind": "frame",
