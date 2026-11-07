@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T16:26:37.553Z",
+  "generatedAt": "2026-11-07T17:27:59.061Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,10 +7,10 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "d165c17",
-    "subject": "chore: 同步面板",
-    "date": "2026-11-08T00:05:07+08:00",
-    "branch": "ticket/04-firmware-ble",
+    "sha": "bbac1a9",
+    "subject": "merge: 03 固件 BLE 链路 + 单色出光 (#4)",
+    "date": "2026-11-08T00:26:55+08:00",
+    "branch": "spec-v1",
     "dirty": true
   },
   "tasks": {
@@ -30,8 +30,8 @@
         "ready": false,
         "isParent": true,
         "children": {
-          "completed": 2,
-          "percentCompleted": 16,
+          "completed": 3,
+          "percentCompleted": 25,
           "total": 12
         },
         "closedAt": null,
@@ -91,7 +91,7 @@
           {
             "number": 4,
             "title": "03 固件：BLE 链路 + 单色出光",
-            "state": "OPEN"
+            "state": "CLOSED"
           }
         ],
         "openBlockers": 0,
@@ -109,7 +109,7 @@
       {
         "number": 4,
         "title": "03 固件：BLE 链路 + 单色出光",
-        "state": "OPEN",
+        "state": "CLOSED",
         "labels": [
           "ready-for-agent"
         ],
@@ -137,15 +137,15 @@
           }
         ],
         "openBlockers": 0,
-        "ready": true,
+        "ready": false,
         "isParent": false,
         "children": {
           "completed": 0,
           "percentCompleted": 0,
           "total": 0
         },
-        "closedAt": null,
-        "updatedAt": "2026-11-07T14:12:52Z",
+        "closedAt": "2026-11-07T16:28:12Z",
+        "updatedAt": "2026-11-07T16:28:12Z",
         "url": "https://github.com/sishoui/ble-light/issues/4"
       },
       {
@@ -163,7 +163,7 @@
           {
             "number": 4,
             "title": "03 固件：BLE 链路 + 单色出光",
-            "state": "OPEN"
+            "state": "CLOSED"
           }
         ],
         "blocking": [
@@ -183,8 +183,8 @@
             "state": "OPEN"
           }
         ],
-        "openBlockers": 1,
-        "ready": false,
+        "openBlockers": 0,
+        "ready": true,
         "isParent": false,
         "children": {
           "completed": 0,
@@ -445,7 +445,7 @@
           {
             "number": 4,
             "title": "03 固件：BLE 链路 + 单色出光",
-            "state": "OPEN"
+            "state": "CLOSED"
           }
         ],
         "blocking": [
@@ -455,8 +455,8 @@
             "state": "OPEN"
           }
         ],
-        "openBlockers": 1,
-        "ready": false,
+        "openBlockers": 0,
+        "ready": true,
         "isParent": false,
         "children": {
           "completed": 0,
@@ -470,13 +470,14 @@
     ],
     "stats": {
       "total": 13,
-      "open": 11,
-      "closed": 2,
-      "ready": 1,
+      "open": 10,
+      "closed": 3,
+      "ready": 2,
       "readyList": [
-        4
+        5,
+        13
       ],
-      "progress": 15
+      "progress": 23
     }
   },
   "layers": [
@@ -752,7 +753,7 @@
       "role": "设计变量的可执行副本：颜色、圆角、间距、动效与字号表。权威定义在 docs/design.md。",
       "exists": true,
       "fileCount": 1,
-      "lines": 96,
+      "lines": 128,
       "files": [
         "miniprogram/app.wxss"
       ],
@@ -1013,9 +1014,9 @@
       "purpose": "视觉语言的唯一权威。颜色、字体、间距、圆角、动效、文案与禁令。",
       "status": "生效",
       "hasFrontmatter": true,
-      "lines": 203,
-      "bytes": 7229,
-      "hash": "03f26ab78a0875d3",
+      "lines": 222,
+      "bytes": 8937,
+      "hash": "afd7c1a7c5b8fa01",
       "isAdr": false,
       "isAgentDoc": false
     },
@@ -1074,7 +1075,7 @@
   ],
   "docStats": {
     "count": 12,
-    "lines": 1228,
+    "lines": 1247,
     "withoutFrontmatter": 0,
     "adrCount": 4
   },
@@ -1186,23 +1187,21 @@
     "unseamed": 0
   },
   "files": {
-    "total": 88,
-    "code": 64,
+    "total": 86,
+    "code": 62,
     "docs": 12,
     "tests": 12,
     "binary": 0,
-    "lines": 13072,
+    "lines": 13123,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
       ".md": 15,
       ".json": 8,
       ".txt": 2,
-      ".lock": 1,
       ".c": 17,
       ".h": 12,
       ".yml": 1,
-      "g": 1,
       ".defaults": 1,
       ".wxss": 1,
       ".ts": 4,
@@ -1217,7 +1216,7 @@
       "docs/adr": 4,
       "docs/agents": 2,
       "docs/design": 1,
-      "firmware": 4,
+      "firmware": 2,
       "firmware/main": 24,
       "firmware/test": 7,
       "miniprogram": 1,
@@ -1246,7 +1245,7 @@
         "name": ".gitignore",
         "dir": ".",
         "ext": ".gitignore",
-        "size": 197,
+        "size": 211,
         "lines": 14,
         "binary": false,
         "isDoc": false,
@@ -1363,8 +1362,8 @@
         "name": "design.md",
         "dir": "docs",
         "ext": ".md",
-        "size": 7229,
-        "lines": 202,
+        "size": 8937,
+        "lines": 221,
         "binary": false,
         "isDoc": true,
         "isTest": false,
@@ -1389,8 +1388,8 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 83423,
-        "lines": 2825,
+        "size": 86827,
+        "lines": 2974,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -1480,21 +1479,8 @@
         "name": "CMakeLists.txt",
         "dir": "firmware",
         "ext": ".txt",
-        "size": 107,
+        "size": 111,
         "lines": 4,
-        "binary": false,
-        "isDoc": false,
-        "isTest": false,
-        "module": null,
-        "description": null
-      },
-      {
-        "path": "firmware/dependencies.lock",
-        "name": "dependencies.lock",
-        "dir": "firmware",
-        "ext": ".lock",
-        "size": 542,
-        "lines": null,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -1558,7 +1544,7 @@
         "name": "CMakeLists.txt",
         "dir": "firmware/main",
         "ext": ".txt",
-        "size": 351,
+        "size": 367,
         "lines": 16,
         "binary": false,
         "isDoc": false,
@@ -1649,7 +1635,7 @@
         "name": "idf_component.yml",
         "dir": "firmware/main",
         "ext": ".yml",
-        "size": 74,
+        "size": 78,
         "lines": 4,
         "binary": false,
         "isDoc": false,
@@ -1814,24 +1800,11 @@
         "description": "32 字节 State blob 的编解码。纯函数。 持久化格式：'L''M''E''N' + version(1) + 32 字节 State。解码失败整份拒绝。"
       },
       {
-        "path": "firmware/sdkconfig",
-        "name": "sdkconfig",
-        "dir": "firmware",
-        "ext": "g",
-        "size": 103178,
-        "lines": null,
-        "binary": false,
-        "isDoc": false,
-        "isTest": false,
-        "module": null,
-        "description": null
-      },
-      {
         "path": "firmware/sdkconfig.defaults",
         "name": "sdkconfig.defaults",
         "dir": "firmware",
         "ext": ".defaults",
-        "size": 374,
+        "size": 386,
         "lines": null,
         "binary": false,
         "isDoc": false,
@@ -1948,13 +1921,13 @@
         "name": "app.wxss",
         "dir": "miniprogram",
         "ext": ".wxss",
-        "size": 2604,
-        "lines": 96,
+        "size": 3753,
+        "lines": 128,
         "binary": false,
         "isDoc": false,
         "isTest": false,
         "module": "miniprogram/app.wxss",
-        "description": "设计变量。全项目唯一的颜色与字号来源。 权威定义在 docs/design.md，这里只是它的可执行副本。 改这里必须同步改文档，反之亦然。"
+        "description": "设计变量。全项目唯一的颜色与字号来源。 权威定义在 docs/design.md，这里只是它的可执行副本。 改这里必须同步改文档，反之亦然。 风格：暖调家居——米白画布、深棕主卡、焦糖强调、照片媒体卡。"
       },
       {
         "path": "miniprogram/utils/protocol/constants.gen.ts",
@@ -2615,6 +2588,182 @@
         {
           "short": "77d58ab",
           "subject": "chore: 生成物强制 LF，gen:check 在 Windows 上才可能通过"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "id": "bbac1a9",
+      "title": "feat(firmware): BLE 链路 + 单色出光 + 状态持久化",
+      "date": "2026-11-08T00:26:55+08:00",
+      "commits": 3,
+      "pr": null,
+      "branch": null,
+      "sha": "bbac1a9ecb5ecee69b96f6e814a0fda973d04d2f",
+      "short": "bbac1a9",
+      "body": "",
+      "files": [
+        {
+          "path": "docs/map.generated.json",
+          "add": 574,
+          "del": 76
+        },
+        {
+          "path": "firmware/main/main.c",
+          "add": 263,
+          "del": 0
+        },
+        {
+          "path": "firmware/main/ble_link.c",
+          "add": 206,
+          "del": 0
+        },
+        {
+          "path": "firmware/test/test_device_core.c",
+          "add": 199,
+          "del": 0
+        },
+        {
+          "path": "firmware/test/test_storage.c",
+          "add": 198,
+          "del": 0
+        },
+        {
+          "path": "firmware/main/device_core.c",
+          "add": 107,
+          "del": 0
+        },
+        {
+          "path": "firmware/main/led_strip_owner.c",
+          "add": 94,
+          "del": 0
+        },
+        {
+          "path": "scripts/build-firmware.mjs",
+          "add": 88,
+          "del": 0
+        },
+        {
+          "path": "firmware/main/state_blob.c",
+          "add": 68,
+          "del": 0
+        },
+        {
+          "path": "firmware/main/device_core.h",
+          "add": 66,
+          "del": 0
+        },
+        {
+          "path": "firmware/main/save_scheduler.c",
+          "add": 53,
+          "del": 0
+        },
+        {
+          "path": "firmware/main/save_scheduler.h",
+          "add": 41,
+          "del": 0
+        },
+        {
+          "path": "firmware/main/led_strip_owner.h",
+          "add": 32,
+          "del": 0
+        },
+        {
+          "path": "firmware/main/gamma.c",
+          "add": 31,
+          "del": 0
+        },
+        {
+          "path": "firmware/main/state_blob.h",
+          "add": 28,
+          "del": 0
+        },
+        {
+          "path": "docs/map.json",
+          "add": 26,
+          "del": 1
+        },
+        {
+          "path": "firmware/main/ble_link.h",
+          "add": 26,
+          "del": 0
+        },
+        {
+          "path": "scripts/map.mjs",
+          "add": 9,
+          "del": 10
+        },
+        {
+          "path": "firmware/main/selftest.c",
+          "add": 17,
+          "del": 0
+        },
+        {
+          "path": "firmware/main/CMakeLists.txt",
+          "add": 16,
+          "del": 0
+        },
+        {
+          "path": "firmware/main/selftest.h",
+          "add": 15,
+          "del": 0
+        },
+        {
+          "path": "firmware/main/gamma.h",
+          "add": 13,
+          "del": 0
+        },
+        {
+          "path": "firmware/sdkconfig.defaults",
+          "add": 12,
+          "del": 0
+        },
+        {
+          "path": ".gitignore",
+          "add": 5,
+          "del": 0
+        },
+        {
+          "path": "firmware/CMakeLists.txt",
+          "add": 4,
+          "del": 0
+        },
+        {
+          "path": "firmware/main/idf_component.yml",
+          "add": 4,
+          "del": 0
+        },
+        {
+          "path": "firmware/test/main.c",
+          "add": 4,
+          "del": 0
+        },
+        {
+          "path": "package.json",
+          "add": 2,
+          "del": 1
+        },
+        {
+          "path": "scripts/test-firmware.mjs",
+          "add": 2,
+          "del": 0
+        }
+      ],
+      "fileCount": 29,
+      "additions": 2203,
+      "deletions": 88,
+      "commitList": [
+        {
+          "short": "bbac1a9",
+          "subject": "merge: 03 固件 BLE 链路 + 单色出光 (#4)"
+        },
+        {
+          "short": "d016203",
+          "subject": "feat(firmware): BLE 链路 + 单色出光 + 状态持久化"
+        },
+        {
+          "short": "d165c17",
+          "subject": "chore: 同步面板"
         }
       ]
     }
