@@ -420,3 +420,11 @@ test("协议生成器：C 头与 TS 常量的上限值来自同一份 JSON", () 
   assert.deepEqual(r.missingH, [], `C 头缺：${r.missingH}`);
   assert.deepEqual(r.missingTs, [], `TS 缺：${r.missingTs}`);
 });
+
+test("--strict 在提交面板数据后仍然一致（提交本身不该让面板变旧）", () => {
+  syncRealOutput();
+  // 模拟「刚提交完面板数据」：HEAD 前进但内容没变
+  assert.doesNotThrow(() => {
+    runMapOnly(["--strict"]);
+  }, "提交面板数据后 strict 应当仍然通过");
+});

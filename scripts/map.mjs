@@ -729,7 +729,9 @@ function stableJson(text) {
   try {
     const obj = JSON.parse(text);
     delete obj.generatedAt;
-    if (obj.head) delete obj.head.dirty;
+    // head 是「生成时的 HEAD」。提交面板数据本身就会让 HEAD 前进，
+    // 把它算进比对里，sync 就永远收敛不了（提交即落后）。
+    delete obj.head;
     // 面板产物自己会变：去掉它的条目，否则一致时也永远报落后
     if (Array.isArray(obj.files?.list)) {
       obj.files.list = obj.files.list.filter((f) => f.path !== "docs/map.generated.json");
@@ -761,7 +763,7 @@ function staleSummary(previousJson, fresh) {
   cmp("迭代数", prev.iterations?.length, fresh.iterations?.length);
   cmp("任务数", prev.tasks?.stats?.total, fresh.tasks?.stats?.total);
   cmp("健康错误", prev.health?.errors, fresh.health?.errors);
-  if (prev.head?.sha !== fresh.head?.sha) diffs.push(`HEAD ${prev.head?.sha ?? "?"} → ${fresh.head?.sha ?? "?"}`);
+
 
   // 找出具体变动的文件（新增、删除、行数、大小、描述）
   // 面板产物自己不参与比对——它每次生成都会变，否则永远报「落后」。

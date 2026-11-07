@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T17:36:19.397Z",
+  "generatedAt": "2026-11-07T17:39:58.438Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "feca521",
-    "subject": "docs: 状态跟上——#2/#3/#4 已完成，#5 卡在设计稿确认",
-    "date": "2026-11-08T01:34:46+08:00",
+    "sha": "a6d801a",
+    "subject": "chore: 同步面板",
+    "date": "2026-11-08T01:36:45+08:00",
     "branch": "spec-v1",
     "dirty": true
   },
@@ -782,7 +782,7 @@
       "role": "扫描仓库生成 docs/map.generated.json：文件、文档、测试、迭代、健康检查。",
       "exists": true,
       "fileCount": 1,
-      "lines": 793,
+      "lines": 795,
       "files": [
         "scripts/map.mjs"
       ],
@@ -795,7 +795,7 @@
       "role": "测生成器本身：扫描正确性、六类健康检查、协议向量与常量一致性。",
       "exists": true,
       "fileCount": 1,
-      "lines": 422,
+      "lines": 430,
       "files": [
         "scripts/map.test.mjs"
       ],
@@ -1248,9 +1248,9 @@
       "path": "scripts/map.test.mjs",
       "name": "map.test.mjs",
       "description": "scripts/map.mjs 的测试。 为什么必须测：面板上每个数字、每条健康检查结论都由它生成。它悄悄错了， 整个面板和所有门禁都是假的——而且不会有任何东西报错。 用法：node --test scripts/map.test.mjs",
-      "lines": 423,
-      "cases": 27,
-      "asserts": 49,
+      "lines": 431,
+      "cases": 28,
+      "asserts": 50,
       "seam": "tooling",
       "violations": []
     },
@@ -1277,9 +1277,9 @@
   ],
   "testStats": {
     "files": 15,
-    "cases": 208,
-    "asserts": 261,
-    "lines": 2641,
+    "cases": 209,
+    "asserts": 262,
+    "lines": 2649,
     "bySeam": {
       "protocol": 4,
       "reducer": 3,
@@ -1296,7 +1296,7 @@
     "docs": 12,
     "tests": 18,
     "binary": 0,
-    "lines": 15956,
+    "lines": 15966,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
@@ -1496,7 +1496,7 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 99537,
+        "size": 99487,
         "lines": 3416,
         "binary": false,
         "isDoc": false,
@@ -2562,8 +2562,8 @@
         "name": "map.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 29355,
-        "lines": 793,
+        "size": 29391,
+        "lines": 795,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -2575,8 +2575,8 @@
         "name": "map.test.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 15758,
-        "lines": 422,
+        "size": 16072,
+        "lines": 430,
         "binary": false,
         "isDoc": false,
         "isTest": true,
