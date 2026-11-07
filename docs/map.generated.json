@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T16:04:20.785Z",
+  "generatedAt": "2026-11-07T16:26:37.553Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,10 +7,10 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "8a2f371",
-    "subject": "merge: 02 固件 host 内核 (#3)",
-    "date": "2026-11-08T00:03:33+08:00",
-    "branch": "spec-v1",
+    "sha": "d165c17",
+    "subject": "chore: 同步面板",
+    "date": "2026-11-08T00:05:07+08:00",
+    "branch": "ticket/04-firmware-ble",
     "dirty": true
   },
   "tasks": {
@@ -30,8 +30,8 @@
         "ready": false,
         "isParent": true,
         "children": {
-          "completed": 0,
-          "percentCompleted": 0,
+          "completed": 2,
+          "percentCompleted": 16,
           "total": 12
         },
         "closedAt": null,
@@ -41,7 +41,7 @@
       {
         "number": 2,
         "title": "01 协议 payload 逐字节定义（prefactor）",
-        "state": "OPEN",
+        "state": "CLOSED",
         "labels": [
           "ready-for-agent"
         ],
@@ -54,25 +54,25 @@
           {
             "number": 3,
             "title": "02 固件 host 内核：编解码 + 命令 reducer",
-            "state": "OPEN"
+            "state": "CLOSED"
           }
         ],
         "openBlockers": 0,
-        "ready": true,
+        "ready": false,
         "isParent": false,
         "children": {
           "completed": 0,
           "percentCompleted": 0,
           "total": 0
         },
-        "closedAt": null,
-        "updatedAt": "2026-11-07T14:12:41Z",
+        "closedAt": "2026-11-07T16:04:50Z",
+        "updatedAt": "2026-11-07T16:04:50Z",
         "url": "https://github.com/sishoui/ble-light/issues/2"
       },
       {
         "number": 3,
         "title": "02 固件 host 内核：编解码 + 命令 reducer",
-        "state": "OPEN",
+        "state": "CLOSED",
         "labels": [
           "ready-for-agent"
         ],
@@ -84,7 +84,7 @@
           {
             "number": 2,
             "title": "01 协议 payload 逐字节定义（prefactor）",
-            "state": "OPEN"
+            "state": "CLOSED"
           }
         ],
         "blocking": [
@@ -94,7 +94,7 @@
             "state": "OPEN"
           }
         ],
-        "openBlockers": 1,
+        "openBlockers": 0,
         "ready": false,
         "isParent": false,
         "children": {
@@ -102,8 +102,8 @@
           "percentCompleted": 0,
           "total": 0
         },
-        "closedAt": null,
-        "updatedAt": "2026-11-07T14:12:45Z",
+        "closedAt": "2026-11-07T16:04:55Z",
+        "updatedAt": "2026-11-07T16:04:55Z",
         "url": "https://github.com/sishoui/ble-light/issues/3"
       },
       {
@@ -121,7 +121,7 @@
           {
             "number": 3,
             "title": "02 固件 host 内核：编解码 + 命令 reducer",
-            "state": "OPEN"
+            "state": "CLOSED"
           }
         ],
         "blocking": [
@@ -136,8 +136,8 @@
             "state": "OPEN"
           }
         ],
-        "openBlockers": 1,
-        "ready": false,
+        "openBlockers": 0,
+        "ready": true,
         "isParent": false,
         "children": {
           "completed": 0,
@@ -470,13 +470,13 @@
     ],
     "stats": {
       "total": 13,
-      "open": 13,
-      "closed": 0,
+      "open": 11,
+      "closed": 2,
       "ready": 1,
       "readyList": [
-        2
+        4
       ],
-      "progress": 0
+      "progress": 15
     }
   },
   "layers": [
@@ -602,10 +602,12 @@
       "layer": "firmware",
       "seam": null,
       "role": "32 字节 State blob 编解码。解码失败整份拒绝。",
-      "exists": false,
-      "fileCount": 0,
-      "lines": 0,
-      "files": [],
+      "exists": true,
+      "fileCount": 1,
+      "lines": 68,
+      "files": [
+        "firmware/main/state_blob.c"
+      ],
       "testCount": 0
     },
     {
@@ -613,10 +615,12 @@
       "layer": "firmware",
       "seam": null,
       "role": "按 NVS 键的防抖纯逻辑（500ms / 0ms / 2s），只存 blob 指针不拷贝。",
-      "exists": false,
-      "fileCount": 0,
-      "lines": 0,
-      "files": [],
+      "exists": true,
+      "fileCount": 1,
+      "lines": 53,
+      "files": [
+        "firmware/main/save_scheduler.c"
+      ],
       "testCount": 0
     },
     {
@@ -624,10 +628,12 @@
       "layer": "firmware",
       "seam": null,
       "role": "NimBLE GATT server、广播、RX 喂分片、TX notify、多帧报告任务。",
-      "exists": false,
-      "fileCount": 0,
-      "lines": 0,
-      "files": [],
+      "exists": true,
+      "fileCount": 1,
+      "lines": 206,
+      "files": [
+        "firmware/main/ble_link.c"
+      ],
       "testCount": 0
     },
     {
@@ -659,10 +665,12 @@
       "layer": "firmware",
       "seam": null,
       "role": "灯带句柄唯一所有者；运行时切 GPIO；推送像素。",
-      "exists": false,
-      "fileCount": 0,
-      "lines": 0,
-      "files": [],
+      "exists": true,
+      "fileCount": 1,
+      "lines": 94,
+      "files": [
+        "firmware/main/led_strip_owner.c"
+      ],
       "testCount": 0
     },
     {
@@ -670,10 +678,12 @@
       "layer": "firmware",
       "seam": null,
       "role": "gamma 表、亮度乘算、色相丢失截断。",
-      "exists": false,
-      "fileCount": 0,
-      "lines": 0,
-      "files": [],
+      "exists": true,
+      "fileCount": 1,
+      "lines": 31,
+      "files": [
+        "firmware/main/gamma.c"
+      ],
       "testCount": 0
     },
     {
@@ -681,10 +691,12 @@
       "layer": "firmware",
       "seam": null,
       "role": "红 / 绿 / 蓝 / 白各 500ms 的自检状态机。",
-      "exists": false,
-      "fileCount": 0,
-      "lines": 0,
-      "files": [],
+      "exists": true,
+      "fileCount": 1,
+      "lines": 17,
+      "files": [
+        "firmware/main/selftest.c"
+      ],
       "testCount": 0
     },
     {
@@ -764,7 +776,7 @@
       "role": "扫描仓库生成 docs/map.generated.json：文件、文档、测试、迭代、健康检查。",
       "exists": true,
       "fileCount": 1,
-      "lines": 794,
+      "lines": 793,
       "files": [
         "scripts/map.mjs"
       ],
@@ -885,6 +897,19 @@
         "panel/src/views/Tasks.vue",
         "panel/src/views/Tests.vue",
         "panel/vite.config.ts"
+      ],
+      "testCount": 0
+    },
+    {
+      "path": "firmware/main/device_core.c",
+      "layer": "firmware",
+      "seam": "reducer",
+      "role": "设备内核：状态机 + 意图收集。把 reducer 的输出翻成副作用清单。",
+      "exists": true,
+      "fileCount": 1,
+      "lines": 107,
+      "files": [
+        "firmware/main/device_core.c"
       ],
       "testCount": 0
     }
@@ -1065,6 +1090,16 @@
       "violations": []
     },
     {
+      "path": "firmware/test/test_device_core.c",
+      "name": "test_device_core.c",
+      "description": "设备内核：命令 → 状态 + 意图，自检状态机。 它不属于五个接缝中的任何一个（它是 reducer 的调用方）， 所以测试放在 reducer 接缝的同一目录下，按行为断言。",
+      "lines": 200,
+      "cases": 13,
+      "asserts": 0,
+      "seam": "reducer",
+      "violations": []
+    },
+    {
       "path": "firmware/test/test_protocol.c",
       "name": "test_protocol.c",
       "description": "协议编解码接缝。唯一允许断言字节偏移的测试。 向量来自 docs/protocol-vectors.json（生成物），不在这里手写 hex。",
@@ -1072,6 +1107,16 @@
       "cases": 22,
       "asserts": 0,
       "seam": "protocol",
+      "violations": []
+    },
+    {
+      "path": "firmware/test/test_storage.c",
+      "name": "test_storage.c",
+      "description": "持久化结构的编解码。坏数据、版本不匹配、超容量、写失败都算行为。",
+      "lines": 199,
+      "cases": 16,
+      "asserts": 0,
+      "seam": "reducer",
       "violations": []
     },
     {
@@ -1126,13 +1171,13 @@
     }
   ],
   "testStats": {
-    "files": 7,
-    "cases": 127,
+    "files": 9,
+    "cases": 156,
     "asserts": 176,
-    "lines": 1593,
+    "lines": 1992,
     "bySeam": {
       "protocol": 1,
-      "reducer": 1,
+      "reducer": 3,
       "render": 0,
       "session": 0,
       "page": 0,
@@ -1141,25 +1186,30 @@
     "unseamed": 0
   },
   "files": {
-    "total": 64,
-    "code": 42,
+    "total": 88,
+    "code": 64,
     "docs": 12,
-    "tests": 10,
+    "tests": 12,
     "binary": 0,
-    "lines": 11467,
+    "lines": 13072,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
       ".md": 15,
       ".json": 8,
-      ".c": 7,
-      ".h": 5,
+      ".txt": 2,
+      ".lock": 1,
+      ".c": 17,
+      ".h": 12,
+      ".yml": 1,
+      "g": 1,
+      ".defaults": 1,
       ".wxss": 1,
       ".ts": 4,
       ".html": 1,
       ".vue": 8,
       ".css": 1,
-      ".mjs": 12
+      ".mjs": 13
     },
     "byDir": {
       ".": 7,
@@ -1167,14 +1217,15 @@
       "docs/adr": 4,
       "docs/agents": 2,
       "docs/design": 1,
-      "firmware/main": 7,
-      "firmware/test": 5,
+      "firmware": 4,
+      "firmware/main": 24,
+      "firmware/test": 7,
       "miniprogram": 1,
       "miniprogram/utils/protocol": 1,
       "panel": 4,
       "panel/src": 4,
       "panel/src/views": 7,
-      "scripts": 12
+      "scripts": 13
     },
     "list": [
       {
@@ -1195,8 +1246,8 @@
         "name": ".gitignore",
         "dir": ".",
         "ext": ".gitignore",
-        "size": 92,
-        "lines": 9,
+        "size": 197,
+        "lines": 14,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -1338,8 +1389,8 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 71564,
-        "lines": 2462,
+        "size": 83423,
+        "lines": 2825,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -1351,8 +1402,8 @@
         "name": "map.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 8067,
-        "lines": 266,
+        "size": 8719,
+        "lines": 291,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -1425,6 +1476,58 @@
         "description": "测试"
       },
       {
+        "path": "firmware/CMakeLists.txt",
+        "name": "CMakeLists.txt",
+        "dir": "firmware",
+        "ext": ".txt",
+        "size": 107,
+        "lines": 4,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": null
+      },
+      {
+        "path": "firmware/dependencies.lock",
+        "name": "dependencies.lock",
+        "dir": "firmware",
+        "ext": ".lock",
+        "size": 542,
+        "lines": null,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": null
+      },
+      {
+        "path": "firmware/main/ble_link.c",
+        "name": "ble_link.c",
+        "dir": "firmware/main",
+        "ext": ".c",
+        "size": 6282,
+        "lines": 206,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": "firmware/main/ble_link.c",
+        "description": "BLE 链路：NimBLE GATT server、广播、RX 分片喂入、TX 通知。"
+      },
+      {
+        "path": "firmware/main/ble_link.h",
+        "name": "ble_link.h",
+        "dir": "firmware/main",
+        "ext": ".h",
+        "size": 802,
+        "lines": 26,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": "BLE 链路：NimBLE GATT server、广播、RX 分片喂入、TX 通知。 只做搬运：收到的完整帧交给 main 的回调，发出的字节由调用方给。"
+      },
+      {
         "path": "firmware/main/chunk_reasm.c",
         "name": "chunk_reasm.c",
         "dir": "firmware/main",
@@ -1451,6 +1554,19 @@
         "description": "分片重组。BLE 一次写最多 179 字节，整帧 240 字节要分片。 规则：每片 1 字节 ctrl（bit7 FIRST / bit6 LAST / bit5..0 序号）， 重组超时 1000ms，超时或乱序丢弃整份。"
       },
       {
+        "path": "firmware/main/CMakeLists.txt",
+        "name": "CMakeLists.txt",
+        "dir": "firmware/main",
+        "ext": ".txt",
+        "size": 351,
+        "lines": 16,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": null
+      },
+      {
         "path": "firmware/main/command.c",
         "name": "command.c",
         "dir": "firmware/main",
@@ -1475,6 +1591,110 @@
         "isTest": false,
         "module": null,
         "description": "命令 reducer：纯函数。(state, cmd) → (state', result, intents)。 不碰 NVS、不发通知、不读全局。副作用以意图形式返回，由调用方执行。 校验顺序固定：命令字 → 载荷长度 → 载荷取值。"
+      },
+      {
+        "path": "firmware/main/device_core.c",
+        "name": "device_core.c",
+        "dir": "firmware/main",
+        "ext": ".c",
+        "size": 3558,
+        "lines": 107,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": "firmware/main/device_core.c",
+        "description": "设备内核：状态机 + 意图收集。"
+      },
+      {
+        "path": "firmware/main/device_core.h",
+        "name": "device_core.h",
+        "dir": "firmware/main",
+        "ext": ".h",
+        "size": 2039,
+        "lines": 66,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": "设备内核：状态机 + 意图收集。不碰 BLE / NVS / RMT。 这一层回答「收到一帧该发生什么」：谁的状态变了、要存哪些键、要发哪些通知。 ESP-IDF 侧只负责把意图翻译成真副作用。"
+      },
+      {
+        "path": "firmware/main/gamma.c",
+        "name": "gamma.c",
+        "dir": "firmware/main",
+        "ext": ".c",
+        "size": 758,
+        "lines": 31,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": "firmware/main/gamma.c",
+        "description": "gamma 表与亮度乘算。 gamma 表在首次使用时算一次，不占 flash。255 项 × 1 字节。"
+      },
+      {
+        "path": "firmware/main/gamma.h",
+        "name": "gamma.h",
+        "dir": "firmware/main",
+        "ext": ".h",
+        "size": 353,
+        "lines": 13,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": "gamma 表与亮度乘算。纯函数，可宿主机测。"
+      },
+      {
+        "path": "firmware/main/idf_component.yml",
+        "name": "idf_component.yml",
+        "dir": "firmware/main",
+        "ext": ".yml",
+        "size": 74,
+        "lines": 4,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": null
+      },
+      {
+        "path": "firmware/main/led_strip_owner.c",
+        "name": "led_strip_owner.c",
+        "dir": "firmware/main",
+        "ext": ".c",
+        "size": 2942,
+        "lines": 94,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": "firmware/main/led_strip_owner.c",
+        "description": "灯带句柄的唯一所有者。 只有这个文件碰 RMT / led_strip。别处一律通过它。 句柄按链惰性创建；重建时先建新的，成功后再换，失败保留旧的。"
+      },
+      {
+        "path": "firmware/main/led_strip_owner.h",
+        "name": "led_strip_owner.h",
+        "dir": "firmware/main",
+        "ext": ".h",
+        "size": 938,
+        "lines": 32,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": "灯带句柄的唯一所有者。把像素推给 RMT。 句柄重建是异步的：改灯珠数时先回 ACK，重建完成后发 Event。"
+      },
+      {
+        "path": "firmware/main/main.c",
+        "name": "main.c",
+        "dir": "firmware/main",
+        "ext": ".c",
+        "size": 9073,
+        "lines": 263,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": "设备主程序：把 BLE / 存储 / 灯带接到设备内核上。 这一层只做翻译：内核产出的意图 → 真副作用。所有判断都在 device_core 里。"
       },
       {
         "path": "firmware/main/protocol_gen.h",
@@ -1516,12 +1736,116 @@
         "description": "协议编解码。纯函数：不读写全局、不碰硬件、不碰存储。 唯一允许出现字节偏移的地方——其余模块一律用 protocol_gen.h 的宏。"
       },
       {
+        "path": "firmware/main/save_scheduler.c",
+        "name": "save_scheduler.c",
+        "dir": "firmware/main",
+        "ext": ".c",
+        "size": 1825,
+        "lines": 53,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": "firmware/main/save_scheduler.c",
+        "description": "保存调度：按 NVS 键的防抖纯逻辑。"
+      },
+      {
+        "path": "firmware/main/save_scheduler.h",
+        "name": "save_scheduler.h",
+        "dir": "firmware/main",
+        "ext": ".h",
+        "size": 1375,
+        "lines": 41,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": "保存调度：按 NVS 键的防抖。纯逻辑，不知道 NVS 存在。 三种键各有自己的防抖：state 500ms、layout 0ms（立即）、scene 2000ms。 调用方每帧调 tick，拿到「该存哪些键」的列表。"
+      },
+      {
+        "path": "firmware/main/selftest.c",
+        "name": "selftest.c",
+        "dir": "firmware/main",
+        "ext": ".c",
+        "size": 479,
+        "lines": 17,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": "firmware/main/selftest.c",
+        "description": "自检颜色表。"
+      },
+      {
+        "path": "firmware/main/selftest.h",
+        "name": "selftest.h",
+        "dir": "firmware/main",
+        "ext": ".h",
+        "size": 425,
+        "lines": 15,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": "自检状态机：红 → 绿 → 蓝 → 白各 500ms，覆盖整条灯链。 纯逻辑：给出「此刻该显示什么颜色」，推送是调用方的事。"
+      },
+      {
+        "path": "firmware/main/state_blob.c",
+        "name": "state_blob.c",
+        "dir": "firmware/main",
+        "ext": ".c",
+        "size": 2819,
+        "lines": 68,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": "firmware/main/state_blob.c",
+        "description": "32 字节 State blob 编解码。解码失败整份拒绝，不半兼容。"
+      },
+      {
+        "path": "firmware/main/state_blob.h",
+        "name": "state_blob.h",
+        "dir": "firmware/main",
+        "ext": ".h",
+        "size": 909,
+        "lines": 28,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": "32 字节 State blob 的编解码。纯函数。 持久化格式：'L''M''E''N' + version(1) + 32 字节 State。解码失败整份拒绝。"
+      },
+      {
+        "path": "firmware/sdkconfig",
+        "name": "sdkconfig",
+        "dir": "firmware",
+        "ext": "g",
+        "size": 103178,
+        "lines": null,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": null
+      },
+      {
+        "path": "firmware/sdkconfig.defaults",
+        "name": "sdkconfig.defaults",
+        "dir": "firmware",
+        "ext": ".defaults",
+        "size": 374,
+        "lines": null,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": null
+      },
+      {
         "path": "firmware/test/main.c",
         "name": "main.c",
         "dir": "firmware/test",
         "ext": ".c",
-        "size": 332,
-        "lines": 12,
+        "size": 470,
+        "lines": 16,
         "binary": false,
         "isDoc": false,
         "isTest": true,
@@ -1540,6 +1864,19 @@
         "isTest": true,
         "module": null,
         "description": "命令 reducer 接缝。(state, cmd) → (state', result, intents) 纯函数。 每个命令至少四条：合法改状态 / 越界回 InvalidParam 且状态不变 / 长度错回 BadLength / 未定义码回 UnknownCommand。"
+      },
+      {
+        "path": "firmware/test/test_device_core.c",
+        "name": "test_device_core.c",
+        "dir": "firmware/test",
+        "ext": ".c",
+        "size": 6852,
+        "lines": 199,
+        "binary": false,
+        "isDoc": false,
+        "isTest": true,
+        "module": null,
+        "description": "设备内核：命令 → 状态 + 意图，自检状态机。 它不属于五个接缝中的任何一个（它是 reducer 的调用方）， 所以测试放在 reducer 接缝的同一目录下，按行为断言。"
       },
       {
         "path": "firmware/test/test_harness.c",
@@ -1579,6 +1916,19 @@
         "isTest": true,
         "module": null,
         "description": "协议编解码接缝。唯一允许断言字节偏移的测试。 向量来自 docs/protocol-vectors.json（生成物），不在这里手写 hex。"
+      },
+      {
+        "path": "firmware/test/test_storage.c",
+        "name": "test_storage.c",
+        "dir": "firmware/test",
+        "ext": ".c",
+        "size": 6758,
+        "lines": 198,
+        "binary": false,
+        "isDoc": false,
+        "isTest": true,
+        "module": null,
+        "description": "持久化结构的编解码。坏数据、版本不匹配、超容量、写失败都算行为。"
       },
       {
         "path": "GLOSSARY.md",
@@ -1637,8 +1987,8 @@
         "name": "package.json",
         "dir": ".",
         "ext": ".json",
-        "size": 884,
-        "lines": 24,
+        "size": 941,
+        "lines": 25,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -1854,6 +2204,19 @@
         "description": "ble-light"
       },
       {
+        "path": "scripts/build-firmware.mjs",
+        "name": "build-firmware.mjs",
+        "dir": "scripts",
+        "ext": ".mjs",
+        "size": 2791,
+        "lines": 88,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": "固件交叉编译：调 ESP-IDF 的 idf.py 编 ESP32-C3 目标。 node scripts/build-firmware.mjs 需要 IDF_PATH 与已安装的 RISC-V 工具链。不在 CI 里跑——宿主机测试已经覆盖 纯逻辑，这里验的是「能不能真的出固件」。 Windows 上必须绕开 Git Bash 的 MSYSTEM 环境变量，否则 export.bat 拒绝执行； 所以这里生成一个临时 .bat 来跑…"
+      },
+      {
         "path": "scripts/file-api.mjs",
         "name": "file-api.mjs",
         "dir": "scripts",
@@ -1923,8 +2286,8 @@
         "name": "map.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 29346,
-        "lines": 794,
+        "size": 29355,
+        "lines": 793,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -2001,8 +2364,8 @@
         "name": "test-firmware.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 3770,
-        "lines": 111,
+        "size": 3802,
+        "lines": 113,
         "binary": false,
         "isDoc": false,
         "isTest": false,

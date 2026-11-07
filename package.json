@@ -16,7 +16,8 @@
     "panel:build": "npm --prefix panel run build",
     "setup": "npm --prefix panel install",
     "test:firmware": "node scripts/test-firmware.mjs",
-    "test:firmware:cov": "node scripts/test-firmware.mjs --cov"
+    "test:firmware:cov": "node scripts/test-firmware.mjs --cov",
+    "build:firmware": "node scripts/build-firmware.mjs"
   },
   "dependencies": {
     "marked": "^18.1.3"

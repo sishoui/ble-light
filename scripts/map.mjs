@@ -371,19 +371,18 @@ function collectTests(config) {
       : (text.match(/\bexpect\s*\(|\bassert\.\w+\s*\(/g) ?? []).length;
 
     // 工具测试验的是生成器本身，读源码是它的正当手段，不算违规
+    // 接缝归属是显式声明的（map.json 的 testSeamPaths），不靠文件名猜：
+    // 猜出来的归属会随命名变化漂移，而且猜错时门禁会静默放过。
     let seam = null;
     if (isTooling && toolingSeam) {
       seam = toolingSeam;
-    } else if (/protocol|codec|frame|chunk|commands/.test(path)) {
-      seam = "protocol";
-    } else if (/command|reducer|state/.test(path)) {
-      seam = "reducer";
-    } else if (/render|effect|pixel|gamma/.test(path)) {
-      seam = "render";
-    } else if (/session|transport|ble|control/.test(path)) {
-      seam = "session";
-    } else if (/page|component|view/.test(path)) {
-      seam = "page";
+    } else {
+      for (const [key, patterns] of Object.entries(config.rules?.testSeamPaths ?? {})) {
+        if (patterns.some((p) => path === p || path.startsWith(p))) {
+          seam = key;
+          break;
+        }
+      }
     }
 
     const violations = [];
