@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T15:46:35.685Z",
+  "generatedAt": "2026-11-07T16:03:07.479Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,10 +7,10 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "77d58ab",
-    "subject": "chore: 生成物强制 LF，gen:check 在 Windows 上才可能通过",
-    "date": "2026-11-07T23:45:18+08:00",
-    "branch": "spec-v1",
+    "sha": "5ab7ec2",
+    "subject": "chore: 同步面板",
+    "date": "2026-11-07T23:46:56+08:00",
+    "branch": "ticket/03-firmware-host-kernel",
     "dirty": true
   },
   "tasks": {
@@ -521,10 +521,12 @@
       "layer": "firmware",
       "seam": "protocol",
       "role": "信封解码、CRC16、ACK / Event / 各固定报告编码。纯函数。",
-      "exists": false,
-      "fileCount": 0,
-      "lines": 0,
-      "files": [],
+      "exists": true,
+      "fileCount": 1,
+      "lines": 77,
+      "files": [
+        "firmware/main/protocol.c"
+      ],
       "testCount": 0
     },
     {
@@ -532,10 +534,12 @@
       "layer": "firmware",
       "seam": "reducer",
       "role": "命令 reducer：校验命令字 / 长度 / 取值，输出新状态、结果码与意图。",
-      "exists": false,
-      "fileCount": 0,
-      "lines": 0,
-      "files": [],
+      "exists": true,
+      "fileCount": 1,
+      "lines": 130,
+      "files": [
+        "firmware/main/command.c"
+      ],
       "testCount": 0
     },
     {
@@ -631,10 +635,12 @@
       "layer": "firmware",
       "seam": "protocol",
       "role": "BLE 分片重组状态机：1 字节 ctrl、240B 上限、1000ms 超时。",
-      "exists": false,
-      "fileCount": 0,
-      "lines": 0,
-      "files": [],
+      "exists": true,
+      "fileCount": 1,
+      "lines": 59,
+      "files": [
+        "firmware/main/chunk_reasm.c"
+      ],
       "testCount": 0
     },
     {
@@ -758,7 +764,7 @@
       "role": "扫描仓库生成 docs/map.generated.json：文件、文档、测试、迭代、健康检查。",
       "exists": true,
       "fileCount": 1,
-      "lines": 782,
+      "lines": 794,
       "files": [
         "scripts/map.mjs"
       ],
@@ -771,7 +777,7 @@
       "role": "测生成器本身：扫描正确性、六类健康检查、协议向量与常量一致性。",
       "exists": true,
       "fileCount": 1,
-      "lines": 393,
+      "lines": 422,
       "files": [
         "scripts/map.test.mjs"
       ],
@@ -1049,6 +1055,26 @@
   },
   "tests": [
     {
+      "path": "firmware/test/test_command.c",
+      "name": "test_command.c",
+      "description": "命令 reducer 接缝。(state, cmd) → (state', result, intents) 纯函数。 每个命令至少四条：合法改状态 / 越界回 InvalidParam 且状态不变 / 长度错回 BadLength / 未定义码回 UnknownCommand。",
+      "lines": 384,
+      "cases": 32,
+      "asserts": 0,
+      "seam": "reducer",
+      "violations": []
+    },
+    {
+      "path": "firmware/test/test_protocol.c",
+      "name": "test_protocol.c",
+      "description": "协议编解码接缝。唯一允许断言字节偏移的测试。 向量来自 docs/protocol-vectors.json（生成物），不在这里手写 hex。",
+      "lines": 244,
+      "cases": 22,
+      "asserts": 0,
+      "seam": "protocol",
+      "violations": []
+    },
+    {
       "path": "scripts/file-api.test.mjs",
       "name": "file-api.test.mjs",
       "description": "scripts/file-api.mjs 的测试。 为什么必须测：这是面板唯一的读取入口，也是唯一的攻击面。 白名单、路径穿越、二进制拦截、大小截断，每一条都必须有测试守着。",
@@ -1072,9 +1098,9 @@
       "path": "scripts/map.test.mjs",
       "name": "map.test.mjs",
       "description": "scripts/map.mjs 的测试。 为什么必须测：面板上每个数字、每条健康检查结论都由它生成。它悄悄错了， 整个面板和所有门禁都是假的——而且不会有任何东西报错。 用法：node --test scripts/map.test.mjs",
-      "lines": 394,
+      "lines": 423,
       "cases": 27,
-      "asserts": 48,
+      "asserts": 49,
       "seam": "tooling",
       "violations": []
     },
@@ -1100,13 +1126,13 @@
     }
   ],
   "testStats": {
-    "files": 5,
-    "cases": 73,
-    "asserts": 175,
-    "lines": 936,
+    "files": 7,
+    "cases": 127,
+    "asserts": 176,
+    "lines": 1593,
     "bySeam": {
-      "protocol": 0,
-      "reducer": 0,
+      "protocol": 1,
+      "reducer": 1,
       "render": 0,
       "session": 0,
       "page": 0,
@@ -1115,24 +1141,25 @@
     "unseamed": 0
   },
   "files": {
-    "total": 52,
-    "code": 35,
+    "total": 64,
+    "code": 42,
     "docs": 12,
-    "tests": 5,
+    "tests": 10,
     "binary": 0,
-    "lines": 10126,
+    "lines": 11467,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
       ".md": 15,
       ".json": 8,
-      ".h": 1,
+      ".c": 7,
+      ".h": 5,
       ".wxss": 1,
       ".ts": 4,
       ".html": 1,
       ".vue": 8,
       ".css": 1,
-      ".mjs": 11
+      ".mjs": 12
     },
     "byDir": {
       ".": 7,
@@ -1140,13 +1167,14 @@
       "docs/adr": 4,
       "docs/agents": 2,
       "docs/design": 1,
-      "firmware/main": 1,
+      "firmware/main": 7,
+      "firmware/test": 5,
       "miniprogram": 1,
       "miniprogram/utils/protocol": 1,
       "panel": 4,
       "panel/src": 4,
       "panel/src/views": 7,
-      "scripts": 11
+      "scripts": 12
     },
     "list": [
       {
@@ -1310,8 +1338,8 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 62215,
-        "lines": 2161,
+        "size": 68474,
+        "lines": 2327,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -1323,8 +1351,8 @@
         "name": "map.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 7845,
-        "lines": 231,
+        "size": 8067,
+        "lines": 266,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -1397,17 +1425,160 @@
         "description": "测试"
       },
       {
+        "path": "firmware/main/chunk_reasm.c",
+        "name": "chunk_reasm.c",
+        "dir": "firmware/main",
+        "ext": ".c",
+        "size": 1539,
+        "lines": 59,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": "firmware/main/chunk_reasm.c",
+        "description": "分片重组：单分片 / 多分片 / 序号回绕 / 超时 / 乱序。"
+      },
+      {
+        "path": "firmware/main/chunk_reasm.h",
+        "name": "chunk_reasm.h",
+        "dir": "firmware/main",
+        "ext": ".h",
+        "size": 1030,
+        "lines": 36,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": "分片重组。BLE 一次写最多 179 字节，整帧 240 字节要分片。 规则：每片 1 字节 ctrl（bit7 FIRST / bit6 LAST / bit5..0 序号）， 重组超时 1000ms，超时或乱序丢弃整份。"
+      },
+      {
+        "path": "firmware/main/command.c",
+        "name": "command.c",
+        "dir": "firmware/main",
+        "ext": ".c",
+        "size": 4359,
+        "lines": 130,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": "firmware/main/command.c",
+        "description": "命令 reducer：纯函数，副作用只以意图返回。"
+      },
+      {
+        "path": "firmware/main/command.h",
+        "name": "command.h",
+        "dir": "firmware/main",
+        "ext": ".h",
+        "size": 1922,
+        "lines": 64,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": "命令 reducer：纯函数。(state, cmd) → (state', result, intents)。 不碰 NVS、不发通知、不读全局。副作用以意图形式返回，由调用方执行。 校验顺序固定：命令字 → 载荷长度 → 载荷取值。"
+      },
+      {
         "path": "firmware/main/protocol_gen.h",
         "name": "protocol_gen.h",
         "dir": "firmware/main",
         "ext": ".h",
-        "size": 13131,
+        "size": 13167,
         "lines": 349,
         "binary": false,
         "isDoc": false,
         "isTest": false,
         "module": null,
         "description": "GENERATED — DO NOT EDIT. Source: docs/protocol.json, generator: scripts/gen-protocol.mjs"
+      },
+      {
+        "path": "firmware/main/protocol.c",
+        "name": "protocol.c",
+        "dir": "firmware/main",
+        "ext": ".c",
+        "size": 3056,
+        "lines": 77,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": "firmware/main/protocol.c",
+        "description": "协议编解码。纯函数：不读写全局、不碰硬件、不碰存储。"
+      },
+      {
+        "path": "firmware/main/protocol.h",
+        "name": "protocol.h",
+        "dir": "firmware/main",
+        "ext": ".h",
+        "size": 1577,
+        "lines": 42,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": "协议编解码。纯函数：不读写全局、不碰硬件、不碰存储。 唯一允许出现字节偏移的地方——其余模块一律用 protocol_gen.h 的宏。"
+      },
+      {
+        "path": "firmware/test/main.c",
+        "name": "main.c",
+        "dir": "firmware/test",
+        "ext": ".c",
+        "size": 332,
+        "lines": 12,
+        "binary": false,
+        "isDoc": false,
+        "isTest": true,
+        "module": null,
+        "description": "宿主机测试入口。跑全部已注册用例，非 0 退出即失败。"
+      },
+      {
+        "path": "firmware/test/test_command.c",
+        "name": "test_command.c",
+        "dir": "firmware/test",
+        "ext": ".c",
+        "size": 13372,
+        "lines": 383,
+        "binary": false,
+        "isDoc": false,
+        "isTest": true,
+        "module": null,
+        "description": "命令 reducer 接缝。(state, cmd) → (state', result, intents) 纯函数。 每个命令至少四条：合法改状态 / 越界回 InvalidParam 且状态不变 / 长度错回 BadLength / 未定义码回 UnknownCommand。"
+      },
+      {
+        "path": "firmware/test/test_harness.c",
+        "name": "test_harness.c",
+        "dir": "firmware/test",
+        "ext": ".c",
+        "size": 931,
+        "lines": 36,
+        "binary": false,
+        "isDoc": false,
+        "isTest": true,
+        "module": null,
+        "description": "测试 harness 的唯一状态副本。"
+      },
+      {
+        "path": "firmware/test/test_harness.h",
+        "name": "test_harness.h",
+        "dir": "firmware/test",
+        "ext": ".h",
+        "size": 3381,
+        "lines": 70,
+        "binary": false,
+        "isDoc": false,
+        "isTest": true,
+        "module": null,
+        "description": "宿主机测试的最小 harness。不引第三方框架。 为什么用显式注册而不是 constructor：链接器会丢弃没被引用的目标文件， 自动注册的用例就静默消失——「0 tests, 0 failed」比红灯更危险。 状态在 test_harness.c 里只有一份。头文件里放全局变量会让每个 .c 各有一份拷贝。"
+      },
+      {
+        "path": "firmware/test/test_protocol.c",
+        "name": "test_protocol.c",
+        "dir": "firmware/test",
+        "ext": ".c",
+        "size": 8056,
+        "lines": 243,
+        "binary": false,
+        "isDoc": false,
+        "isTest": true,
+        "module": null,
+        "description": "协议编解码接缝。唯一允许断言字节偏移的测试。 向量来自 docs/protocol-vectors.json（生成物），不在这里手写 hex。"
       },
       {
         "path": "GLOSSARY.md",
@@ -1466,8 +1637,8 @@
         "name": "package.json",
         "dir": ".",
         "ext": ".json",
-        "size": 730,
-        "lines": 22,
+        "size": 884,
+        "lines": 24,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -1713,7 +1884,7 @@
         "name": "gen-protocol.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 20540,
+        "size": 20454,
         "lines": 591,
         "binary": false,
         "isDoc": false,
@@ -1752,8 +1923,8 @@
         "name": "map.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 28503,
-        "lines": 782,
+        "size": 29346,
+        "lines": 794,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -1765,8 +1936,8 @@
         "name": "map.test.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 14598,
-        "lines": 393,
+        "size": 15745,
+        "lines": 422,
         "binary": false,
         "isDoc": false,
         "isTest": true,
@@ -1824,6 +1995,19 @@
         "isTest": false,
         "module": "scripts/tasks.mjs",
         "description": "从 GitHub 拉任务图，供面板显示「任务做到哪了」。 为什么单独一个模块：gh 调用可能失败（没网、没登录、限流）， 面板不能因此完全打不开。失败时返回 null，任务视图显示「不可用」， 其余视图照常。"
+      },
+      {
+        "path": "scripts/test-firmware.mjs",
+        "name": "test-firmware.mjs",
+        "dir": "scripts",
+        "ext": ".mjs",
+        "size": 3770,
+        "lines": 111,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": "固件宿主机测试：用系统 C 编译器把 firmware/main 的纯逻辑和 firmware/test 编成一个 可执行文件跑掉。不需要 ESP-IDF、不需要真机。 node scripts/test-firmware.mjs # 跑测试 node scripts/test-firmware.mjs --cov # 跑测试并打印 reducer 分支覆盖 只编「不依赖实时操作系统与硬件」的模块。BLE / NVS / RMT 的封…"
       }
     ]
   },
@@ -2121,18 +2305,6 @@
         "level": "warn",
         "kind": "seam-untested",
         "path": null,
-        "message": "接缝「协议编解码」(protocol) 暂无测试（还没有产品代码，门禁未启用）"
-      },
-      {
-        "level": "warn",
-        "kind": "seam-untested",
-        "path": null,
-        "message": "接缝「命令 reducer」(reducer) 暂无测试（还没有产品代码，门禁未启用）"
-      },
-      {
-        "level": "warn",
-        "kind": "seam-untested",
-        "path": null,
         "message": "接缝「渲染合成」(render) 暂无测试（还没有产品代码，门禁未启用）"
       },
       {
@@ -2146,16 +2318,10 @@
         "kind": "seam-untested",
         "path": null,
         "message": "接缝「页面处理器」(page) 暂无测试（还没有产品代码，门禁未启用）"
-      },
-      {
-        "level": "info",
-        "kind": "no-code",
-        "path": null,
-        "message": "还没有产品代码，接缝门禁暂未启用"
       }
     ],
     "errors": 0,
-    "warnings": 5,
+    "warnings": 3,
     "ok": true
   }
 }

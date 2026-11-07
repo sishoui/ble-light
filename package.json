@@ -9,12 +9,14 @@
     "gen:check": "node scripts/gen-protocol.mjs --check",
     "map": "node scripts/map.mjs",
     "map:check": "node scripts/map.mjs --strict",
-    "test": "node --test --test-concurrency=1 scripts/*.test.mjs",
+    "test": "node scripts/test-firmware.mjs && node --test --test-concurrency=1 scripts/*.test.mjs",
     "check": "npm run gen:check && npm run map:check",
     "sync": "npm run gen && npm run map",
     "panel": "npm --prefix panel run dev",
     "panel:build": "npm --prefix panel run build",
-    "setup": "npm --prefix panel install"
+    "setup": "npm --prefix panel install",
+    "test:firmware": "node scripts/test-firmware.mjs",
+    "test:firmware:cov": "node scripts/test-firmware.mjs --cov"
   },
   "dependencies": {
     "marked": "^18.1.3"
