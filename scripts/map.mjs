@@ -58,6 +58,7 @@ function walk(dir, out = []) {
       if (IGNORE_DIRS.has(entry.name)) continue;
       walk(join(dir, entry.name), out);
     } else if (entry.isFile()) {
+      if (IGNORE_DIRS.has(entry.name)) continue;
       out.push(join(dir, entry.name));
     }
   }
@@ -652,7 +653,8 @@ function main() {
       docs: files.filter((f) => f.isDoc).length,
       tests: files.filter((f) => f.isTest).length,
       binary: files.filter((f) => f.binary).length,
-      lines: files.reduce((n, f) => n + (f.lines ?? 0), 0),
+      // 产物自己不参与统计：它每次生成都会变，算进来就永远收敛不了
+      lines: files.filter((f) => f.path !== "docs/map.generated.json").reduce((n, f) => n + (f.lines ?? 0), 0),
       byExt,
       byDir,
       list: files,

@@ -48,6 +48,25 @@ function encodeFrame({ command, seq, payload }) {
 const hex = (arr) => arr.map((b) => b.toString(16).padStart(2, "0")).join(" ");
 const toInt = (s) => (typeof s === "number" ? s : parseInt(String(s), 16));
 
+/* ---------- 命名 ---------- */
+const snake = (name) => name.replace(/([a-z0-9])([A-Z])/g, "$1_$2").toUpperCase();
+
+/**
+ * 一个字段 → 若干条宏。数组额外给出元素宽、元素数，以及元素内每个字段的偏移，
+ * 这样两端都不必再自己算 base + i * elem + offset。
+ */
+function fieldMacros(f) {
+  const out = [[`${f.name}_OFF`, f.offset], [`${f.name}_BYTES`, f.bytes]];
+  if (f.type === "array") {
+    out.push([`${f.name}_COUNT`, f.count], [`${f.name}_ELEM_BYTES`, f.elementBytes]);
+    for (const e of f.element) {
+      out.push([`${f.name}_ELEM_${e.name}_OFF`, e.offset]);
+      out.push([`${f.name}_ELEM_${e.name}_BYTES`, e.bytes]);
+    }
+  }
+  return out;
+}
+
 /* ---------- 生成 C 头 ---------- */
 function genHeader() {
   const L = spec.limits;
@@ -95,8 +114,42 @@ function genHeader() {
   }
   lines.push("", "/* result codes */");
   for (const r of spec.resultCodes) {
-    lines.push(`#define RES_${r.name.toUpperCase().replace(/([a-z])([A-Z])/g, "$1_$2")} ${r.code}u`);
+    lines.push(`#define RES_${snake(r.name)} ${r.code}u`);
   }
+
+  lines.push("", "/* field offsets and widths — 逐字节契约，codec 只照这张表写 */");
+  for (const c of spec.commands) {
+    if (c.fields.length === 0) continue;
+    lines.push("", `/* ${c.name} (${c.code}) */`);
+    for (const f of c.fields) {
+      for (const [k, v] of fieldMacros(f)) lines.push(`#define CMD_${snake(c.name)}_FIELD_${snake(k)} ${v}u`);
+    }
+  }
+  for (const r of spec.reports) {
+    if (r.fields.length === 0) continue;
+    lines.push("", `/* ${r.name} (${r.code}) */`);
+    for (const f of r.fields) {
+      for (const [k, v] of fieldMacros(f)) lines.push(`#define RPT_${snake(r.name)}_FIELD_${snake(k)} ${v}u`);
+    }
+  }
+  lines.push("", "/* layer layout (9 bytes) */");
+  for (const f of spec.layer.fields) {
+    lines.push(`#define LAYER_${snake(f.name)}_OFF ${f.offset}u`);
+    lines.push(`#define LAYER_${snake(f.name)}_BYTES ${f.bytes}u`);
+  }
+  lines.push("", "/* state layout (32 bytes) */");
+  for (const f of spec.state.fields) {
+    lines.push(`#define STATE_${snake(f.name)}_OFF ${f.offset}u`);
+    lines.push(`#define STATE_${snake(f.name)}_BYTES ${f.bytes}u`);
+    if (f.type === "array") {
+      lines.push(`#define STATE_${snake(f.name)}_COUNT ${f.count}u`);
+      lines.push(`#define STATE_${snake(f.name)}_ELEM_BYTES ${f.elementBytes}u`);
+      for (const e of f.element) {
+        lines.push(`#define STATE_${snake(f.name)}_ELEM_${snake(e.name)}_OFF ${e.offset}u`);
+      }
+    }
+  }
+
   lines.push("", "#endif /* BLE_LIGHT_PROTOCOL_GEN_H */", "");
   return lines.join("\n");
 }
@@ -137,6 +190,31 @@ function genTs() {
     ...spec.effects.map((e) => `  ${e.name}: ${e.type},`),
     "} as const;",
     "",
+    "/** 字段描述：偏移、宽度、类型、取值域。codec 只照这张表写。 */",
+    "export interface FieldSpec {",
+    "  offset: number;",
+    "  bytes: number;",
+    "  type: string;",
+    "  range?: readonly [number, number];",
+    "  values?: Readonly<Record<string, number>>;",
+    "  count?: number;",
+    "  elementBytes?: number;",
+    "}",
+    "",
+    "/** 每条命令的逐字节字段表，按字段名索引。 */",
+    "export const COMMAND_FIELDS = {",
+    ...spec.commands.map((c) => `  ${c.name}: ${tsFieldTable(c.fields)},`),
+    "} as const;",
+    "",
+    "/** 每种报告的逐字节字段表，按字段名索引。 */",
+    "export const REPORT_FIELDS = {",
+    ...spec.reports.map((r) => `  ${r.name}: ${tsFieldTable(r.fields)},`),
+    "} as const;",
+    "",
+    "/** 层与状态的字段表，按字段名索引。 */",
+    `export const LAYER_FIELDS = ${tsFieldTable(spec.layer.fields)} as const;`,
+    `export const STATE_FIELDS = ${tsFieldTable(spec.state.fields)} as const;`,
+    "",
     "export type CommandName = keyof typeof CMD;",
     "export type ResultName = keyof typeof RESULT;",
     "export type EffectName = keyof typeof EFFECT;",
@@ -145,9 +223,92 @@ function genTs() {
   return lines.join("\n");
 }
 
+/** TS 侧只需要 codec 用得到的那几项，不把整份 JSON 塞进去。 */
+function tsFieldTable(fields) {
+  if (fields.length === 0) return "{}";
+  const rows = fields.map((f) => `${JSON.stringify(f.name)}: ${tsFieldSpec(f)}`);
+  return `{\n${rows.map((r) => `    ${r},`).join("\n")}\n  }`;
+}
+
+function tsFieldSpec(f) {
+  const parts = [`offset: ${f.offset}`, `bytes: ${f.bytes}`, `type: ${JSON.stringify(f.type)}`];
+  if (f.range) parts.push(`range: [${f.range[0]}, ${f.range[1]}]`);
+  if (f.values) parts.push(`values: ${JSON.stringify(f.values)}`);
+  if (f.count) parts.push(`count: ${f.count}`, `elementBytes: ${f.elementBytes}`);
+  if (f.lengthField) parts.push(`lengthField: ${JSON.stringify(f.lengthField)}`);
+  if (f.pad) parts.push(`pad: ${JSON.stringify(f.pad)}`);
+  if (f.element) {
+    const els = f.element.map((e) => `${JSON.stringify(e.name)}: ${tsFieldSpec(e)}`);
+    parts.push(`element: { ${els.join(", ")} }`);
+  }
+  return `{ ${parts.join(", ")} }`;
+}
+
 /* ---------- 生成测试向量 ---------- */
-function genVectors() {
-  const vectors = [];
+
+/** 每个字段取一个位于取值域内的确定性样例值；数组取满 8 个元素。 */
+function samplePayload(fields) {
+  const out = new Array(fields.reduce((n, f) => Math.max(n, f.offset + f.bytes), 0)).fill(0);
+  for (const f of fields) {
+    switch (f.type) {
+      case "enum": {
+        const vals = Object.values(f.values);
+        out[f.offset] = vals[Math.min(1, vals.length - 1)];
+        break;
+      }
+      case "u8":
+        out[f.offset] = Math.min(f.range[1], Math.max(f.range[0], 5));
+        break;
+      case "u16le": {
+        const v = Math.min(f.range[1], Math.max(f.range[0], 300));
+        out[f.offset] = v & 0xff;
+        out[f.offset + 1] = (v >> 8) & 0xff;
+        break;
+      }
+      case "utf8": {
+        const text = Buffer.from("ab", "utf8");
+        for (let i = 0; i < text.length; i++) out[f.offset + i] = text[i];
+        const lenField = fields.find((x) => x.name === f.lengthField);
+        if (lenField) out[lenField.offset] = text.length;
+        break;
+      }
+      case "layer": {
+        out[f.offset] = 0x01;
+        out[f.offset + 8] = 100;
+        break;
+      }
+      case "state":
+        for (let i = 0; i < f.bytes; i++) out[f.offset + i] = (i + 1) & 0xff;
+        break;
+      case "array": {
+        for (let i = 0; i < f.count; i++) {
+          for (const e of f.element) {
+            const at = f.offset + i * f.elementBytes + e.offset;
+            const v = e.type === "u16le" ? 7 : 1;
+            out[at] = v;
+            if (e.type === "u16le") out[at + 1] = 0;
+          }
+        }
+        break;
+      }
+      default:
+        out[f.offset] = 0;
+    }
+  }
+  return out;
+}
+
+/** 把样例载荷再按字段切回来，作为「逐字段期望值」写进向量。 */
+function expectedFields(fields, payload) {
+  return fields.map((f) => ({
+    name: f.name,
+    offset: f.offset,
+    bytes: f.bytes,
+    hex: payload.slice(f.offset, f.offset + f.bytes).map((b) => b.toString(16).padStart(2, "0")).join(" "),
+  }));
+}
+
+function genVectors() {  const vectors = [];
   const push = (v) => vectors.push(v);
 
   push({
@@ -212,6 +373,33 @@ function genVectors() {
       payloadBytes: c.payloadBytes,
       expect_total_bytes: spec.frame.headerBytes + c.payloadBytes,
       expect_hex: hex(encodeFrame({ command: toInt(c.code), seq: 0, payload })),
+    });
+  }
+
+  // 逐字段向量：不只给整帧 hex，还给每个字段的偏移、字节与期望值。
+  // 两端 codec 可以直接按字段断言，不必自己从 hex 里切。
+  for (const c of spec.commands) {
+    if (c.fields.length === 0) continue;
+    const payload = samplePayload(c.fields);
+    push({
+      kind: "fields",
+      name: `fields_${c.name}`,
+      command: c.name,
+      payload_bytes: c.payloadBytes,
+      expect_payload_hex: hex(payload),
+      expect_fields: expectedFields(c.fields, payload),
+    });
+  }
+  for (const r of spec.reports) {
+    if (r.fields.length === 0) continue;
+    const payload = samplePayload(r.fields);
+    push({
+      kind: "fields",
+      name: `fields_${r.name}`,
+      report: r.name,
+      payload_bytes: r.payloadBytes,
+      expect_payload_hex: hex(payload),
+      expect_fields: expectedFields(r.fields, payload),
     });
   }
 
@@ -313,7 +501,46 @@ function genMarkdownSections() {
     ].join("\n"),
     resultCodes: resRows,
     limits: ["| 常量 | 值 |", "|---|---:|", limRows].join("\n"),
+    commandFields: fieldTables(spec.commands),
+    reportFields: fieldTables(spec.reports),
+    stateFields: oneFieldTable(spec.state.fields),
+    layerFields: oneFieldTable(spec.layer.fields),
   };
+}
+
+/** 每条命令/报告一张字段表，表头带码与名称。 */
+function fieldTables(entries) {
+  const blocks = [];
+  for (const e of entries) {
+    if (e.fields.length === 0) continue;
+    blocks.push(`#### \`${e.code}\` ${e.name}（${e.payloadBytes} 字节）\n\n${oneFieldTable(e.fields)}`);
+  }
+  return blocks.join("\n\n");
+}
+
+function oneFieldTable(fields) {
+  const rows = [];
+  for (const f of fields) {
+    if (f.type === "array") {
+      for (const e of f.element) {
+        rows.push(`| ${f.offset + e.offset} | \`${f.name}[].${e.name}\` | ${e.bytes} | ${e.type} | ${rangeCell(e)} |`);
+      }
+      continue;
+    }
+    rows.push(`| ${f.offset} | \`${f.name}\` | ${f.bytes} | ${f.type} | ${rangeCell(f)} |`);
+  }
+  return ["| 偏移 | 字段 | 字节 | 类型 | 取值域 |", "|---:|---|---:|---|---|", ...rows].join("\n");
+}
+
+function rangeCell(f) {
+  if (f.type === "enum") return Object.entries(f.values).map(([k, v]) => `${v}=${k}`).join(" / ");
+  if (f.type === "utf8") return `UTF-8，补零到 ${f.bytes}，长度见 \`${f.lengthField}\``;
+  if (f.type === "layer") return "见 §7";
+  if (f.type === "state") return "见 §8";
+  if (f.type === "bytes") return "保留，必须为 0";
+  if (f.type === "array") return `${f.count} × ${f.elementBytes} 字节`;
+  if (f.range) return `${f.range[0]}–${f.range[1]}`;
+  return "—";
 }
 
 /* ---------- 写文件 ---------- */

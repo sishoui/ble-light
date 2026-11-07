@@ -69,7 +69,7 @@ magic 0xA6 | version 0x01 | command | seq | length (u16 LE) | payload | crc16 (u
 <!-- GENERATED:commands -->
 | 码 | 名称 | 载荷字节 | 说明 |
 |---|---|---:|---|
-| `0x01` | `SetPower` | 1 | 整机开关 0/1 |
+| `0x01` | `SetPower` | 1 | 整机开关 |
 | `0x02` | `SetBrightness` | 1 | 0-255，按构建期上限钳位 |
 | `0x05` | `QueryState` | 0 | ACK 后补 StateReport |
 | `0x06` | `SetLedCount` | 3 | 1-100，异步重建句柄，ACK 可能延迟 |
@@ -89,6 +89,113 @@ magic 0xA6 | version 0x01 | command | seq | length (u16 LE) | payload | crc16 (u
 | `0x29` | `QueryScene` | 1 | 逐部位、逐步骤报告 + SceneListEnd |
 <!-- /GENERATED:commands -->
 
+### 逐字段定义
+
+<!-- GENERATED:commandFields -->
+#### `0x01` SetPower（1 字节）
+
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `power` | 1 | enum | 0=off / 1=on |
+
+#### `0x02` SetBrightness（1 字节）
+
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `brightness` | 1 | u8 | 0–255 |
+
+#### `0x06` SetLedCount（3 字节）
+
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `strip_id` | 1 | u8 | 0–7 |
+| 1 | `count` | 2 | u16le | 1–100 |
+
+#### `0x1B` SetStripPower（2 字节）
+
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `strip_id` | 1 | u8 | 0–7 |
+| 1 | `on` | 1 | enum | 0=off / 1=on |
+
+#### `0x20` LayoutWrite（2 字节）
+
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `strip_id` | 1 | u8 | 0–7 |
+| 1 | `part_count` | 1 | u8 | 1–8 |
+
+#### `0x21` LayoutPart（29 字节）
+
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `strip_id` | 1 | u8 | 0–7 |
+| 1 | `part_id` | 1 | u8 | 0–7 |
+| 2 | `name_len` | 1 | u8 | 0–24 |
+| 3 | `name` | 24 | utf8 | UTF-8，补零到 24，长度见 `name_len` |
+| 27 | `seg_count` | 1 | u8 | 1–8 |
+| 28 | `phase` | 1 | enum | 0=continuous / 1=per_segment |
+
+#### `0x22` LayoutSeg（5 字节）
+
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `strip_id` | 1 | u8 | 0–7 |
+| 1 | `part_id` | 1 | u8 | 0–7 |
+| 2 | `seg_id` | 1 | u8 | 0–7 |
+| 3 | `start` | 1 | u8 | 0–99 |
+| 4 | `end` | 1 | u8 | 0–99 |
+
+#### `0x24` QueryLayout（1 字节）
+
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `strip_id` | 1 | u8 | 0–7 |
+
+#### `0x25` ScenePart（6 字节）
+
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `scene_id` | 1 | u8 | 0–2 |
+| 1 | `strip_id` | 1 | u8 | 0–7 |
+| 2 | `part_id` | 1 | u8 | 0–7 |
+| 3 | `step_count` | 1 | u8 | 1–8 |
+| 4 | `loop` | 1 | enum | 0=none / 1=all / 2=last |
+| 5 | `on` | 1 | enum | 0=off / 1=on |
+
+#### `0x26` SceneStep（24 字节）
+
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `scene_id` | 1 | u8 | 0–2 |
+| 1 | `strip_id` | 1 | u8 | 0–7 |
+| 2 | `part_id` | 1 | u8 | 0–7 |
+| 3 | `step_index` | 1 | u8 | 0–7 |
+| 4 | `duration` | 2 | u16le | 100–60000 |
+| 6 | `layer0` | 9 | layer | 见 §7 |
+| 15 | `layer1` | 9 | layer | 见 §7 |
+
+#### `0x27` SceneName（26 字节）
+
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `scene_id` | 1 | u8 | 0–2 |
+| 1 | `name_len` | 1 | u8 | 0–24 |
+| 2 | `name` | 24 | utf8 | UTF-8，补零到 24，长度见 `name_len` |
+
+#### `0x28` ActivateScene（1 字节）
+
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `scene_id` | 1 | u8 | 0–2 |
+
+#### `0x29` QueryScene（1 字节）
+
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `scene_id` | 1 | u8 | 0–2 |
+<!-- /GENERATED:commandFields -->
+
 ## 6. 报告
 
 <!-- GENERATED:reports -->
@@ -105,6 +212,106 @@ magic 0xA6 | version 0x01 | command | seq | length (u16 LE) | payload | crc16 (u
 | `0x8C` | `SceneStepReport` | 24 | 同 SceneStep 载荷 |
 | `0x8D` | `SceneListEnd` | 26 | 多帧收尾，带场景名 |
 <!-- /GENERATED:reports -->
+
+### 逐字段定义
+
+<!-- GENERATED:reportFields -->
+#### `0x80` ACK（2 字节）
+
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `command` | 1 | u8 | 0–255 |
+| 1 | `result` | 1 | u8 | 0–9 |
+
+#### `0x81` Event（2 字节）
+
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `event_code` | 1 | enum | 1=storage_failed |
+| 1 | `detail` | 1 | u8 | 0–255 |
+
+#### `0x82` StateReport（32 字节）
+
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `state` | 32 | state | 见 §8 |
+
+#### `0x87` StripConfigReport（24 字节）
+
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `strips[].strip_id` | 1 | u8 | 0–7 |
+| 1 | `strips[].gpio` | 1 | u8 | 0–48 |
+| 2 | `strips[].flags` | 1 | u8 | 0–255 |
+
+#### `0x88` DeviceInfoReport（15 字节）
+
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `fw_major` | 1 | u8 | 0–255 |
+| 1 | `fw_minor` | 1 | u8 | 0–255 |
+| 2 | `fw_patch` | 1 | u8 | 0–255 |
+| 3 | `hw_id` | 2 | u16le | 0–65535 |
+| 5 | `max_leds` | 1 | u8 | 1–100 |
+| 6 | `max_strips` | 1 | u8 | 1–8 |
+| 7 | `max_parts` | 1 | u8 | 1–8 |
+| 8 | `max_steps` | 1 | u8 | 1–8 |
+| 9 | `max_scenes` | 1 | u8 | 1–3 |
+| 10 | `max_layers` | 1 | u8 | 1–2 |
+| 11 | `caps` | 2 | u16le | 0–65535 |
+| 13 | `reserved` | 2 | bytes | 保留，必须为 0 |
+
+#### `0x89` LayoutReport（45 字节）
+
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `strip_id` | 1 | u8 | 0–7 |
+| 1 | `part_id` | 1 | u8 | 0–7 |
+| 2 | `name_len` | 1 | u8 | 0–24 |
+| 3 | `name` | 24 | utf8 | UTF-8，补零到 24，长度见 `name_len` |
+| 27 | `seg_count` | 1 | u8 | 1–8 |
+| 28 | `phase` | 1 | enum | 0=continuous / 1=per_segment |
+| 29 | `segs[].start` | 1 | u8 | 0–99 |
+| 30 | `segs[].end` | 1 | u8 | 0–99 |
+
+#### `0x8A` LayoutListEnd（2 字节）
+
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `strip_id` | 1 | u8 | 0–7 |
+| 1 | `part_mask` | 1 | u8 | 0–255 |
+
+#### `0x8B` ScenePartReport（6 字节）
+
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `scene_id` | 1 | u8 | 0–2 |
+| 1 | `strip_id` | 1 | u8 | 0–7 |
+| 2 | `part_id` | 1 | u8 | 0–7 |
+| 3 | `step_count` | 1 | u8 | 1–8 |
+| 4 | `loop` | 1 | enum | 0=none / 1=all / 2=last |
+| 5 | `on` | 1 | enum | 0=off / 1=on |
+
+#### `0x8C` SceneStepReport（24 字节）
+
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `scene_id` | 1 | u8 | 0–2 |
+| 1 | `strip_id` | 1 | u8 | 0–7 |
+| 2 | `part_id` | 1 | u8 | 0–7 |
+| 3 | `step_index` | 1 | u8 | 0–7 |
+| 4 | `duration` | 2 | u16le | 100–60000 |
+| 6 | `layer0` | 9 | layer | 见 §7 |
+| 15 | `layer1` | 9 | layer | 见 §7 |
+
+#### `0x8D` SceneListEnd（26 字节）
+
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `scene_id` | 1 | u8 | 0–2 |
+| 1 | `name_len` | 1 | u8 | 0–24 |
+| 2 | `name` | 24 | utf8 | UTF-8，补零到 24，长度见 `name_len` |
+<!-- /GENERATED:reportFields -->
 
 ## 7. 层
 
@@ -124,22 +331,40 @@ magic 0xA6 | version 0x01 | command | seq | length (u16 LE) | payload | crc16 (u
 | `0xFF` | 空层 | 0 / 0 / 0 / 0 / 0 | 只能作叠加层 |
 <!-- /GENERATED:effects -->
 
+### 层字段
+
+<!-- GENERATED:layerFields -->
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `type` | 1 | u8 | 0–255 |
+| 1 | `param0` | 1 | u8 | 0–255 |
+| 2 | `param1` | 1 | u8 | 0–255 |
+| 3 | `param2` | 1 | u8 | 0–255 |
+| 4 | `param3` | 1 | u8 | 0–255 |
+| 5 | `param4` | 1 | u8 | 0–255 |
+| 6 | `param5` | 1 | u8 | 0–255 |
+| 7 | `param6` | 1 | u8 | 0–255 |
+| 8 | `level` | 1 | u8 | 0–100 |
+<!-- /GENERATED:layerFields -->
+
 两层叠加规则：空层 → 覆盖；非空 → 按 `level` 相加合成。
 
 ## 8. 状态（32 字节）
 
-```
-0      power
-1      brightness（已按 max_brightness 钳位）
-2      max_brightness
-3      strip_count
-4      strip_power_mask
-5      active_scene
-6      layout_valid
-7      reserved = 0
-8..23  led_count[8]  (u16 LE)
-24..31 part_count[8]
-```
+<!-- GENERATED:stateFields -->
+| 偏移 | 字段 | 字节 | 类型 | 取值域 |
+|---:|---|---:|---|---|
+| 0 | `power` | 1 | enum | 0=off / 1=on |
+| 1 | `brightness` | 1 | u8 | 0–255 |
+| 2 | `max_brightness` | 1 | u8 | 0–255 |
+| 3 | `strip_count` | 1 | u8 | 0–8 |
+| 4 | `strip_power_mask` | 1 | u8 | 0–255 |
+| 5 | `active_scene` | 1 | u8 | 0–2 |
+| 6 | `layout_valid` | 1 | enum | 0=invalid / 1=valid |
+| 7 | `reserved` | 1 | bytes | 保留，必须为 0 |
+| 8 | `led_count[].count` | 2 | u16le | 0–100 |
+| 24 | `part_count[].count` | 1 | u8 | 0–8 |
+<!-- /GENERATED:stateFields -->
 
 State 不含部位开关、播放位置、颜色摘要；明细走 `QueryLayout` / `QueryScene`。
 
