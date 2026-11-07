@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T14:02:00.604Z",
+  "generatedAt": "2026-11-07T14:06:25.809Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "4c932f7",
-    "subject": "feat(panel): 文件职责描述 + 点击查看内容",
-    "date": "2026-11-07T21:53:58+08:00",
+    "sha": "ba86676",
+    "subject": "feat(panel): Markdown 文档渲染预览，可切回原文",
+    "date": "2026-11-07T22:02:16+08:00",
     "branch": "main"
   },
   "layers": [
@@ -502,8 +502,8 @@
       "status": "生效",
       "hasFrontmatter": true,
       "lines": 36,
-      "bytes": 1386,
-      "hash": "3257c7ce8eccbe07",
+      "bytes": 1452,
+      "hash": "1ab9740ce612437e",
       "isAdr": false,
       "isAgentDoc": false
     },
@@ -737,7 +737,7 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 41784,
+        "size": 41790,
         "lines": 1440,
         "binary": false,
         "isDoc": false,
@@ -802,7 +802,7 @@
         "name": "status.md",
         "dir": "docs",
         "ext": ".md",
-        "size": 1386,
+        "size": 1452,
         "lines": 35,
         "binary": false,
         "isDoc": true,
@@ -1205,13 +1205,13 @@
   "iterations": [
     {
       "index": 1,
-      "id": "4c932f7",
+      "id": "ba86676",
       "title": "初始提交",
-      "date": "2026-11-07T21:53:58+08:00",
-      "commits": 4,
+      "date": "2026-11-07T22:02:16+08:00",
+      "commits": 5,
       "pr": null,
       "branch": null,
-      "sha": "4c932f7f773c33142a82f73b2d0feafefdab7121",
+      "sha": "ba8667635afabcd7d65466d00472fbb7b69f74cb",
       "body": "",
       "files": []
     }
