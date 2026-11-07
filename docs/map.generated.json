@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T17:27:59.061Z",
+  "generatedAt": "2026-11-07T17:28:36.965Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "bbac1a9",
-    "subject": "merge: 03 固件 BLE 链路 + 单色出光 (#4)",
-    "date": "2026-11-08T00:26:55+08:00",
+    "sha": "b784ffe",
+    "subject": "feat(design): 视觉体系换成暖调家居风",
+    "date": "2026-11-08T01:28:19+08:00",
     "branch": "spec-v1",
     "dirty": true
   },
@@ -706,10 +706,13 @@
       "seam": "protocol",
       "role": "帧构造与解析、分片、命令构造器与解析器、常量与类型。",
       "exists": true,
-      "fileCount": 1,
-      "lines": 270,
+      "fileCount": 4,
+      "lines": 449,
       "files": [
-        "miniprogram/utils/protocol/constants.gen.ts"
+        "miniprogram/utils/protocol/chunk.ts",
+        "miniprogram/utils/protocol/constants.gen.ts",
+        "miniprogram/utils/protocol/crc.ts",
+        "miniprogram/utils/protocol/frame.ts"
       ],
       "testCount": 0
     },
@@ -729,10 +732,12 @@
       "layer": "miniprogram",
       "seam": "session",
       "role": "页面唯一门面：连接、状态镜像、命令语义、节流。页面不直接碰传输层。",
-      "exists": false,
-      "fileCount": 0,
-      "lines": 0,
-      "files": [],
+      "exists": true,
+      "fileCount": 1,
+      "lines": 184,
+      "files": [
+        "miniprogram/utils/control/session.ts"
+      ],
       "testCount": 0
     },
     {
@@ -803,7 +808,7 @@
       "role": "从 docs/protocol.json 生成 C 头、TS 常量、测试向量、文档表格段。",
       "exists": true,
       "fileCount": 1,
-      "lines": 591,
+      "lines": 593,
       "files": [
         "scripts/gen-protocol.mjs"
       ],
@@ -913,6 +918,45 @@
         "firmware/main/device_core.c"
       ],
       "testCount": 0
+    },
+    {
+      "path": "miniprogram/utils/control/view-model.ts",
+      "layer": "miniprogram",
+      "seam": "page",
+      "role": "会话状态 → 页面 data 的纯映射。页面只调它。",
+      "exists": true,
+      "fileCount": 1,
+      "lines": 64,
+      "files": [
+        "miniprogram/utils/control/view-model.ts"
+      ],
+      "testCount": 0
+    },
+    {
+      "path": "miniprogram/utils/control/discover-unit.ts",
+      "layer": "miniprogram",
+      "seam": "page",
+      "role": "连接页的视图模型与交互单元，纯函数。",
+      "exists": true,
+      "fileCount": 1,
+      "lines": 51,
+      "files": [
+        "miniprogram/utils/control/discover-unit.ts"
+      ],
+      "testCount": 0
+    },
+    {
+      "path": "miniprogram/tests/session/fake-transport.ts",
+      "layer": "miniprogram",
+      "seam": "session",
+      "role": "假传输：记录设备收到了什么，可脚本化响应。测试只断言它的内容。",
+      "exists": true,
+      "fileCount": 1,
+      "lines": 113,
+      "files": [
+        "miniprogram/tests/session/fake-transport.ts"
+      ],
+      "testCount": 6
     }
   ],
   "docs": [
@@ -1121,6 +1165,66 @@
       "violations": []
     },
     {
+      "path": "miniprogram/tests/page/view-model.test.ts",
+      "name": "view-model.test.ts",
+      "description": null,
+      "lines": 139,
+      "cases": 18,
+      "asserts": 25,
+      "seam": "page",
+      "violations": []
+    },
+    {
+      "path": "miniprogram/tests/protocol/chunk.test.ts",
+      "name": "chunk.test.ts",
+      "description": null,
+      "lines": 94,
+      "cases": 10,
+      "asserts": 24,
+      "seam": "protocol",
+      "violations": []
+    },
+    {
+      "path": "miniprogram/tests/protocol/frame.test.ts",
+      "name": "frame.test.ts",
+      "description": null,
+      "lines": 86,
+      "cases": 12,
+      "asserts": 15,
+      "seam": "protocol",
+      "violations": []
+    },
+    {
+      "path": "miniprogram/tests/protocol/vectors.ts",
+      "name": "vectors.ts",
+      "description": "测试向量的类型化视图。JSON 是生成物，这里只给它一个形状， 不改数据、不复制数据。",
+      "lines": 58,
+      "cases": 0,
+      "asserts": 0,
+      "seam": "protocol",
+      "violations": []
+    },
+    {
+      "path": "miniprogram/tests/session/fake-transport.ts",
+      "name": "fake-transport.ts",
+      "description": "假传输：记录设备收到了什么，可以脚本化响应。 会话层的测试只断言这里的内容，不看会话内部。",
+      "lines": 114,
+      "cases": 0,
+      "asserts": 0,
+      "seam": "session",
+      "violations": []
+    },
+    {
+      "path": "miniprogram/tests/session/session.test.ts",
+      "name": "session.test.ts",
+      "description": null,
+      "lines": 158,
+      "cases": 12,
+      "asserts": 21,
+      "seam": "session",
+      "violations": []
+    },
+    {
       "path": "scripts/file-api.test.mjs",
       "name": "file-api.test.mjs",
       "description": "scripts/file-api.mjs 的测试。 为什么必须测：这是面板唯一的读取入口，也是唯一的攻击面。 白名单、路径穿越、二进制拦截、大小截断，每一条都必须有测试守着。",
@@ -1172,39 +1276,39 @@
     }
   ],
   "testStats": {
-    "files": 9,
-    "cases": 156,
-    "asserts": 176,
-    "lines": 1992,
+    "files": 15,
+    "cases": 208,
+    "asserts": 261,
+    "lines": 2641,
     "bySeam": {
-      "protocol": 1,
+      "protocol": 4,
       "reducer": 3,
       "render": 0,
-      "session": 0,
-      "page": 0,
+      "session": 2,
+      "page": 1,
       "tooling": 5
     },
     "unseamed": 0
   },
   "files": {
-    "total": 86,
-    "code": 62,
+    "total": 101,
+    "code": 71,
     "docs": 12,
-    "tests": 12,
+    "tests": 18,
     "binary": 0,
-    "lines": 13123,
+    "lines": 15952,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
       ".md": 15,
-      ".json": 8,
+      ".json": 11,
       ".txt": 2,
       ".c": 17,
       ".h": 12,
       ".yml": 1,
       ".defaults": 1,
       ".wxss": 1,
-      ".ts": 4,
+      ".ts": 16,
       ".html": 1,
       ".vue": 8,
       ".css": 1,
@@ -1219,8 +1323,12 @@
       "firmware": 2,
       "firmware/main": 24,
       "firmware/test": 7,
-      "miniprogram": 1,
-      "miniprogram/utils/protocol": 1,
+      "miniprogram": 4,
+      "miniprogram/tests/page": 1,
+      "miniprogram/tests/protocol": 3,
+      "miniprogram/tests/session": 2,
+      "miniprogram/utils/control": 3,
+      "miniprogram/utils/protocol": 4,
       "panel": 4,
       "panel/src": 4,
       "panel/src/views": 7,
@@ -1245,8 +1353,8 @@
         "name": ".gitignore",
         "dir": ".",
         "ext": ".gitignore",
-        "size": 211,
-        "lines": 14,
+        "size": 238,
+        "lines": 15,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -1401,8 +1509,8 @@
         "name": "map.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 8719,
-        "lines": 291,
+        "size": 9394,
+        "lines": 310,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -1414,8 +1522,8 @@
         "name": "protocol-vectors.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 23667,
-        "lines": 1024,
+        "size": 23699,
+        "lines": 1025,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -1930,6 +2038,175 @@
         "description": "设计变量。全项目唯一的颜色与字号来源。 权威定义在 docs/design.md，这里只是它的可执行副本。 改这里必须同步改文档，反之亦然。 风格：暖调家居——米白画布、深棕主卡、焦糖强调、照片媒体卡。"
       },
       {
+        "path": "miniprogram/package-lock.json",
+        "name": "package-lock.json",
+        "dir": "miniprogram",
+        "ext": ".json",
+        "size": 52940,
+        "lines": 1654,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": "JSON 数据文件"
+      },
+      {
+        "path": "miniprogram/package.json",
+        "name": "package.json",
+        "dir": "miniprogram",
+        "ext": ".json",
+        "size": 256,
+        "lines": 14,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": "JSON 数据文件"
+      },
+      {
+        "path": "miniprogram/tests/page/view-model.test.ts",
+        "name": "view-model.test.ts",
+        "dir": "miniprogram/tests/page",
+        "ext": ".ts",
+        "size": 4639,
+        "lines": 138,
+        "binary": false,
+        "isDoc": false,
+        "isTest": true,
+        "module": null,
+        "description": null
+      },
+      {
+        "path": "miniprogram/tests/protocol/chunk.test.ts",
+        "name": "chunk.test.ts",
+        "dir": "miniprogram/tests/protocol",
+        "ext": ".ts",
+        "size": 3188,
+        "lines": 93,
+        "binary": false,
+        "isDoc": false,
+        "isTest": true,
+        "module": null,
+        "description": null
+      },
+      {
+        "path": "miniprogram/tests/protocol/frame.test.ts",
+        "name": "frame.test.ts",
+        "dir": "miniprogram/tests/protocol",
+        "ext": ".ts",
+        "size": 3203,
+        "lines": 85,
+        "binary": false,
+        "isDoc": false,
+        "isTest": true,
+        "module": null,
+        "description": null
+      },
+      {
+        "path": "miniprogram/tests/protocol/vectors.ts",
+        "name": "vectors.ts",
+        "dir": "miniprogram/tests/protocol",
+        "ext": ".ts",
+        "size": 1514,
+        "lines": 57,
+        "binary": false,
+        "isDoc": false,
+        "isTest": true,
+        "module": null,
+        "description": "测试向量的类型化视图。JSON 是生成物，这里只给它一个形状， 不改数据、不复制数据。"
+      },
+      {
+        "path": "miniprogram/tests/session/fake-transport.ts",
+        "name": "fake-transport.ts",
+        "dir": "miniprogram/tests/session",
+        "ext": ".ts",
+        "size": 3335,
+        "lines": 113,
+        "binary": false,
+        "isDoc": false,
+        "isTest": true,
+        "module": "miniprogram/tests/session/fake-transport.ts",
+        "description": "假传输：记录设备收到了什么，可以脚本化响应。 会话层的测试只断言这里的内容，不看会话内部。"
+      },
+      {
+        "path": "miniprogram/tests/session/session.test.ts",
+        "name": "session.test.ts",
+        "dir": "miniprogram/tests/session",
+        "ext": ".ts",
+        "size": 4928,
+        "lines": 157,
+        "binary": false,
+        "isDoc": false,
+        "isTest": true,
+        "module": null,
+        "description": null
+      },
+      {
+        "path": "miniprogram/tsconfig.json",
+        "name": "tsconfig.json",
+        "dir": "miniprogram",
+        "ext": ".json",
+        "size": 375,
+        "lines": 16,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": "JSON 数据文件"
+      },
+      {
+        "path": "miniprogram/utils/control/discover-unit.ts",
+        "name": "discover-unit.ts",
+        "dir": "miniprogram/utils/control",
+        "ext": ".ts",
+        "size": 1432,
+        "lines": 51,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": "miniprogram/utils/control/discover-unit.ts",
+        "description": "连接页的视图模型与交互单元。纯函数。"
+      },
+      {
+        "path": "miniprogram/utils/control/session.ts",
+        "name": "session.ts",
+        "dir": "miniprogram/utils/control",
+        "ext": ".ts",
+        "size": 5851,
+        "lines": 184,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": "miniprogram/utils/control/session.ts",
+        "description": "会话层：页面的唯一门面。连接、状态镜像、命令语义、节流都在这里。 页面不直接碰传输层，只走这个类。测试断言设备收到了什么（transport.writes）， 不断言内部字段。"
+      },
+      {
+        "path": "miniprogram/utils/control/view-model.ts",
+        "name": "view-model.ts",
+        "dir": "miniprogram/utils/control",
+        "ext": ".ts",
+        "size": 2059,
+        "lines": 64,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": "miniprogram/utils/control/view-model.ts",
+        "description": "视图模型：会话状态 → 页面 data 的纯映射。 无 mock、无 fixture、无副作用。页面只调这个函数然后 setData。"
+      },
+      {
+        "path": "miniprogram/utils/protocol/chunk.ts",
+        "name": "chunk.ts",
+        "dir": "miniprogram/utils/protocol",
+        "ext": ".ts",
+        "size": 2425,
+        "lines": 87,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": "分片与重组。BLE 一次写最多 179 字节，整帧 240 字节要切。 每片 1 字节 ctrl：bit7 FIRST、bit6 LAST、bit5..0 序号。重组超时 1000ms。"
+      },
+      {
         "path": "miniprogram/utils/protocol/constants.gen.ts",
         "name": "constants.gen.ts",
         "dir": "miniprogram/utils/protocol",
@@ -1941,6 +2218,32 @@
         "isTest": false,
         "module": null,
         "description": "GENERATED — DO NOT EDIT. Source: docs/protocol.json, generator: scripts/gen-protocol.mjs"
+      },
+      {
+        "path": "miniprogram/utils/protocol/crc.ts",
+        "name": "crc.ts",
+        "dir": "miniprogram/utils/protocol",
+        "ext": ".ts",
+        "size": 470,
+        "lines": 16,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": "CRC16 CCITT-FALSE：poly 0x1021，init 0xFFFF，不反转，无末尾异或。 与固件用同一份生成出来的常量。"
+      },
+      {
+        "path": "miniprogram/utils/protocol/frame.ts",
+        "name": "frame.ts",
+        "dir": "miniprogram/utils/protocol",
+        "ext": ".ts",
+        "size": 2226,
+        "lines": 76,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": "帧编解码。协议接缝里唯一允许出现字节偏移的地方。 布局固定：magic | version | command | seq | length(u16 LE) | payload | crc16(u16 LE)"
       },
       {
         "path": "package-lock.json",
@@ -1960,8 +2263,8 @@
         "name": "package.json",
         "dir": ".",
         "ext": ".json",
-        "size": 941,
-        "lines": 25,
+        "size": 1022,
+        "lines": 26,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -2220,8 +2523,8 @@
         "name": "gen-protocol.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 20454,
-        "lines": 591,
+        "size": 20559,
+        "lines": 593,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -2272,7 +2575,7 @@
         "name": "map.test.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 15745,
+        "size": 15758,
         "lines": 422,
         "binary": false,
         "isDoc": false,
@@ -2953,22 +3256,10 @@
         "kind": "seam-untested",
         "path": null,
         "message": "接缝「渲染合成」(render) 暂无测试（还没有产品代码，门禁未启用）"
-      },
-      {
-        "level": "warn",
-        "kind": "seam-untested",
-        "path": null,
-        "message": "接缝「会话层」(session) 暂无测试（还没有产品代码，门禁未启用）"
-      },
-      {
-        "level": "warn",
-        "kind": "seam-untested",
-        "path": null,
-        "message": "接缝「页面处理器」(page) 暂无测试（还没有产品代码，门禁未启用）"
       }
     ],
     "errors": 0,
-    "warnings": 3,
+    "warnings": 1,
     "ok": true
   }
 }

@@ -315,7 +315,9 @@ function genVectors() {  const vectors = [];
     kind: "crc",
     name: "crc16_check_string",
     input_ascii: "123456789",
-    expect_crc: hex([0x29, 0xb1]),
+    /* 按值写，不按线序：线序由各端编码器负责（帧里是 LE） */
+    expect_crc: 0x29B1,
+    expect_crc_hex: "0x29B1",
   });
 
   push({

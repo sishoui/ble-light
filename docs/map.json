@@ -228,6 +228,24 @@
       "layer": "firmware",
       "seam": "reducer",
       "role": "设备内核：状态机 + 意图收集。把 reducer 的输出翻成副作用清单。"
+    },
+    {
+      "path": "miniprogram/utils/control/view-model.ts",
+      "layer": "miniprogram",
+      "seam": "page",
+      "role": "会话状态 → 页面 data 的纯映射。页面只调它。"
+    },
+    {
+      "path": "miniprogram/utils/control/discover-unit.ts",
+      "layer": "miniprogram",
+      "seam": "page",
+      "role": "连接页的视图模型与交互单元，纯函数。"
+    },
+    {
+      "path": "miniprogram/tests/session/fake-transport.ts",
+      "layer": "miniprogram",
+      "seam": "session",
+      "role": "假传输：记录设备收到了什么，可脚本化响应。测试只断言它的内容。"
     }
   ],
   "rules": {
@@ -270,7 +288,8 @@
     "requireFrontmatter": true,
     "testSeamPaths": {
       "protocol": [
-        "firmware/test/test_protocol.c"
+        "firmware/test/test_protocol.c",
+        "miniprogram/tests/protocol/"
       ],
       "reducer": [
         "firmware/test/test_command.c",
