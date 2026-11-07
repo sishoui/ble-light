@@ -1,3 +1,8 @@
+---
+purpose: issue 在哪、怎么读写：GitHub Issues + gh CLI 的命令约定。
+status: 生效
+---
+
 # Issue tracker: GitHub
 
 Issues and specs for this repo live as GitHub issues. Use the `gh` CLI for all operations.

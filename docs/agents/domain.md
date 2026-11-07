@@ -1,3 +1,8 @@
+---
+purpose: 领域文档的消费规则：探索代码前先读 GLOSSARY.md 与 docs/adr/。
+status: 生效
+---
+
 # Domain Docs
 
 How the engineering skills should consume this repo's domain documentation when exploring the codebase.

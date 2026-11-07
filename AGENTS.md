@@ -1,3 +1,88 @@
+# ble-light · Agent 规则
+
+## 开工前先读
+
+1. [`docs/status.md`](docs/status.md) —— 现在在哪、下一步、**禁做**
+2. [`GLOSSARY.md`](GLOSSARY.md) —— 用这里的词，不要造同义词
+3. 要动协议就先读 [`docs/protocol.md`](docs/protocol.md)；要动测试先读 [`docs/testing.md`](docs/testing.md)
+
+不要凭本文件推断进度。本文件只写**规则**，不写状态。
+
+## 事实归属表
+
+每个事实只有一个家。写文档前先查这张表，找不到家就说明你在发明新文档。
+
+| 事实类型 | 唯一归属 |
+|---|---|
+| 协议字节、命令码、State 布局 | `docs/protocol.md` |
+| 领域术语、不变量 | `GLOSSARY.md` |
+| 为什么这么定 | `docs/adr/NNNN-*.md` |
+| 当前进度 / 下一步 / 禁做 | `docs/status.md` |
+| 测试分层、接缝、禁令 | `docs/testing.md` |
+| 验收项与证据 | `docs/acceptance.md` |
+| 怎么跑、怎么接线 | `README.md` |
+| 每个模块干什么 | `docs/map.json`（面板读它） |
+
+**文档之间只许指针，不许复述。** 同一事实出现在两处 = 缺陷。
+
+## 硬规则
+
+### 文档
+
+- 文件名**不带版本号**。禁止 `protocol-v2.md`、`spec-final.md`、`xxx-old`、`handoff.md`、`pending-tasks.md`
+- **作废即删除**，git 就是归档。看历史用 `git show <ref>:<path>`
+- `docs/status.md` **≤60 行，每轮原地重写**，不追加历史段落
+- 每份文档必须有 frontmatter：`purpose`（一句话职责）+ `status`
+- 新增文档前先证明现有文档放不下。`docs/` 文件数封顶约 10 个
+
+### 测试
+
+- 只测**五个接缝**：协议编解码 / 命令 reducer / 渲染合成 / 会话层 / 页面处理器
+- 三条禁令：**不读源码做断言**、**不 mock 自证**、**不拿 fixture 快照当行为测试**
+- 测试红了先问「行为变了吗」。行为没变就是接缝选错了，改接缝，**不删测试**
+- 协议向量只有一份 `docs/protocol-vectors.json`，固件与小程序共跑
+
+### 代码
+
+- 固件单向依赖：`ble_link → command → led_engine → led_render`，不许反向
+- reducer 是纯函数，不碰 NVS / BLE / 硬件
+- 页面不直接碰传输层，只走 `session`
+
+### 流程
+
+- trunk-based：分支活不过 2 天，合完即删。**禁止长期 `integration/*` 分支**
+- issue 只在 GitHub。`.scratch/` 整个 gitignore，只放一次性脚本，**永不成为权威**
+- 证据按 claim 存，不按 run 存。测试报告是生成物，gitignore
+- 发版打 tag（`v1.0.0`），版本身份不靠 commit message 和散文
+
+## 项目管理面板
+
+```bash
+npm run map      # 扫描仓库 → docs/map.generated.json
+npm run panel    # http://localhost:5180
+npm run map:check # 健康检查，有 error 退出码 1
+```
+
+**每次改动后必须跑 `npm run map` 并提交 `docs/map.generated.json`。** 面板里没有一个手抄的数字，全部来自这次扫描。
+
+新增/删除/移动文件时：
+
+- 如果是**新模块**（一个目录或一个核心源文件），在 `docs/map.json` 的 `modules` 里加一条，写清一句话职责和它属于哪个接缝
+- 如果只是模块内部的文件变动，什么都不用做——扫描器会自己发现
+- 如果是**新文档**，先加进 `docs/map.json` 的 `docsAllowed`，否则 `map:check` 报 `doc-not-declared`
+
+`map:check` 会拦住这些情况：
+
+| 检查 | 说明 |
+|---|---|
+| `doc-not-declared` | 文档没有家，说明它不该存在或该登记 |
+| `doc-no-frontmatter` | 缺 `purpose` / `status` |
+| `banned-doc-name` | 文件名命中 `handoff` / `protocol-v[0-9]` / `-old` 等 |
+| `status-too-long` | `docs/status.md` 超过 60 行 |
+| `test-reads-source` | 测试疑似读源码做断言 |
+| `test-asserts-call` | 测试疑似断言方法被调用 |
+| `duplicate-title` | 两份文档标题重复，可能重复建设 |
+
 ## Agent skills
 
 ### Issue tracker

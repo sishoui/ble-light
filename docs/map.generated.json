@@ -1,0 +1,1040 @@
+{
+  "generatedAt": "2026-11-07T12:48:21.184Z",
+  "generator": "scripts/map.mjs",
+  "project": {
+    "name": "ble-light",
+    "tagline": "微信小程序 BLE 直连控制 ESP32-C3 驱动的 WS2812B 灯带",
+    "repo": "sishoui/ble-light"
+  },
+  "head": {
+    "sha": "1137773",
+    "subject": "chore: scaffold agent skills configuration",
+    "date": "2026-11-07T19:55:56+08:00",
+    "branch": "main"
+  },
+  "layers": [
+    {
+      "id": "firmware",
+      "name": "固件",
+      "blurb": "ESP-IDF v6.1 + NimBLE，跑在 ESP32-C3FH4 上",
+      "dirs": [
+        "firmware"
+      ]
+    },
+    {
+      "id": "miniprogram",
+      "name": "小程序",
+      "blurb": "微信小程序原生 + TypeScript，手机侧全部逻辑",
+      "dirs": [
+        "miniprogram"
+      ]
+    },
+    {
+      "id": "docs",
+      "name": "文档",
+      "blurb": "每个事实只有一个家",
+      "dirs": [
+        "docs"
+      ]
+    },
+    {
+      "id": "tooling",
+      "name": "工具",
+      "blurb": "生成器、探针、压测、面板",
+      "dirs": [
+        "scripts",
+        "tools",
+        "panel"
+      ]
+    }
+  ],
+  "modules": [
+    {
+      "path": "firmware/main/protocol.c",
+      "layer": "firmware",
+      "seam": "protocol",
+      "role": "信封解码、CRC16、ACK / Event / 各固定报告编码。纯函数。",
+      "exists": false,
+      "fileCount": 0,
+      "lines": 0,
+      "files": [],
+      "testCount": 0
+    },
+    {
+      "path": "firmware/main/command.c",
+      "layer": "firmware",
+      "seam": "reducer",
+      "role": "命令 reducer：校验命令字 / 长度 / 取值，输出新状态、结果码与意图。",
+      "exists": false,
+      "fileCount": 0,
+      "lines": 0,
+      "files": [],
+      "testCount": 0
+    },
+    {
+      "path": "firmware/main/led_render.c",
+      "layer": "firmware",
+      "seam": "render",
+      "role": "一份快照 + 布局 + 场景 + 播放头 → 一帧像素。整帧亮度与 gamma 只做一次。",
+      "exists": false,
+      "fileCount": 0,
+      "lines": 0,
+      "files": [],
+      "testCount": 0
+    },
+    {
+      "path": "firmware/main/effects.c",
+      "layer": "firmware",
+      "seam": "render",
+      "role": "八种灯效的像素公式、层编解码、参数与形状校验、两层合成。",
+      "exists": false,
+      "fileCount": 0,
+      "lines": 0,
+      "files": [],
+      "testCount": 0
+    },
+    {
+      "path": "firmware/main/scene_compose.c",
+      "layer": "firmware",
+      "seam": "render",
+      "role": "渲染唯一入口：按链合成，推进播放头，判断是否需要出新帧。",
+      "exists": false,
+      "fileCount": 0,
+      "lines": 0,
+      "files": [],
+      "testCount": 0
+    },
+    {
+      "path": "firmware/main/layout_store.c",
+      "layer": "firmware",
+      "seam": null,
+      "role": "8 链 × 8 部位 × 8 段的布局表与相位，布局 blob 编解码。",
+      "exists": false,
+      "fileCount": 0,
+      "lines": 0,
+      "files": [],
+      "testCount": 0
+    },
+    {
+      "path": "firmware/main/scene_store.c",
+      "layer": "firmware",
+      "seam": null,
+      "role": "三个场景表、每部位 8 步，场景 blob 编解码。",
+      "exists": false,
+      "fileCount": 0,
+      "lines": 0,
+      "files": [],
+      "testCount": 0
+    },
+    {
+      "path": "firmware/main/state_blob.c",
+      "layer": "firmware",
+      "seam": null,
+      "role": "32 字节 State blob 编解码。解码失败整份拒绝。",
+      "exists": false,
+      "fileCount": 0,
+      "lines": 0,
+      "files": [],
+      "testCount": 0
+    },
+    {
+      "path": "firmware/main/save_scheduler.c",
+      "layer": "firmware",
+      "seam": null,
+      "role": "按 NVS 键的防抖纯逻辑（500ms / 0ms / 2s），只存 blob 指针不拷贝。",
+      "exists": false,
+      "fileCount": 0,
+      "lines": 0,
+      "files": [],
+      "testCount": 0
+    },
+    {
+      "path": "firmware/main/ble_link.c",
+      "layer": "firmware",
+      "seam": null,
+      "role": "NimBLE GATT server、广播、RX 喂分片、TX notify、多帧报告任务。",
+      "exists": false,
+      "fileCount": 0,
+      "lines": 0,
+      "files": [],
+      "testCount": 0
+    },
+    {
+      "path": "firmware/main/chunk_reasm.c",
+      "layer": "firmware",
+      "seam": "protocol",
+      "role": "BLE 分片重组状态机：1 字节 ctrl、240B 上限、1000ms 超时。",
+      "exists": false,
+      "fileCount": 0,
+      "lines": 0,
+      "files": [],
+      "testCount": 0
+    },
+    {
+      "path": "firmware/main/led_engine.c",
+      "layer": "firmware",
+      "seam": null,
+      "role": "共享状态唯一所有者、latest-wins 邮箱、渲染任务、布局与场景权威副本、64 个播放头。",
+      "exists": false,
+      "fileCount": 0,
+      "lines": 0,
+      "files": [],
+      "testCount": 0
+    },
+    {
+      "path": "firmware/main/led_strip_owner.c",
+      "layer": "firmware",
+      "seam": null,
+      "role": "灯带句柄唯一所有者；运行时切 GPIO；推送像素。",
+      "exists": false,
+      "fileCount": 0,
+      "lines": 0,
+      "files": [],
+      "testCount": 0
+    },
+    {
+      "path": "firmware/main/gamma.c",
+      "layer": "firmware",
+      "seam": null,
+      "role": "gamma 表、亮度乘算、色相丢失截断。",
+      "exists": false,
+      "fileCount": 0,
+      "lines": 0,
+      "files": [],
+      "testCount": 0
+    },
+    {
+      "path": "firmware/main/selftest.c",
+      "layer": "firmware",
+      "seam": null,
+      "role": "红 / 绿 / 蓝 / 白各 500ms 的自检状态机。",
+      "exists": false,
+      "fileCount": 0,
+      "lines": 0,
+      "files": [],
+      "testCount": 0
+    },
+    {
+      "path": "miniprogram/utils/protocol",
+      "layer": "miniprogram",
+      "seam": "protocol",
+      "role": "帧构造与解析、分片、命令构造器与解析器、常量与类型。",
+      "exists": false,
+      "fileCount": 0,
+      "lines": 0,
+      "files": [],
+      "testCount": 0
+    },
+    {
+      "path": "miniprogram/utils/ble",
+      "layer": "miniprogram",
+      "seam": "session",
+      "role": "扫描、连接、MTU 协商、串行写、ACK 等待、多帧收集、错误分诊、日志。",
+      "exists": false,
+      "fileCount": 0,
+      "lines": 0,
+      "files": [],
+      "testCount": 0
+    },
+    {
+      "path": "miniprogram/utils/control/session.ts",
+      "layer": "miniprogram",
+      "seam": "session",
+      "role": "页面唯一门面：连接、状态镜像、命令语义、节流。页面不直接碰传输层。",
+      "exists": false,
+      "fileCount": 0,
+      "lines": 0,
+      "files": [],
+      "testCount": 0
+    },
+    {
+      "path": "miniprogram/pages",
+      "layer": "miniprogram",
+      "seam": "page",
+      "role": "六个页面：home / me / discover / device / device-info / part。页面只做视图与事件绑定。",
+      "exists": false,
+      "fileCount": 0,
+      "lines": 0,
+      "files": [],
+      "testCount": 0
+    },
+    {
+      "path": "miniprogram/components",
+      "layer": "miniprogram",
+      "seam": "page",
+      "role": "自建导航栏与 tabBar（含状态栏高度与胶囊避让）。",
+      "exists": false,
+      "fileCount": 0,
+      "lines": 0,
+      "files": [],
+      "testCount": 0
+    },
+    {
+      "path": "scripts/map.mjs",
+      "layer": "tooling",
+      "seam": null,
+      "role": "扫描仓库生成 docs/map.generated.json：文件、文档、测试、迭代、健康检查。",
+      "exists": true,
+      "fileCount": 1,
+      "lines": 426,
+      "files": [
+        "scripts/map.mjs"
+      ],
+      "testCount": 0
+    },
+    {
+      "path": "panel",
+      "layer": "tooling",
+      "seam": null,
+      "role": "Vue 3 项目管理面板，只读 map.generated.json。",
+      "exists": true,
+      "fileCount": 13,
+      "lines": 2736,
+      "files": [
+        "panel/index.html",
+        "panel/package-lock.json",
+        "panel/package.json",
+        "panel/src/App.vue",
+        "panel/src/main.ts",
+        "panel/src/store.ts",
+        "panel/src/style.css",
+        "panel/src/views/Docs.vue",
+        "panel/src/views/Files.vue",
+        "panel/src/views/Iterations.vue",
+        "panel/src/views/Overview.vue",
+        "panel/src/views/Tests.vue",
+        "panel/vite.config.ts"
+      ],
+      "testCount": 0
+    }
+  ],
+  "docs": [
+    {
+      "path": "docs/acceptance.md",
+      "name": "acceptance.md",
+      "title": "验收",
+      "purpose": "验收矩阵。一张表，按需求行往下填，永不按版本复制第二份。",
+      "status": "生效",
+      "hasFrontmatter": true,
+      "lines": 56,
+      "bytes": 2222,
+      "hash": "ac90612a31a869b9",
+      "isAdr": false,
+      "isAgentDoc": false
+    },
+    {
+      "path": "docs/adr/0001-domain-model.md",
+      "name": "0001-domain-model.md",
+      "title": "0001 领域模型沿用 lumen v5",
+      "purpose": "ADR 0001 —— 领域模型沿用 lumen v5。",
+      "status": "生效",
+      "hasFrontmatter": true,
+      "lines": 38,
+      "bytes": 1392,
+      "hash": "99bd2e076c4f2637",
+      "isAdr": true,
+      "isAgentDoc": false
+    },
+    {
+      "path": "docs/adr/0002-single-source-docs.md",
+      "name": "0002-single-source-docs.md",
+      "title": "0002 文档文件名不带版本号，作废即删除",
+      "purpose": "ADR 0002 —— 文档文件名不带版本号，作废即删除。",
+      "status": "生效",
+      "hasFrontmatter": true,
+      "lines": 50,
+      "bytes": 2128,
+      "hash": "ac25c0ba6d2ecc35",
+      "isAdr": true,
+      "isAgentDoc": false
+    },
+    {
+      "path": "docs/adr/0003-five-seams.md",
+      "name": "0003-five-seams.md",
+      "title": "0003 只测五个接缝，测行为不测结构",
+      "purpose": "ADR 0003 —— 只测五个接缝，测行为不测结构。",
+      "status": "生效",
+      "hasFrontmatter": true,
+      "lines": 54,
+      "bytes": 2113,
+      "hash": "320a242eb77650c4",
+      "isAdr": true,
+      "isAgentDoc": false
+    },
+    {
+      "path": "docs/adr/0004-no-backend-v1.md",
+      "name": "0004-no-backend-v1.md",
+      "title": "0004 v1 不包含后端",
+      "purpose": "ADR 0004 —— v1 不包含后端。",
+      "status": "生效",
+      "hasFrontmatter": true,
+      "lines": 33,
+      "bytes": 1047,
+      "hash": "04c48e42e9fdef21",
+      "isAdr": true,
+      "isAgentDoc": false
+    },
+    {
+      "path": "docs/agents/domain.md",
+      "name": "domain.md",
+      "title": "Domain Docs",
+      "purpose": "领域文档的消费规则：探索代码前先读 GLOSSARY.md 与 docs/adr/。",
+      "status": "生效",
+      "hasFrontmatter": true,
+      "lines": 57,
+      "bytes": 2207,
+      "hash": "8f6cf8669c581d2f",
+      "isAdr": false,
+      "isAgentDoc": true
+    },
+    {
+      "path": "docs/agents/issue-tracker.md",
+      "name": "issue-tracker.md",
+      "title": "Issue tracker: GitHub",
+      "purpose": "issue 在哪、怎么读写：GitHub Issues + gh CLI 的命令约定。",
+      "status": "生效",
+      "hasFrontmatter": true,
+      "lines": 56,
+      "bytes": 5237,
+      "hash": "0f8f6a8f0a60cbe6",
+      "isAdr": false,
+      "isAgentDoc": true
+    },
+    {
+      "path": "docs/protocol.md",
+      "name": "protocol.md",
+      "title": "协议",
+      "purpose": "协议契约。字节布局的唯一权威，文件名永不带版本号。",
+      "status": "草案",
+      "hasFrontmatter": true,
+      "lines": 143,
+      "bytes": 5643,
+      "hash": "3353c00c6aa0ec70",
+      "isAdr": false,
+      "isAgentDoc": false
+    },
+    {
+      "path": "docs/status.md",
+      "name": "status.md",
+      "title": "状态",
+      "purpose": "当前状态。唯一允许写「现在在哪 / 下一步」的地方，原地重写，不追加历史。",
+      "status": "生效",
+      "hasFrontmatter": true,
+      "lines": 34,
+      "bytes": 1152,
+      "hash": "aa7456f6165bcfd1",
+      "isAdr": false,
+      "isAgentDoc": false
+    },
+    {
+      "path": "docs/testing.md",
+      "name": "testing.md",
+      "title": "测试",
+      "purpose": "测试分层、五个接缝、三条禁令。定义「测什么」与「在哪测」。",
+      "status": "生效",
+      "hasFrontmatter": true,
+      "lines": 44,
+      "bytes": 2397,
+      "hash": "d2ec6da7e3b376e6",
+      "isAdr": false,
+      "isAgentDoc": false
+    }
+  ],
+  "docStats": {
+    "count": 10,
+    "lines": 565,
+    "withoutFrontmatter": 0,
+    "adrCount": 4
+  },
+  "tests": [],
+  "testStats": {
+    "files": 0,
+    "cases": 0,
+    "asserts": 0,
+    "lines": 0,
+    "bySeam": {
+      "protocol": 0,
+      "reducer": 0,
+      "render": 0,
+      "session": 0,
+      "page": 0
+    },
+    "unseamed": 0
+  },
+  "files": {
+    "total": 31,
+    "code": 21,
+    "docs": 10,
+    "tests": 0,
+    "binary": 0,
+    "lines": 5139,
+    "byExt": {
+      ".gitignore": 1,
+      ".md": 13,
+      ".json": 5,
+      ".html": 1,
+      ".vue": 6,
+      ".ts": 3,
+      ".css": 1,
+      ".mjs": 1
+    },
+    "byDir": {
+      ".": 5,
+      "docs": 6,
+      "docs/adr": 4,
+      "docs/agents": 2,
+      "panel": 4,
+      "panel/src": 4,
+      "panel/src/views": 5,
+      "scripts": 1
+    },
+    "list": [
+      {
+        "path": ".gitignore",
+        "dir": ".",
+        "ext": ".gitignore",
+        "size": 83,
+        "lines": null,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "AGENTS.md",
+        "dir": ".",
+        "ext": ".md",
+        "size": 4086,
+        "lines": 94,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "docs/acceptance.md",
+        "dir": "docs",
+        "ext": ".md",
+        "size": 2222,
+        "lines": 55,
+        "binary": false,
+        "isDoc": true,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "docs/adr/0001-domain-model.md",
+        "dir": "docs/adr",
+        "ext": ".md",
+        "size": 1392,
+        "lines": 37,
+        "binary": false,
+        "isDoc": true,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "docs/adr/0002-single-source-docs.md",
+        "dir": "docs/adr",
+        "ext": ".md",
+        "size": 2128,
+        "lines": 49,
+        "binary": false,
+        "isDoc": true,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "docs/adr/0003-five-seams.md",
+        "dir": "docs/adr",
+        "ext": ".md",
+        "size": 2113,
+        "lines": 53,
+        "binary": false,
+        "isDoc": true,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "docs/adr/0004-no-backend-v1.md",
+        "dir": "docs/adr",
+        "ext": ".md",
+        "size": 1047,
+        "lines": 32,
+        "binary": false,
+        "isDoc": true,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "docs/agents/domain.md",
+        "dir": "docs/agents",
+        "ext": ".md",
+        "size": 2207,
+        "lines": 56,
+        "binary": false,
+        "isDoc": true,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "docs/agents/issue-tracker.md",
+        "dir": "docs/agents",
+        "ext": ".md",
+        "size": 5237,
+        "lines": 55,
+        "binary": false,
+        "isDoc": true,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "docs/map.generated.json",
+        "dir": "docs",
+        "ext": ".json",
+        "size": 25460,
+        "lines": 1040,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "docs/map.json",
+        "dir": "docs",
+        "ext": ".json",
+        "size": 6070,
+        "lines": 179,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "docs/protocol.md",
+        "dir": "docs",
+        "ext": ".md",
+        "size": 5643,
+        "lines": 142,
+        "binary": false,
+        "isDoc": true,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "docs/status.md",
+        "dir": "docs",
+        "ext": ".md",
+        "size": 1152,
+        "lines": 33,
+        "binary": false,
+        "isDoc": true,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "docs/testing.md",
+        "dir": "docs",
+        "ext": ".md",
+        "size": 2397,
+        "lines": 43,
+        "binary": false,
+        "isDoc": true,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "GLOSSARY.md",
+        "dir": ".",
+        "ext": ".md",
+        "size": 2787,
+        "lines": 47,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "package.json",
+        "dir": ".",
+        "ext": ".json",
+        "size": 415,
+        "lines": 14,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "panel/index.html",
+        "dir": "panel",
+        "ext": ".html",
+        "size": 361,
+        "lines": null,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "panel/package-lock.json",
+        "dir": "panel",
+        "ext": ".json",
+        "size": 44289,
+        "lines": 1376,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "panel/package.json",
+        "dir": "panel",
+        "ext": ".json",
+        "size": 402,
+        "lines": 19,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "panel/src/App.vue",
+        "dir": "panel/src",
+        "ext": ".vue",
+        "size": 6033,
+        "lines": 161,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "panel/src/main.ts",
+        "dir": "panel/src",
+        "ext": ".ts",
+        "size": 115,
+        "lines": 5,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "panel/src/store.ts",
+        "dir": "panel/src",
+        "ext": ".ts",
+        "size": 4108,
+        "lines": 164,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "panel/src/style.css",
+        "dir": "panel/src",
+        "ext": ".css",
+        "size": 2952,
+        "lines": 105,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "panel/src/views/Docs.vue",
+        "dir": "panel/src/views",
+        "ext": ".vue",
+        "size": 4797,
+        "lines": 114,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "panel/src/views/Files.vue",
+        "dir": "panel/src/views",
+        "ext": ".vue",
+        "size": 8361,
+        "lines": 184,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "panel/src/views/Iterations.vue",
+        "dir": "panel/src/views",
+        "ext": ".vue",
+        "size": 6369,
+        "lines": 160,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "panel/src/views/Overview.vue",
+        "dir": "panel/src/views",
+        "ext": ".vue",
+        "size": 10450,
+        "lines": 241,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "panel/src/views/Tests.vue",
+        "dir": "panel/src/views",
+        "ext": ".vue",
+        "size": 6111,
+        "lines": 166,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "panel/vite.config.ts",
+        "dir": "panel",
+        "ext": ".ts",
+        "size": 1421,
+        "lines": 41,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "README.md",
+        "dir": ".",
+        "ext": ".md",
+        "size": 1787,
+        "lines": 48,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null
+      },
+      {
+        "path": "scripts/map.mjs",
+        "dir": "scripts",
+        "ext": ".mjs",
+        "size": 15448,
+        "lines": 426,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": "scripts/map.mjs"
+      }
+    ]
+  },
+  "iterations": [
+    {
+      "index": 1,
+      "id": "1137773",
+      "title": "初始提交",
+      "date": "2026-11-07T19:55:56+08:00",
+      "commits": 1,
+      "pr": null,
+      "branch": null,
+      "sha": "11377736d5b368077ebdd35ef8fdf977aef287b3",
+      "body": "",
+      "files": []
+    }
+  ],
+  "iterationNote": "尚无合并提交，按单次提交计",
+  "acceptance": [
+    {
+      "id": "H1",
+      "area": "硬件基线",
+      "title": "64 颗 WS2812B 点亮，通道顺序 GRB",
+      "how": "自检四色",
+      "status": "☐",
+      "evidence": "—"
+    },
+    {
+      "id": "H2",
+      "area": "硬件基线",
+      "title": "灯带独立 5V 供电、只与开发板共地",
+      "how": "万用表 + 观察",
+      "status": "☐",
+      "evidence": "—"
+    },
+    {
+      "id": "H3",
+      "area": "硬件基线",
+      "title": "74AHCT125 电平转换在 BOM 中",
+      "how": "查 BOM",
+      "status": "☐",
+      "evidence": "—"
+    },
+    {
+      "id": "H4",
+      "area": "硬件基线",
+      "title": "8 链 × 100 颗，满亮度电流不越电源预算",
+      "how": "电流表",
+      "status": "☐",
+      "evidence": "—"
+    },
+    {
+      "id": "P1",
+      "area": "协议",
+      "title": "113 条向量两端逐字节一致",
+      "how": "`npm test`",
+      "status": "☐",
+      "evidence": "—"
+    },
+    {
+      "id": "P2",
+      "area": "协议",
+      "title": "分片重组 1000ms 超时与乱序丢弃",
+      "how": "单测",
+      "status": "☐",
+      "evidence": "—"
+    },
+    {
+      "id": "P3",
+      "area": "协议",
+      "title": "退役码回 `0x02`",
+      "how": "向量",
+      "status": "☐",
+      "evidence": "—"
+    },
+    {
+      "id": "P4",
+      "area": "协议",
+      "title": "校验顺序：命令字 → 长度 → 取值",
+      "how": "单测",
+      "status": "☐",
+      "evidence": "—"
+    },
+    {
+      "id": "F1",
+      "area": "功能",
+      "title": "部位划分：一颗灯珠只属一个部位",
+      "how": "单测 + 真机",
+      "status": "☐",
+      "evidence": "—"
+    },
+    {
+      "id": "F2",
+      "area": "功能",
+      "title": "未覆盖灯珠恒黑",
+      "how": "真机肉眼",
+      "status": "☐",
+      "evidence": "—"
+    },
+    {
+      "id": "F3",
+      "area": "功能",
+      "title": "三个场景独立、断电恢复",
+      "how": "真机断电重启",
+      "status": "☐",
+      "evidence": "—"
+    },
+    {
+      "id": "F4",
+      "area": "功能",
+      "title": "每部位独立播放头，30 分钟无相位漂移",
+      "how": "串口 `ph:` 日志",
+      "status": "☐",
+      "evidence": "—"
+    },
+    {
+      "id": "F5",
+      "area": "功能",
+      "title": "场景切换硬切，播放头重置到第 1 步",
+      "how": "真机",
+      "status": "☐",
+      "evidence": "—"
+    },
+    {
+      "id": "F6",
+      "area": "功能",
+      "title": "两层叠加按 `level` 合成",
+      "how": "渲染快照",
+      "status": "☐",
+      "evidence": "—"
+    },
+    {
+      "id": "F7",
+      "area": "功能",
+      "title": "呼吸/彩虹/流星/爆闪/心跳/随机闪烁参数边界",
+      "how": "单测",
+      "status": "☐",
+      "evidence": "—"
+    },
+    {
+      "id": "S1",
+      "area": "稳定性",
+      "title": "800 颗 / 64 播放头帧率 < 50ms",
+      "how": "`--framerate` 压测",
+      "status": "☐",
+      "evidence": "—"
+    },
+    {
+      "id": "S2",
+      "area": "稳定性",
+      "title": "RMT × BLE 共存无偶发闪灯",
+      "how": "400s 压力 + 录像",
+      "status": "☐",
+      "evidence": "—"
+    },
+    {
+      "id": "S3",
+      "area": "稳定性",
+      "title": "NVS 写失败上报 `Event 0x81`",
+      "how": "注入失败",
+      "status": "☐",
+      "evidence": "—"
+    },
+    {
+      "id": "U1",
+      "area": "体验",
+      "title": "小程序切后台回前台静默回连",
+      "how": "真机",
+      "status": "☐",
+      "evidence": "—"
+    },
+    {
+      "id": "U2",
+      "area": "体验",
+      "title": "改灯珠数量无可见黑屏",
+      "how": "真机录像",
+      "status": "☐",
+      "evidence": "—"
+    },
+    {
+      "id": "U3",
+      "area": "体验",
+      "title": "iOS 后台扫描可用",
+      "how": "iPad",
+      "status": "☐",
+      "evidence": "—"
+    }
+  ],
+  "acceptanceStats": {
+    "total": 21,
+    "done": 0,
+    "partial": 0,
+    "blocked": 0,
+    "todo": 21
+  },
+  "health": {
+    "issues": [
+      {
+        "level": "info",
+        "kind": "no-code",
+        "path": null,
+        "message": "还没有产品代码"
+      }
+    ],
+    "errors": 0,
+    "warnings": 0,
+    "ok": true
+  }
+}
