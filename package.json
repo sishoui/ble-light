@@ -14,5 +14,8 @@
     "panel": "npm --prefix panel run dev",
     "panel:build": "npm --prefix panel run build",
     "setup": "npm --prefix panel install"
+  },
+  "dependencies": {
+    "marked": "^18.1.3"
   }
 }

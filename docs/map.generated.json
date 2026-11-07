@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T13:53:32.147Z",
+  "generatedAt": "2026-11-07T14:02:00.604Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "0e1a6c1",
-    "subject": "feat: 测试配方定稿 + 协议单一真相",
-    "date": "2026-11-07T21:34:08+08:00",
+    "sha": "4c932f7",
+    "subject": "feat(panel): 文件职责描述 + 点击查看内容",
+    "date": "2026-11-07T21:53:58+08:00",
     "branch": "main"
   },
   "layers": [
@@ -337,6 +337,19 @@
       "testCount": 0
     },
     {
+      "path": "scripts/markdown.mjs",
+      "layer": "tooling",
+      "seam": null,
+      "role": "Markdown 预览：剥 frontmatter、丢原始 HTML、链接协议白名单、标题生成锚点。",
+      "exists": true,
+      "fileCount": 1,
+      "lines": 133,
+      "files": [
+        "scripts/markdown.mjs"
+      ],
+      "testCount": 0
+    },
+    {
       "path": "docs/protocol.json",
       "layer": "docs",
       "seam": "protocol",
@@ -356,7 +369,7 @@
       "role": "Vue 3 项目管理面板，只读 map.generated.json。",
       "exists": true,
       "fileCount": 14,
-      "lines": 3028,
+      "lines": 3183,
       "files": [
         "panel/index.html",
         "panel/package-lock.json",
@@ -544,43 +557,53 @@
       "asserts": 36,
       "seam": "tooling",
       "violations": []
+    },
+    {
+      "path": "scripts/markdown.test.mjs",
+      "name": "markdown.test.mjs",
+      "description": "scripts/markdown.mjs 的测试。 为什么必须测：渲染结果直接进 v-html，是面板唯一的注入点。 原始 HTML 必须被丢掉，链接协议必须被白名单拦，frontmatter 不能露出来。",
+      "lines": 176,
+      "cases": 19,
+      "asserts": 54,
+      "seam": "tooling",
+      "violations": []
     }
   ],
   "testStats": {
-    "files": 3,
-    "cases": 40,
-    "asserts": 78,
-    "lines": 478,
+    "files": 4,
+    "cases": 59,
+    "asserts": 132,
+    "lines": 654,
     "bySeam": {
       "protocol": 0,
       "reducer": 0,
       "render": 0,
       "session": 0,
       "page": 0,
-      "tooling": 3
+      "tooling": 4
     },
     "unseamed": 0
   },
   "files": {
-    "total": 42,
-    "code": 29,
+    "total": 45,
+    "code": 31,
     "docs": 10,
-    "tests": 3,
+    "tests": 4,
     "binary": 0,
-    "lines": 7891,
+    "lines": 8452,
     "byExt": {
       ".gitignore": 1,
       ".md": 13,
-      ".json": 7,
+      ".json": 8,
       ".h": 1,
       ".ts": 4,
       ".html": 1,
       ".vue": 7,
       ".css": 1,
-      ".mjs": 7
+      ".mjs": 9
     },
     "byDir": {
-      ".": 5,
+      ".": 6,
       "docs": 8,
       "docs/adr": 4,
       "docs/agents": 2,
@@ -589,7 +612,7 @@
       "panel": 4,
       "panel/src": 4,
       "panel/src/views": 6,
-      "scripts": 7
+      "scripts": 9
     },
     "list": [
       {
@@ -714,8 +737,8 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 39450,
-        "lines": 1378,
+        "size": 41784,
+        "lines": 1440,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -727,8 +750,8 @@
         "name": "map.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 7170,
-        "lines": 212,
+        "size": 7382,
+        "lines": 218,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -840,12 +863,25 @@
         "description": "GENERATED — DO NOT EDIT. Source: docs/protocol.json, generator: scripts/gen-protocol.mjs"
       },
       {
+        "path": "package-lock.json",
+        "name": "package-lock.json",
+        "dir": ".",
+        "ext": ".json",
+        "size": 635,
+        "lines": 27,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": "JSON 数据文件"
+      },
+      {
         "path": "package.json",
         "name": "package.json",
         "dir": ".",
         "ext": ".json",
-        "size": 618,
-        "lines": 18,
+        "size": 667,
+        "lines": 21,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -974,13 +1010,13 @@
         "name": "FileViewer.vue",
         "dir": "panel/src/views",
         "ext": ".vue",
-        "size": 5554,
-        "lines": 165,
+        "size": 10987,
+        "lines": 320,
         "binary": false,
         "isDoc": false,
         "isTest": false,
         "module": null,
-        "description": "文件查看器：模态框展示文件内容，带行号、语法高亮、自动换行、复制与 Esc 关闭。"
+        "description": "文件查看器：模态框展示文件内容。 Markdown 默认渲染预览，可切回原文；其他文件走行号 + 语法高亮。"
       },
       {
         "path": "panel/src/views/Iterations.vue",
@@ -1137,19 +1173,45 @@
         "isTest": true,
         "module": "scripts/map.test.mjs",
         "description": "scripts/map.mjs 的测试。 为什么必须测：面板上每个数字、每条健康检查结论都由它生成。它悄悄错了， 整个面板和所有门禁都是假的——而且不会有任何东西报错。 用法：node --test scripts/map.test.mjs"
+      },
+      {
+        "path": "scripts/markdown.mjs",
+        "name": "markdown.mjs",
+        "dir": "scripts",
+        "ext": ".mjs",
+        "size": 4263,
+        "lines": 133,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": "scripts/markdown.mjs",
+        "description": "Markdown → HTML，供面板预览文档。 三个必须做的事： 1. frontmatter 不显示——它是元数据，不是正文 2. 原始 HTML 一律丢掉——文档来自仓库，但 v-html 是注入点，不能赌 3. 链接协议白名单——javascript: 之类必须拦掉 输出是纯函数结果，不碰 DOM，方便直接测。"
+      },
+      {
+        "path": "scripts/markdown.test.mjs",
+        "name": "markdown.test.mjs",
+        "dir": "scripts",
+        "ext": ".mjs",
+        "size": 6593,
+        "lines": 175,
+        "binary": false,
+        "isDoc": false,
+        "isTest": true,
+        "module": null,
+        "description": "scripts/markdown.mjs 的测试。 为什么必须测：渲染结果直接进 v-html，是面板唯一的注入点。 原始 HTML 必须被丢掉，链接协议必须被白名单拦，frontmatter 不能露出来。"
       }
     ]
   },
   "iterations": [
     {
       "index": 1,
-      "id": "0e1a6c1",
+      "id": "4c932f7",
       "title": "初始提交",
-      "date": "2026-11-07T21:34:08+08:00",
-      "commits": 3,
+      "date": "2026-11-07T21:53:58+08:00",
+      "commits": 4,
       "pr": null,
       "branch": null,
-      "sha": "0e1a6c16f6dfa64eb9b36c7646cf707a7079be0b",
+      "sha": "4c932f7f773c33142a82f73b2d0feafefdab7121",
       "body": "",
       "files": []
     }
