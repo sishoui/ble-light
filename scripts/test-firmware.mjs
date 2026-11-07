@@ -28,6 +28,8 @@ const HOST_SOURCES = [
   "layout_store.c",
   "scene_store.c",
   "save_scheduler.c",
+  "device_core.c",
+  "gamma.c",
   "effects.c",
   "led_render.c",
   "scene_compose.c",

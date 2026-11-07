@@ -3,10 +3,14 @@
 
 void lumen_register_protocol(void);
 void lumen_register_command(void);
+void lumen_register_storage(void);
+void lumen_register_device_core(void);
 
 int main(void) {
     lumen_register_protocol();
     lumen_register_command();
+    lumen_register_storage();
+    lumen_register_device_core();
     int failed = lumen_test_run_all();
     return failed == 0 ? 0 : 1;
 }

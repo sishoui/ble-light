@@ -222,6 +222,12 @@
       "layer": "tooling",
       "seam": null,
       "role": "Vue 3 项目管理面板，只读 map.generated.json。"
+    },
+    {
+      "path": "firmware/main/device_core.c",
+      "layer": "firmware",
+      "seam": "reducer",
+      "role": "设备内核：状态机 + 意图收集。把 reducer 的输出翻成副作用清单。"
     }
   ],
   "rules": {
@@ -261,6 +267,25 @@
     "toolingTestPaths": [
       "scripts/"
     ],
-    "requireFrontmatter": true
+    "requireFrontmatter": true,
+    "testSeamPaths": {
+      "protocol": [
+        "firmware/test/test_protocol.c"
+      ],
+      "reducer": [
+        "firmware/test/test_command.c",
+        "firmware/test/test_device_core.c",
+        "firmware/test/test_storage.c"
+      ],
+      "render": [
+        "firmware/test/test_render.c"
+      ],
+      "session": [
+        "miniprogram/tests/session/"
+      ],
+      "page": [
+        "miniprogram/tests/page/"
+      ]
+    }
   }
 }
