@@ -9,7 +9,7 @@
     "gen:check": "node scripts/gen-protocol.mjs --check",
     "map": "node scripts/map.mjs",
     "map:check": "node scripts/map.mjs --strict",
-    "test": "node --test scripts/*.test.mjs",
+    "test": "node --test --test-concurrency=1 scripts/*.test.mjs",
     "check": "npm run gen:check && npm run map:check",
     "sync": "npm run gen && npm run map",
     "panel": "npm --prefix panel run dev",

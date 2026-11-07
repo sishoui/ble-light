@@ -128,6 +128,12 @@
       "role": "六个页面：home / me / discover / device / device-info / part。页面只做视图与事件绑定。"
     },
     {
+      "path": "miniprogram/app.wxss",
+      "layer": "miniprogram",
+      "seam": null,
+      "role": "设计变量的可执行副本：颜色、圆角、间距、动效与字号表。权威定义在 docs/design.md。"
+    },
+    {
       "path": "miniprogram/components",
       "layer": "miniprogram",
       "seam": "page",
@@ -196,10 +202,11 @@
       "docs/status.md",
       "docs/testing.md",
       "docs/acceptance.md",
+      "docs/design.md",
       "docs/agents/issue-tracker.md",
       "docs/agents/domain.md"
     ],
-    "docsAllowedPrefixes": ["docs/adr/"],
+    "docsAllowedPrefixes": ["docs/adr/", "docs/design/"],
     "bannedDocPatterns": [
       "handoff",
       "pending-tasks",

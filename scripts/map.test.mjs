@@ -155,17 +155,87 @@ test("健康检查：status.md 不超过 60 行", () => {
   assert.deepEqual(tooLong, []);
 });
 
+/* ---------------- 样式 token 门禁 ---------------- */
+
+test("页面 wxss 写死 hex 会被抓到", () => {
+  const dir = join(REPO, "miniprogram", "pages", "_probe");
+  try {
+    mkdirSync(dir, { recursive: true });
+    writeFileSync(join(dir, "probe.wxss"), ".card { background: #1c1c1e; }\n", "utf8");
+    const map = runMap();
+    const hit = map.health.issues.filter((i) => i.kind === "style-hardcoded-color");
+    assert.equal(hit.length, 1, `期望 1 条，实际 ${hit.length}`);
+    assert.match(hit[0].message, /#1c1c1e/);
+    assert.equal(hit[0].level, "error");
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+    runMap();
+  }
+});
+
+test("页面 wxss 写死 rgba 会被抓到", () => {
+  const dir = join(REPO, "miniprogram", "pages", "_probe");
+  try {
+    mkdirSync(dir, { recursive: true });
+    writeFileSync(join(dir, "probe.wxss"), ".t { color: rgba(255,255,255,0.9); }\n", "utf8");
+    const map = runMap();
+    const hit = map.health.issues.filter((i) => i.kind === "style-hardcoded-color");
+    assert.equal(hit.length, 1, `期望 1 条，实际 ${hit.length}`);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+    runMap();
+  }
+});
+
+test("用设计变量的 wxss 不被误报", () => {
+  const dir = join(REPO, "miniprogram", "pages", "_probe");
+  try {
+    mkdirSync(dir, { recursive: true });
+    writeFileSync(
+      join(dir, "probe.wxss"),
+      ".card { background: var(--surface-1); color: var(--label); }\n/* #fff 在注释里不算 */\n",
+      "utf8",
+    );
+    const map = runMap();
+    const hit = map.health.issues.filter((i) => i.kind === "style-hardcoded-color");
+    assert.deepEqual(hit.map((i) => i.path), []);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+    runMap();
+  }
+});
+
+test("app.wxss 本身允许定义颜色", () => {
+  const map = runMap();
+  const hit = map.health.issues.filter(
+    (i) => i.kind === "style-hardcoded-color" && i.path === "miniprogram/app.wxss",
+  );
+  assert.deepEqual(hit, [], "app.wxss 是变量的定义处，不该被检");
+});
+
 /* ---------------- 面板新鲜度 ---------------- */
 
+/**
+ * strict 比对的是真实产物（docs/map.generated.json）。
+ * 同步时必须与 strict 用同样参数（都含任务图），否则两边产物必然不同。
+ */
+function syncRealOutput() {
+  execFileSync(
+    process.execPath,
+    [join(HERE, "map.mjs")],
+    { cwd: REPO, encoding: "utf8", stdio: "pipe" },
+  );
+}
+
 test("--strict 在一致时退出码 0", () => {
-  runMap();
+  syncRealOutput();
   assert.doesNotThrow(() => {
     runMapOnly(["--strict"]);
   });
 });
 
 test("--strict 在文件改动后退 1，并指出是哪个文件", () => {
-  runMap();
+  syncRealOutput();
   const probe = join(REPO, "README.md");
   const original = readFileSync(probe, "utf8");
   try {
@@ -183,12 +253,12 @@ test("--strict 在文件改动后退 1，并指出是哪个文件", () => {
     assert.match(output, /README\.md/, "应当指出是 README.md 变了");
   } finally {
     writeFileSync(probe, original, "utf8");
-    runMap();
+    syncRealOutput();
   }
 });
 
 test("--strict 不会因为面板产物自身变化而误报", () => {
-  runMap();
+  syncRealOutput();
   // 连跑两次：第二次必须仍通过，证明 generatedAt 与产物自身条目未参与比对
   assert.doesNotThrow(() => {
     runMapOnly(["--strict"]);

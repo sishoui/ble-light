@@ -20,10 +20,43 @@
 | 当前进度 / 下一步 / 禁做 | `docs/status.md` |
 | 测试分层、接缝、禁令 | `docs/testing.md` |
 | 验收项与证据 | `docs/acceptance.md` |
+| 颜色、字号、间距、动效、文案 | `docs/design.md` |
+| 已确认的设计稿 | `docs/design/` |
 | 怎么跑、怎么接线 | `README.md` |
 | 每个模块干什么 | `docs/map.json`（面板读它） |
 
 **文档之间只许指针，不许复述。** 同一事实出现在两处 = 缺陷。
+
+## 设计流程（动 UI 之前必做）
+
+**触发条件**：新增页面、改页面布局结构、改交互流程、新增控件类型。
+**不触发**：改文案、改颜色值、修不影响结构的 bug。
+
+### 三步
+
+1. **在 Pixso 里出设计稿**
+   - 只画**结构与关键态**：区块划分与层级、空态 / 加载 / 错误 / 选中四种态
+   - 颜色标注用 `docs/design.md` 的变量名，**不标 hex**
+   - 不画像素级细节（rpx 换算与字体渲染差异会让设计稿好看真机不对）
+
+2. **等确认**
+   - 交付时说明：Pixso 节点 id、覆盖了哪些态、哪些地方偏离了 `docs/design.md` 及原因
+   - **没听到「确认」两个字就不许写页面代码。** 不许「先写着，反正是草稿」
+
+3. **确认后存档**
+   - 截图 + 节点记录落进 `docs/design/<页面>-<用途>.md`，格式见 `docs/design/README.md`
+   - 同目录放同名 png
+   - 设计变更时**新增**一份带序号的记录，不覆盖旧的
+
+### 为什么存档
+
+Pixso 是本地桌面服务（`127.0.0.1:3667`），关掉 Pixso、换机器、重启就读不到。
+**仓库是唯一可追溯的地方**，所以确认过的稿必须有一份在 `docs/design/`。
+
+### 视觉的唯一权威是 `docs/design.md`
+
+页面样式**必须**引用它定义的 CSS 变量，禁止 hex 与字号硬编码。
+偏差要写进记录，不许默默偏离。
 
 ## 硬规则
 
@@ -55,6 +88,7 @@
 - 固件单向依赖：`ble_link → command → led_engine → led_render`，不许反向
 - reducer 是纯函数，不碰 NVS / BLE / 硬件；副作用以 `intents` 返回
 - 页面不直接碰传输层，只走 `session`
+- **样式不写 hex、不写字号**：一律用 `docs/design.md` 定义的变量与字号表
 
 ### 流程
 
@@ -83,6 +117,7 @@ npm run panel     # http://localhost:5180
 2. 跑 `npm run test` 和 `npm run check`，全绿
 3. 提交 `docs/map.generated.json`
 4. 如果动了 issue 状态（关闭、标记阻塞解除），再跑一次 `npm run map` 让任务图跟上
+5. **如果动了 UI**：设计稿已确认并存进 `docs/design/`，否则回去补
 
 `npm run check` 会拦住忘记同步：面板数据落后时它退 1，并指出**具体是哪个文件变了**，例如
 `面板数据落后：改动 scripts/markdown.mjs。跑 npm run sync`。
@@ -106,6 +141,7 @@ npm run panel     # http://localhost:5180
 | `seam-untested` | 某个接缝没有任何测试文件。**有产品代码后升为 error** |
 | `generated-stale` | 生成物与 `protocol.json` 不一致 |
 | `panel-stale` | 面板数据落后于仓库，会指出具体变动的文件 |
+| `style-hardcoded-color` | 页面样式中写死 hex 或 rgba，必须走设计变量 |
 | `test-reads-source` | 测试读源码做断言 |
 | `test-asserts-call` | 测试断言方法被调用 |
 | `test-unseamed` | 测试不属于任何接缝 |

@@ -498,6 +498,8 @@ function checkHealth(config, docs, tests, files) {
     }
   }
 
+  issues.push(...checkStyleTokens(files));
+
   const dupes = new Map();
   for (const d of docs) {
     const key = d.title.toLowerCase();
@@ -507,6 +509,48 @@ function checkHealth(config, docs, tests, files) {
 
   if (productCode.length === 0) {
     issues.push({ level: "info", kind: "no-code", path: null, message: "还没有产品代码，接缝门禁暂未启用" });
+  }
+
+  return issues;
+}
+
+/** 页面样式不许写死颜色与字号：必须用 docs/design.md 定义的变量。 */
+function checkStyleTokens(files) {
+  const issues = [];
+  const styles = files.filter(
+    (f) => f.ext === ".wxss" && f.path.startsWith("miniprogram/") && f.path !== "miniprogram/app.wxss",
+  );
+
+  for (const f of styles) {
+    let text;
+    try {
+      text = readFileSync(join(ROOT, f.path), "utf8");
+    } catch {
+      continue;
+    }
+    // 去掉注释再检查，避免注释里的示例误报
+    const code = text.replace(/\/\*[\s\S]*?\*\//g, "");
+
+    const hex = code.match(/#[0-9a-fA-F]{3,8}\b/g);
+    if (hex) {
+      const uniq = [...new Set(hex)].slice(0, 3);
+      issues.push({
+        level: "error",
+        kind: "style-hardcoded-color",
+        path: f.path,
+        message: `写死了颜色 ${uniq.join(" ")}，改用 docs/design.md 的变量`,
+      });
+    }
+
+    const rgb = code.match(/\brgba?\s*\(/g);
+    if (rgb) {
+      issues.push({
+        level: "error",
+        kind: "style-hardcoded-color",
+        path: f.path,
+        message: "写死了 rgba() 颜色，改用变量",
+      });
+    }
   }
 
   return issues;
