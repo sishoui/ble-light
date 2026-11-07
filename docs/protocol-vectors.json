@@ -2,7 +2,7 @@
   "generatedFrom": "docs/protocol.json",
   "generator": "scripts/gen-protocol.mjs",
   "protocolVersion": 1,
-  "count": 34,
+  "count": 57,
   "vectors": [
     {
       "kind": "crc",
@@ -203,6 +203,699 @@
       "payloadBytes": 1,
       "expect_total_bytes": 9,
       "expect_hex": "a6 01 29 00 01 00 01 9d 57"
+    },
+    {
+      "kind": "fields",
+      "name": "fields_SetPower",
+      "command": "SetPower",
+      "payload_bytes": 1,
+      "expect_payload_hex": "01",
+      "expect_fields": [
+        {
+          "name": "power",
+          "offset": 0,
+          "bytes": 1,
+          "hex": "01"
+        }
+      ]
+    },
+    {
+      "kind": "fields",
+      "name": "fields_SetBrightness",
+      "command": "SetBrightness",
+      "payload_bytes": 1,
+      "expect_payload_hex": "05",
+      "expect_fields": [
+        {
+          "name": "brightness",
+          "offset": 0,
+          "bytes": 1,
+          "hex": "05"
+        }
+      ]
+    },
+    {
+      "kind": "fields",
+      "name": "fields_SetLedCount",
+      "command": "SetLedCount",
+      "payload_bytes": 3,
+      "expect_payload_hex": "05 64 00",
+      "expect_fields": [
+        {
+          "name": "strip_id",
+          "offset": 0,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "count",
+          "offset": 1,
+          "bytes": 2,
+          "hex": "64 00"
+        }
+      ]
+    },
+    {
+      "kind": "fields",
+      "name": "fields_SetStripPower",
+      "command": "SetStripPower",
+      "payload_bytes": 2,
+      "expect_payload_hex": "05 01",
+      "expect_fields": [
+        {
+          "name": "strip_id",
+          "offset": 0,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "on",
+          "offset": 1,
+          "bytes": 1,
+          "hex": "01"
+        }
+      ]
+    },
+    {
+      "kind": "fields",
+      "name": "fields_LayoutWrite",
+      "command": "LayoutWrite",
+      "payload_bytes": 2,
+      "expect_payload_hex": "05 05",
+      "expect_fields": [
+        {
+          "name": "strip_id",
+          "offset": 0,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "part_count",
+          "offset": 1,
+          "bytes": 1,
+          "hex": "05"
+        }
+      ]
+    },
+    {
+      "kind": "fields",
+      "name": "fields_LayoutPart",
+      "command": "LayoutPart",
+      "payload_bytes": 29,
+      "expect_payload_hex": "05 05 02 61 62 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 05 01",
+      "expect_fields": [
+        {
+          "name": "strip_id",
+          "offset": 0,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "part_id",
+          "offset": 1,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "name_len",
+          "offset": 2,
+          "bytes": 1,
+          "hex": "02"
+        },
+        {
+          "name": "name",
+          "offset": 3,
+          "bytes": 24,
+          "hex": "61 62 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"
+        },
+        {
+          "name": "seg_count",
+          "offset": 27,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "phase",
+          "offset": 28,
+          "bytes": 1,
+          "hex": "01"
+        }
+      ]
+    },
+    {
+      "kind": "fields",
+      "name": "fields_LayoutSeg",
+      "command": "LayoutSeg",
+      "payload_bytes": 5,
+      "expect_payload_hex": "05 05 05 05 05",
+      "expect_fields": [
+        {
+          "name": "strip_id",
+          "offset": 0,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "part_id",
+          "offset": 1,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "seg_id",
+          "offset": 2,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "start",
+          "offset": 3,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "end",
+          "offset": 4,
+          "bytes": 1,
+          "hex": "05"
+        }
+      ]
+    },
+    {
+      "kind": "fields",
+      "name": "fields_QueryLayout",
+      "command": "QueryLayout",
+      "payload_bytes": 1,
+      "expect_payload_hex": "05",
+      "expect_fields": [
+        {
+          "name": "strip_id",
+          "offset": 0,
+          "bytes": 1,
+          "hex": "05"
+        }
+      ]
+    },
+    {
+      "kind": "fields",
+      "name": "fields_ScenePart",
+      "command": "ScenePart",
+      "payload_bytes": 6,
+      "expect_payload_hex": "02 05 05 05 01 01",
+      "expect_fields": [
+        {
+          "name": "scene_id",
+          "offset": 0,
+          "bytes": 1,
+          "hex": "02"
+        },
+        {
+          "name": "strip_id",
+          "offset": 1,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "part_id",
+          "offset": 2,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "step_count",
+          "offset": 3,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "loop",
+          "offset": 4,
+          "bytes": 1,
+          "hex": "01"
+        },
+        {
+          "name": "on",
+          "offset": 5,
+          "bytes": 1,
+          "hex": "01"
+        }
+      ]
+    },
+    {
+      "kind": "fields",
+      "name": "fields_SceneStep",
+      "command": "SceneStep",
+      "payload_bytes": 24,
+      "expect_payload_hex": "02 05 05 05 2c 01 01 00 00 00 00 00 00 00 64 01 00 00 00 00 00 00 00 64",
+      "expect_fields": [
+        {
+          "name": "scene_id",
+          "offset": 0,
+          "bytes": 1,
+          "hex": "02"
+        },
+        {
+          "name": "strip_id",
+          "offset": 1,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "part_id",
+          "offset": 2,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "step_index",
+          "offset": 3,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "duration",
+          "offset": 4,
+          "bytes": 2,
+          "hex": "2c 01"
+        },
+        {
+          "name": "layer0",
+          "offset": 6,
+          "bytes": 9,
+          "hex": "01 00 00 00 00 00 00 00 64"
+        },
+        {
+          "name": "layer1",
+          "offset": 15,
+          "bytes": 9,
+          "hex": "01 00 00 00 00 00 00 00 64"
+        }
+      ]
+    },
+    {
+      "kind": "fields",
+      "name": "fields_SceneName",
+      "command": "SceneName",
+      "payload_bytes": 26,
+      "expect_payload_hex": "02 02 61 62 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+      "expect_fields": [
+        {
+          "name": "scene_id",
+          "offset": 0,
+          "bytes": 1,
+          "hex": "02"
+        },
+        {
+          "name": "name_len",
+          "offset": 1,
+          "bytes": 1,
+          "hex": "02"
+        },
+        {
+          "name": "name",
+          "offset": 2,
+          "bytes": 24,
+          "hex": "61 62 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"
+        }
+      ]
+    },
+    {
+      "kind": "fields",
+      "name": "fields_ActivateScene",
+      "command": "ActivateScene",
+      "payload_bytes": 1,
+      "expect_payload_hex": "02",
+      "expect_fields": [
+        {
+          "name": "scene_id",
+          "offset": 0,
+          "bytes": 1,
+          "hex": "02"
+        }
+      ]
+    },
+    {
+      "kind": "fields",
+      "name": "fields_QueryScene",
+      "command": "QueryScene",
+      "payload_bytes": 1,
+      "expect_payload_hex": "02",
+      "expect_fields": [
+        {
+          "name": "scene_id",
+          "offset": 0,
+          "bytes": 1,
+          "hex": "02"
+        }
+      ]
+    },
+    {
+      "kind": "fields",
+      "name": "fields_ACK",
+      "report": "ACK",
+      "payload_bytes": 2,
+      "expect_payload_hex": "05 05",
+      "expect_fields": [
+        {
+          "name": "command",
+          "offset": 0,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "result",
+          "offset": 1,
+          "bytes": 1,
+          "hex": "05"
+        }
+      ]
+    },
+    {
+      "kind": "fields",
+      "name": "fields_Event",
+      "report": "Event",
+      "payload_bytes": 2,
+      "expect_payload_hex": "01 05",
+      "expect_fields": [
+        {
+          "name": "event_code",
+          "offset": 0,
+          "bytes": 1,
+          "hex": "01"
+        },
+        {
+          "name": "detail",
+          "offset": 1,
+          "bytes": 1,
+          "hex": "05"
+        }
+      ]
+    },
+    {
+      "kind": "fields",
+      "name": "fields_StateReport",
+      "report": "StateReport",
+      "payload_bytes": 32,
+      "expect_payload_hex": "01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 20",
+      "expect_fields": [
+        {
+          "name": "state",
+          "offset": 0,
+          "bytes": 32,
+          "hex": "01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 20"
+        }
+      ]
+    },
+    {
+      "kind": "fields",
+      "name": "fields_StripConfigReport",
+      "report": "StripConfigReport",
+      "payload_bytes": 24,
+      "expect_payload_hex": "01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01",
+      "expect_fields": [
+        {
+          "name": "strips",
+          "offset": 0,
+          "bytes": 24,
+          "hex": "01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01"
+        }
+      ]
+    },
+    {
+      "kind": "fields",
+      "name": "fields_DeviceInfoReport",
+      "report": "DeviceInfoReport",
+      "payload_bytes": 15,
+      "expect_payload_hex": "05 05 05 2c 01 05 05 05 05 03 02 2c 01 00 00",
+      "expect_fields": [
+        {
+          "name": "fw_major",
+          "offset": 0,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "fw_minor",
+          "offset": 1,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "fw_patch",
+          "offset": 2,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "hw_id",
+          "offset": 3,
+          "bytes": 2,
+          "hex": "2c 01"
+        },
+        {
+          "name": "max_leds",
+          "offset": 5,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "max_strips",
+          "offset": 6,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "max_parts",
+          "offset": 7,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "max_steps",
+          "offset": 8,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "max_scenes",
+          "offset": 9,
+          "bytes": 1,
+          "hex": "03"
+        },
+        {
+          "name": "max_layers",
+          "offset": 10,
+          "bytes": 1,
+          "hex": "02"
+        },
+        {
+          "name": "caps",
+          "offset": 11,
+          "bytes": 2,
+          "hex": "2c 01"
+        },
+        {
+          "name": "reserved",
+          "offset": 13,
+          "bytes": 2,
+          "hex": "00 00"
+        }
+      ]
+    },
+    {
+      "kind": "fields",
+      "name": "fields_LayoutReport",
+      "report": "LayoutReport",
+      "payload_bytes": 45,
+      "expect_payload_hex": "05 05 02 61 62 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 05 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01",
+      "expect_fields": [
+        {
+          "name": "strip_id",
+          "offset": 0,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "part_id",
+          "offset": 1,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "name_len",
+          "offset": 2,
+          "bytes": 1,
+          "hex": "02"
+        },
+        {
+          "name": "name",
+          "offset": 3,
+          "bytes": 24,
+          "hex": "61 62 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"
+        },
+        {
+          "name": "seg_count",
+          "offset": 27,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "phase",
+          "offset": 28,
+          "bytes": 1,
+          "hex": "01"
+        },
+        {
+          "name": "segs",
+          "offset": 29,
+          "bytes": 16,
+          "hex": "01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01"
+        }
+      ]
+    },
+    {
+      "kind": "fields",
+      "name": "fields_LayoutListEnd",
+      "report": "LayoutListEnd",
+      "payload_bytes": 2,
+      "expect_payload_hex": "05 05",
+      "expect_fields": [
+        {
+          "name": "strip_id",
+          "offset": 0,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "part_mask",
+          "offset": 1,
+          "bytes": 1,
+          "hex": "05"
+        }
+      ]
+    },
+    {
+      "kind": "fields",
+      "name": "fields_ScenePartReport",
+      "report": "ScenePartReport",
+      "payload_bytes": 6,
+      "expect_payload_hex": "02 05 05 05 01 01",
+      "expect_fields": [
+        {
+          "name": "scene_id",
+          "offset": 0,
+          "bytes": 1,
+          "hex": "02"
+        },
+        {
+          "name": "strip_id",
+          "offset": 1,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "part_id",
+          "offset": 2,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "step_count",
+          "offset": 3,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "loop",
+          "offset": 4,
+          "bytes": 1,
+          "hex": "01"
+        },
+        {
+          "name": "on",
+          "offset": 5,
+          "bytes": 1,
+          "hex": "01"
+        }
+      ]
+    },
+    {
+      "kind": "fields",
+      "name": "fields_SceneStepReport",
+      "report": "SceneStepReport",
+      "payload_bytes": 24,
+      "expect_payload_hex": "02 05 05 05 2c 01 01 00 00 00 00 00 00 00 64 01 00 00 00 00 00 00 00 64",
+      "expect_fields": [
+        {
+          "name": "scene_id",
+          "offset": 0,
+          "bytes": 1,
+          "hex": "02"
+        },
+        {
+          "name": "strip_id",
+          "offset": 1,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "part_id",
+          "offset": 2,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "step_index",
+          "offset": 3,
+          "bytes": 1,
+          "hex": "05"
+        },
+        {
+          "name": "duration",
+          "offset": 4,
+          "bytes": 2,
+          "hex": "2c 01"
+        },
+        {
+          "name": "layer0",
+          "offset": 6,
+          "bytes": 9,
+          "hex": "01 00 00 00 00 00 00 00 64"
+        },
+        {
+          "name": "layer1",
+          "offset": 15,
+          "bytes": 9,
+          "hex": "01 00 00 00 00 00 00 00 64"
+        }
+      ]
+    },
+    {
+      "kind": "fields",
+      "name": "fields_SceneListEnd",
+      "report": "SceneListEnd",
+      "payload_bytes": 26,
+      "expect_payload_hex": "02 02 61 62 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+      "expect_fields": [
+        {
+          "name": "scene_id",
+          "offset": 0,
+          "bytes": 1,
+          "hex": "02"
+        },
+        {
+          "name": "name_len",
+          "offset": 1,
+          "bytes": 1,
+          "hex": "02"
+        },
+        {
+          "name": "name",
+          "offset": 2,
+          "bytes": 24,
+          "hex": "61 62 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"
+        }
+      ]
     },
     {
       "kind": "retired",
