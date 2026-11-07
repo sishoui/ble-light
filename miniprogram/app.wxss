@@ -3,43 +3,44 @@
  * 权威定义在 docs/design.md，这里只是它的可执行副本。
  * 改这里必须同步改文档，反之亦然。
  *
- * 风格：暖调家居——米白画布、深棕主卡、焦糖强调、照片媒体卡。
+ * 风格：Marco 冷调纸感——Linen 画布、Paper 白卡、宽字距微标签、彩色配给制。
  */
 
 page {
   /* 表面 */
-  --bg: #f7f3ec;
+  --bg: #f7f7f9;
   --surface: #ffffff;
-  --surface-warm: #efe8dd;
-  --card-dark: #372e25;
-  --hairline: #e9e2d6;
+  --surface-nested: #f2f2f2;
+  --surface-warm: #fff9ed;
+  --hairline: #dedee0;
 
   /* 文字 */
-  --text-primary: #322a20;
-  --text-secondary: #8b7f6f;
-  --text-tertiary: #b9ae9c;
-  --on-dark: #ffffff;
-  --on-dark-muted: rgba(255, 255, 255, 0.64);
+  --text-primary: #000000;
+  --text-body: #333333;
+  --text-secondary: #707070;
+  --text-tertiary: #949494;
+  --text-on-dark: #ffffff;
+  --text-on-dark-muted: rgba(255, 255, 255, 0.64);
 
-  /* 强调与语义 */
-  --accent: #d89a63;
-  --accent-press: #c4854e;
-  --accent-soft: #f4e6cf;
-  --cool-soft: #e3edf7;
-  --ok: #8bab8e;
-  --error: #c05a3c;
-  --scrim: rgba(20, 14, 8, 0.55);
+  /* 彩色标点（配给制） */
+  --accent: #6366f1;
+  --accent-wash: #eff0ff;
+  --link: #1685c7;
+  --dot-active: #e92f48;
+  --grad-warm: linear-gradient(16deg, #ff4d79, #ff8040 85%);
+  --on-grad: #ffffff;
 
   /* 圆角 */
-  --radius-media: 40rpx;
-  --radius-card: 32rpx;
-  --radius-control: 24rpx;
+  --radius-feature: 64rpx;
+  --radius-card: 36rpx;
+  --radius-media: 24rpx;
+  --radius-icon: 8rpx;
   --radius-pill: 9999rpx;
 
   /* 间距（8pt 网格 = 16rpx 倍数） */
   --space-page: 32rpx;
-  --space-card: 32rpx;
-  --space-control: 24rpx;
+  --space-card: 48rpx;
+  --space-control: 32rpx;
   --space-gap: 16rpx;
   --space-block: 48rpx;
   --touch-min: 88rpx;
@@ -51,28 +52,50 @@ page {
   --ease: cubic-bezier(0.32, 0.72, 0, 1);
 
   background: var(--bg);
-  color: var(--text-primary);
+  color: var(--text-body);
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
-  font-size: 30rpx;
+  font-size: 32rpx;
   line-height: 1.5;
 }
 
-/* 字号表：只允许 400 / 600 两个字重 */
-.t-title      { font-size: 44rpx; font-weight: 600; line-height: 1.3; }
-.t-number     { font-size: 44rpx; font-weight: 600; line-height: 1.2; font-variant-numeric: tabular-nums; }
-.t-heading    { font-size: 34rpx; font-weight: 600; line-height: 1.4; }
-.t-card       { font-size: 32rpx; font-weight: 600; line-height: 1.4; }
-.t-body       { font-size: 30rpx; font-weight: 400; line-height: 1.5; }
-.t-secondary  { font-size: 26rpx; font-weight: 400; line-height: 1.45; }
-.t-caption    { font-size: 22rpx; font-weight: 400; line-height: 1.4; }
+/* 字号表：字距曲线是签名——小字加宽，大字收紧 */
+.t-display  { font-size: 62rpx; font-weight: 600; line-height: 1.25; letter-spacing: -0.8rpx; }
+.t-number   { font-size: 80rpx; font-weight: 600; line-height: 1.2;  letter-spacing: -1.6rpx; font-variant-numeric: tabular-nums; }
+.t-heading  { font-size: 48rpx; font-weight: 600; line-height: 1.25; letter-spacing: -0.8rpx; }
+.t-card     { font-size: 40rpx; font-weight: 600; line-height: 1.38; }
+.t-body     { font-size: 32rpx; font-weight: 400; line-height: 1.5; }
+.t-secondary{ font-size: 28rpx; font-weight: 400; line-height: 1.45; }
+.t-label    { font-size: 24rpx; font-weight: 500; line-height: 1.2;  letter-spacing: 0.05em; }
+.t-caption  { font-size: 20rpx; font-weight: 400; line-height: 1.4;  letter-spacing: 0.05em; }
 
 /* 数字等宽，避免亮度值变化时抖动 */
 .tabular { font-variant-numeric: tabular-nums; }
 
+/* 微标签：文字 + 前缀彩点，区块眉标的唯一写法 */
+.tracked {
+  display: inline-flex;
+  align-items: center;
+  gap: 12rpx;
+  color: var(--text-secondary);
+  font-size: 24rpx;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+}
+.tracked::before {
+  content: "";
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.tracked.hot::before { background: var(--dot-active); }
+
 /* 表面 */
-.surface       { background: var(--surface); }
-.surface-warm  { background: var(--surface-warm); }
-.card-dark     { background: var(--card-dark); color: var(--on-dark); }
+.surface        { background: var(--surface); }
+.surface-nested { background: var(--surface-nested); }
+.surface-warm   { background: var(--surface-warm); }
+.grad-warm      { background: var(--grad-warm); color: var(--on-grad); }
 
 /* 分隔线 */
 .rule { height: 2rpx; background: var(--hairline); }
@@ -83,15 +106,16 @@ page {
   display: inline-flex;
   align-items: center;
   height: 48rpx;
-  padding: 0 20rpx;
+  padding: 0 24rpx;
   border-radius: var(--radius-pill);
-  background: var(--accent-soft);
-  color: var(--text-primary);
-  font-size: 22rpx;
-  line-height: 1.4;
+  background: var(--surface-nested);
+  color: var(--text-secondary);
+  font-size: 24rpx;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
 }
-.chip.cool { background: var(--cool-soft); }
-.chip.on-photo { background: rgba(255, 255, 255, 0.85); color: var(--text-primary); }
+.chip.accent { background: var(--accent-wash); color: var(--accent); }
 
 /* 按钮 */
 .btn {
@@ -101,26 +125,19 @@ page {
   height: 88rpx;
   padding: 0 48rpx;
   border-radius: var(--radius-pill);
-  font-size: 30rpx;
+  font-size: 32rpx;
   font-weight: 600;
 }
-.btn-primary { background: var(--card-dark); color: var(--on-dark); }
-.btn-accent  { background: var(--accent); color: var(--on-dark); }
-.btn-secondary { background: var(--surface-warm); color: var(--text-primary); }
-.btn-text    { background: transparent; color: var(--text-secondary); font-weight: 400; }
-.btn-danger  { background: transparent; color: var(--error); }
+.btn-primary   { background: transparent; border: 2rpx solid var(--accent); color: var(--accent); }
+.btn-grad      { background: var(--grad-warm); color: var(--on-grad); }
+.btn-secondary { background: var(--surface-nested); color: var(--text-body); }
+.btn-text      { background: transparent; color: var(--link); font-weight: 400; }
+.btn-danger    { background: transparent; color: var(--dot-active); }
 
-/* 照片媒体卡 */
-.photo-card {
-  position: relative;
-  border-radius: var(--radius-media);
-  overflow: hidden;
-}
-.photo-card .scrim {
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 50%;
-  background: linear-gradient(to bottom, transparent, var(--scrim));
+/* 选中态：主角卡 = 白卡 + 紫描边 + 光晕底 */
+.selected {
+  background: var(--accent-wash);
+  border: 2rpx solid var(--accent);
 }
 
 @media (prefers-reduced-motion: reduce) {

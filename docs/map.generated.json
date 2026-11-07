@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T17:41:13.922Z",
+  "generatedAt": "2026-11-07T18:16:29.572Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "823de29",
-    "subject": "fix(tooling): 提交面板数据不再让面板变旧",
-    "date": "2026-11-08T01:39:58+08:00",
+    "sha": "dc2a18d",
+    "subject": "chore: 同步面板",
+    "date": "2026-11-08T01:41:38+08:00",
     "branch": "spec-v1",
     "dirty": true
   },
@@ -758,7 +758,7 @@
       "role": "设计变量的可执行副本：颜色、圆角、间距、动效与字号表。权威定义在 docs/design.md。",
       "exists": true,
       "fileCount": 1,
-      "lines": 128,
+      "lines": 145,
       "files": [
         "miniprogram/app.wxss"
       ],
@@ -1058,9 +1058,9 @@
       "purpose": "视觉语言的唯一权威。颜色、字体、间距、圆角、动效、文案与禁令。",
       "status": "生效",
       "hasFrontmatter": true,
-      "lines": 222,
-      "bytes": 8937,
-      "hash": "afd7c1a7c5b8fa01",
+      "lines": 228,
+      "bytes": 10349,
+      "hash": "6561210318e0cca8",
       "isAdr": false,
       "isAgentDoc": false
     },
@@ -1097,9 +1097,9 @@
       "purpose": "当前状态。唯一允许写「现在在哪 / 下一步」的地方，原地重写，不追加历史。",
       "status": "生效",
       "hasFrontmatter": true,
-      "lines": 40,
-      "bytes": 1950,
-      "hash": "01eadf00e229d0fc",
+      "lines": 41,
+      "bytes": 2110,
+      "hash": "8ba09fcd5911c02e",
       "isAdr": false,
       "isAgentDoc": false
     },
@@ -1119,7 +1119,7 @@
   ],
   "docStats": {
     "count": 12,
-    "lines": 1251,
+    "lines": 1258,
     "withoutFrontmatter": 0,
     "adrCount": 4
   },
@@ -1296,7 +1296,7 @@
     "docs": 12,
     "tests": 18,
     "binary": 0,
-    "lines": 15966,
+    "lines": 15990,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
@@ -1470,8 +1470,8 @@
         "name": "design.md",
         "dir": "docs",
         "ext": ".md",
-        "size": 8937,
-        "lines": 221,
+        "size": 10349,
+        "lines": 227,
         "binary": false,
         "isDoc": true,
         "isTest": false,
@@ -1496,7 +1496,7 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 99521,
+        "size": 99501,
         "lines": 3416,
         "binary": false,
         "isDoc": false,
@@ -1561,8 +1561,8 @@
         "name": "status.md",
         "dir": "docs",
         "ext": ".md",
-        "size": 1950,
-        "lines": 39,
+        "size": 2110,
+        "lines": 40,
         "binary": false,
         "isDoc": true,
         "isTest": false,
@@ -2029,13 +2029,13 @@
         "name": "app.wxss",
         "dir": "miniprogram",
         "ext": ".wxss",
-        "size": 3753,
-        "lines": 128,
+        "size": 4433,
+        "lines": 145,
         "binary": false,
         "isDoc": false,
         "isTest": false,
         "module": "miniprogram/app.wxss",
-        "description": "设计变量。全项目唯一的颜色与字号来源。 权威定义在 docs/design.md，这里只是它的可执行副本。 改这里必须同步改文档，反之亦然。 风格：暖调家居——米白画布、深棕主卡、焦糖强调、照片媒体卡。"
+        "description": "设计变量。全项目唯一的颜色与字号来源。 权威定义在 docs/design.md，这里只是它的可执行副本。 改这里必须同步改文档，反之亦然。 风格：Marco 冷调纸感——Linen 画布、Paper 白卡、宽字距微标签、彩色配给制。"
       },
       {
         "path": "miniprogram/package-lock.json",
