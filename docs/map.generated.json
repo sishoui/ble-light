@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T18:16:29.572Z",
+  "generatedAt": "2026-11-07T18:32:54.163Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "dc2a18d",
-    "subject": "chore: 同步面板",
-    "date": "2026-11-08T01:41:38+08:00",
+    "sha": "b929f6c",
+    "subject": "feat(design): 视觉换成 Marco 冷调纸感，重绘 6 屏设计稿",
+    "date": "2026-11-08T02:16:42+08:00",
     "branch": "spec-v1",
     "dirty": true
   },
@@ -1058,9 +1058,9 @@
       "purpose": "视觉语言的唯一权威。颜色、字体、间距、圆角、动效、文案与禁令。",
       "status": "生效",
       "hasFrontmatter": true,
-      "lines": 228,
-      "bytes": 10349,
-      "hash": "6561210318e0cca8",
+      "lines": 259,
+      "bytes": 12245,
+      "hash": "0bcc25af2bc9abb9",
       "isAdr": false,
       "isAgentDoc": false
     },
@@ -1097,9 +1097,9 @@
       "purpose": "当前状态。唯一允许写「现在在哪 / 下一步」的地方，原地重写，不追加历史。",
       "status": "生效",
       "hasFrontmatter": true,
-      "lines": 41,
-      "bytes": 2110,
-      "hash": "8ba09fcd5911c02e",
+      "lines": 42,
+      "bytes": 2172,
+      "hash": "5eb3f23cb0ac70ae",
       "isAdr": false,
       "isAgentDoc": false
     },
@@ -1119,7 +1119,7 @@
   ],
   "docStats": {
     "count": 12,
-    "lines": 1258,
+    "lines": 1290,
     "withoutFrontmatter": 0,
     "adrCount": 4
   },
@@ -1296,7 +1296,7 @@
     "docs": 12,
     "tests": 18,
     "binary": 0,
-    "lines": 15990,
+    "lines": 16022,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
@@ -1470,8 +1470,8 @@
         "name": "design.md",
         "dir": "docs",
         "ext": ".md",
-        "size": 10349,
-        "lines": 227,
+        "size": 12245,
+        "lines": 258,
         "binary": false,
         "isDoc": true,
         "isTest": false,
@@ -1561,8 +1561,8 @@
         "name": "status.md",
         "dir": "docs",
         "ext": ".md",
-        "size": 2110,
-        "lines": 40,
+        "size": 2172,
+        "lines": 41,
         "binary": false,
         "isDoc": true,
         "isTest": false,
