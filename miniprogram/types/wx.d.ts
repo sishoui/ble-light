@@ -34,7 +34,7 @@ declare const wx: {
     },
   ): void;
   readBLECharacteristicValue(
-    opts: WxSuccessCallback<{ value: string }> & {
+    opts: WxSuccessCallback<{ value: ArrayBuffer }> & {
       deviceId: string;
       serviceId: string;
       characteristicId: string;
@@ -45,13 +45,12 @@ declare const wx: {
       deviceId: string;
       serviceId: string;
       characteristicId: string;
-      value: string;
-      encoding?: "hex";
+      value: ArrayBuffer;
     },
   ): void;
   onBLEConnectionStateChange(cb: (res: { deviceId: string; connected: boolean }) => void): void;
   onBLECharacteristicValueChange(
-    cb: (res: { deviceId: string; serviceId: string; characteristicId: string; value: string }) => void,
+    cb: (res: { deviceId: string; serviceId: string; characteristicId: string; value: ArrayBuffer }) => void,
   ): void;
   openBluetoothAdapter(opts: WxSuccessCallback<unknown>): void;
   startBluetoothDevicesDiscovery(

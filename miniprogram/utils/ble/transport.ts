@@ -6,6 +6,7 @@
  */
 import type { Transport } from "../control/session";
 import { GATT } from "../protocol/constants.gen";
+import { bytesToBuffer, bufferToBytes } from "./buffer";
 
 /** 微信 BLE 错误码 → 人话。文案规则见 docs/design.md §9。 */
 export function explainBleError(code: number, fallback: string): string {
@@ -45,20 +46,7 @@ function call<T>(fn: (opts: { success: (r: T) => void; fail: (e: { errCode?: num
   });
 }
 
-const ENCODING = { encoding: "hex" as const };
 
-function toHex(bytes: Uint8Array): string {
-  return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
-}
-
-function fromHex(hex: string): Uint8Array {
-  const clean = hex.replace(/\s/g, "");
-  const out = new Uint8Array(clean.length / 2);
-  for (let i = 0; i < out.length; i++) {
-    out[i] = parseInt(clean.slice(i * 2, i * 2 + 2), 16);
-  }
-  return out;
-}
 
 export class WxBleTransport implements Transport {
   connected = false;
@@ -126,13 +114,13 @@ export class WxBleTransport implements Transport {
 
     wx.onBLECharacteristicValueChange((res) => {
       if (res.characteristicId === this.txId) {
-        this.onNotify?.(fromHex(res.value as unknown as string));
+        this.onNotify?.(bufferToBytes(res.value));
       }
     });
   }
 
   async readState(): Promise<Uint8Array> {
-    const res = await call<{ value: string }>((o) =>
+    const res = await call<{ value: ArrayBuffer }>((o) =>
       wx.readBLECharacteristicValue({
         deviceId: this.deviceId,
         serviceId: this.serviceId,
@@ -140,7 +128,7 @@ export class WxBleTransport implements Transport {
         ...o,
       }),
     );
-    return fromHex(res.value);
+    return bufferToBytes(res.value);
   }
 
   async write(frame: Uint8Array): Promise<void> {
@@ -148,8 +136,7 @@ export class WxBleTransport implements Transport {
       deviceId: this.deviceId,
       serviceId: this.serviceId,
       characteristicId: this.rxId,
-      value: toHex(frame),
-      ...ENCODING,
+      value: bytesToBuffer(frame),
       ...o,
     }));
   }

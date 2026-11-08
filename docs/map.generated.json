@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T05:50:04.206Z",
+  "generatedAt": "2026-11-08T05:52:42.685Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "2576d15",
-    "subject": "feat(miniprogram): 设备详情补错误卡与重试入口",
-    "date": "2026-11-08T13:46:59+08:00",
+    "sha": "4438000",
+    "subject": "fix(miniprogram): 连上设备后把设备读回的灯珠数存进本机记录",
+    "date": "2026-11-08T13:50:17+08:00",
     "branch": "spec-v1",
     "dirty": true
   },
@@ -722,9 +722,10 @@
       "seam": "session",
       "role": "扫描、连接、MTU 协商、串行写、ACK 等待、多帧收集、错误分诊、日志。",
       "exists": true,
-      "fileCount": 1,
-      "lines": 190,
+      "fileCount": 2,
+      "lines": 193,
       "files": [
+        "miniprogram/utils/ble/buffer.ts",
         "miniprogram/utils/ble/transport.ts"
       ],
       "testCount": 0
@@ -975,7 +976,7 @@
       "files": [
         "miniprogram/tests/session/fake-transport.ts"
       ],
-      "testCount": 10
+      "testCount": 11
     },
     {
       "path": "miniprogram/utils/control/device-list-unit.ts",
@@ -1050,7 +1051,7 @@
       "role": "微信小程序全局 API 的最小类型声明，只声明本项目用到的成员。",
       "exists": true,
       "fileCount": 1,
-      "lines": 73,
+      "lines": 72,
       "files": [
         "miniprogram/types/wx.d.ts"
       ],
@@ -1066,6 +1067,19 @@
       "lines": 13,
       "files": [
         "miniprogram/utils/ui/theme.ts"
+      ],
+      "testCount": 0
+    },
+    {
+      "path": "miniprogram/utils/ble/buffer.ts",
+      "layer": "miniprogram",
+      "seam": "session",
+      "role": "Uint8Array ↔ ArrayBuffer 转换。微信 BLE 的 value 是 ArrayBuffer，带偏移的视图不能直接取 buffer。",
+      "exists": true,
+      "fileCount": 1,
+      "lines": 16,
+      "files": [
+        "miniprogram/utils/ble/buffer.ts"
       ],
       "testCount": 0
     }
@@ -1463,6 +1477,16 @@
       "violations": []
     },
     {
+      "path": "miniprogram/tests/session/ble-buffer.test.ts",
+      "name": "ble-buffer.test.ts",
+      "description": null,
+      "lines": 40,
+      "cases": 5,
+      "asserts": 6,
+      "seam": "session",
+      "violations": []
+    },
+    {
       "path": "miniprogram/tests/session/ble-error.test.ts",
       "name": "ble-error.test.ts",
       "description": null,
@@ -1544,27 +1568,27 @@
     }
   ],
   "testStats": {
-    "files": 19,
-    "cases": 260,
-    "asserts": 348,
-    "lines": 3013,
+    "files": 20,
+    "cases": 265,
+    "asserts": 354,
+    "lines": 3053,
     "bySeam": {
       "protocol": 4,
       "reducer": 3,
       "render": 0,
-      "session": 3,
+      "session": 4,
       "page": 4,
       "tooling": 5
     },
     "unseamed": 0
   },
   "files": {
-    "total": 151,
-    "code": 99,
+    "total": 153,
+    "code": 100,
     "docs": 21,
-    "tests": 22,
+    "tests": 23,
     "binary": 9,
-    "lines": 18521,
+    "lines": 18568,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
@@ -1576,7 +1600,7 @@
       ".h": 12,
       ".yml": 1,
       ".defaults": 1,
-      ".ts": 34,
+      ".ts": 36,
       ".wxss": 5,
       ".wxml": 4,
       ".html": 1,
@@ -1600,9 +1624,9 @@
       "miniprogram/pages/strip": 4,
       "miniprogram/tests/page": 4,
       "miniprogram/tests/protocol": 3,
-      "miniprogram/tests/session": 3,
+      "miniprogram/tests/session": 4,
       "miniprogram/types": 1,
-      "miniprogram/utils/ble": 1,
+      "miniprogram/utils/ble": 2,
       "miniprogram/utils/control": 7,
       "miniprogram/utils/local": 2,
       "miniprogram/utils/protocol": 4,
@@ -2008,8 +2032,8 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 126764,
-        "lines": 4344,
+        "size": 127995,
+        "lines": 4381,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -2021,8 +2045,8 @@
         "name": "map.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 11337,
-        "lines": 352,
+        "size": 11595,
+        "lines": 358,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -2914,6 +2938,19 @@
         "description": "测试向量的类型化视图。JSON 是生成物，这里只给它一个形状， 不改数据、不复制数据。"
       },
       {
+        "path": "miniprogram/tests/session/ble-buffer.test.ts",
+        "name": "ble-buffer.test.ts",
+        "dir": "miniprogram/tests/session",
+        "ext": ".ts",
+        "size": 1509,
+        "lines": 39,
+        "binary": false,
+        "isDoc": false,
+        "isTest": true,
+        "module": null,
+        "description": null
+      },
+      {
         "path": "miniprogram/tests/session/ble-error.test.ts",
         "name": "ble-error.test.ts",
         "dir": "miniprogram/tests/session",
@@ -2970,8 +3007,8 @@
         "name": "wx.d.ts",
         "dir": "miniprogram/types",
         "ext": ".ts",
-        "size": 2583,
-        "lines": 73,
+        "size": 2646,
+        "lines": 72,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -2979,12 +3016,25 @@
         "description": "微信小程序全局 API 的最小声明。 只声明本项目用到的成员，避免引入体积巨大的官方类型包。 新增 wx 调用时在这里补一条声明。"
       },
       {
+        "path": "miniprogram/utils/ble/buffer.ts",
+        "name": "buffer.ts",
+        "dir": "miniprogram/utils/ble",
+        "ext": ".ts",
+        "size": 601,
+        "lines": 16,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": "miniprogram/utils/ble/buffer.ts",
+        "description": "BLE 字节转换。 微信 BLE 的 characteristic value 是 ArrayBuffer，不是 hex 字符串。 单独抽出来是因为「带偏移的 Uint8Array 视图」是个容易错的地方： 直接用 view.buffer 会把整个底层 buffer 发出去。"
+      },
+      {
         "path": "miniprogram/utils/ble/transport.ts",
         "name": "transport.ts",
         "dir": "miniprogram/utils/ble",
         "ext": ".ts",
-        "size": 6255,
-        "lines": 190,
+        "size": 6052,
+        "lines": 177,
         "binary": false,
         "isDoc": false,
         "isTest": false,

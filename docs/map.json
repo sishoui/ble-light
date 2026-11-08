@@ -288,6 +288,12 @@
       "layer": "miniprogram",
       "seam": null,
       "role": "原生控件颜色常量（switch / slider 只吃字面色值，读不到 CSS 变量）。"
+    },
+    {
+      "path": "miniprogram/utils/ble/buffer.ts",
+      "layer": "miniprogram",
+      "seam": "session",
+      "role": "Uint8Array ↔ ArrayBuffer 转换。微信 BLE 的 value 是 ArrayBuffer，带偏移的视图不能直接取 buffer。"
     }
   ],
   "rules": {
