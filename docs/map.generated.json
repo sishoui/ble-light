@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T16:21:11.346Z",
+  "generatedAt": "2026-11-08T17:02:43.778Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "5c94fab",
-    "subject": "docs(acceptance): 补 U4 拖动不卡顿，链路侧通过、UI 侧未验",
-    "date": "2026-11-09T00:19:04+08:00",
+    "sha": "a760d1e",
+    "subject": "docs(status): spec-v1 已合入 main，#5 押在手机真机手感",
+    "date": "2026-11-09T00:21:14+08:00",
     "branch": "main",
     "dirty": true
   },
@@ -1196,9 +1196,9 @@
       "purpose": "视觉语言的唯一权威。颜色、字体、间距、圆角、动效、文案与禁令。",
       "status": "生效",
       "hasFrontmatter": true,
-      "lines": 266,
-      "bytes": 11857,
-      "hash": "fa1630766092da7c",
+      "lines": 299,
+      "bytes": 13701,
+      "hash": "4e82adaa2d7cb1a1",
       "isAdr": false,
       "isAgentDoc": false
     },
@@ -1374,7 +1374,7 @@
   ],
   "docStats": {
     "count": 21,
-    "lines": 1530,
+    "lines": 1563,
     "withoutFrontmatter": 0,
     "adrCount": 4
   },
@@ -1611,7 +1611,7 @@
     "docs": 21,
     "tests": 24,
     "binary": 10,
-    "lines": 19290,
+    "lines": 19323,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
@@ -1797,8 +1797,8 @@
         "name": "design.md",
         "dir": "docs",
         "ext": ".md",
-        "size": 11857,
-        "lines": 265,
+        "size": 13701,
+        "lines": 298,
         "binary": false,
         "isDoc": true,
         "isTest": false,
@@ -2122,7 +2122,7 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 132791,
+        "size": 132784,
         "lines": 4537,
         "binary": false,
         "isDoc": false,
