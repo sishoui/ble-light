@@ -56,36 +56,6 @@
       "role": "命令 reducer：校验命令字 / 长度 / 取值，输出新状态、结果码与意图。"
     },
     {
-      "path": "firmware/main/led_render.c",
-      "layer": "firmware",
-      "seam": "render",
-      "role": "一份快照 + 布局 + 场景 + 播放头 → 一帧像素。整帧亮度与 gamma 只做一次。"
-    },
-    {
-      "path": "firmware/main/effects.c",
-      "layer": "firmware",
-      "seam": "render",
-      "role": "八种灯效的像素公式、层编解码、参数与形状校验、两层合成。"
-    },
-    {
-      "path": "firmware/main/scene_compose.c",
-      "layer": "firmware",
-      "seam": "render",
-      "role": "渲染唯一入口：按链合成，推进播放头，判断是否需要出新帧。"
-    },
-    {
-      "path": "firmware/main/layout_store.c",
-      "layer": "firmware",
-      "seam": null,
-      "role": "8 链 × 8 部位 × 8 段的布局表与相位，布局 blob 编解码。"
-    },
-    {
-      "path": "firmware/main/scene_store.c",
-      "layer": "firmware",
-      "seam": null,
-      "role": "三个场景表、每部位 8 步，场景 blob 编解码。"
-    },
-    {
       "path": "firmware/main/state_blob.c",
       "layer": "firmware",
       "seam": null,
@@ -108,12 +78,6 @@
       "layer": "firmware",
       "seam": "protocol",
       "role": "BLE 分片重组状态机：1 字节 ctrl、240B 上限、1000ms 超时。"
-    },
-    {
-      "path": "firmware/main/led_engine.c",
-      "layer": "firmware",
-      "seam": null,
-      "role": "共享状态唯一所有者、latest-wins 邮箱、渲染任务、布局与场景权威副本、64 个播放头。"
     },
     {
       "path": "firmware/main/led_strip_owner.c",
@@ -168,12 +132,6 @@
       "layer": "miniprogram",
       "seam": null,
       "role": "设计变量的可执行副本：颜色、圆角、间距、动效与字号表。权威定义在 docs/design.md。"
-    },
-    {
-      "path": "miniprogram/components",
-      "layer": "miniprogram",
-      "seam": "page",
-      "role": "自建导航栏与 tabBar（含状态栏高度与胶囊避让）。"
     },
     {
       "path": "scripts/map.mjs",

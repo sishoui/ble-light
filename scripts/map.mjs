@@ -530,6 +530,19 @@ function checkHealth(config, docs, tests, files) {
     }
   }
 
+  // map.json 声明的模块必须真的有文件，否则面板会列出不存在的东西
+  for (const m of config.modules) {
+    const hit = files.some((f) => f.path === m.path || f.path.startsWith(`${m.path}/`));
+    if (!hit) {
+      issues.push({
+        level: "error",
+        kind: "module-missing",
+        path: m.path,
+        message: `map.json 声明了模块 ${m.path}，但仓库里没有对应文件`,
+      });
+    }
+  }
+
   // 生成物必须与协议源同步
   if (files.some((f) => f.path === "docs/protocol-vectors.json")) {
     const stale = checkGenerated();

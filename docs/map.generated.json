@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T17:02:43.778Z",
+  "generatedAt": "2026-11-08T17:07:19.527Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "a760d1e",
-    "subject": "docs(status): spec-v1 已合入 main，#5 押在手机真机手感",
-    "date": "2026-11-09T00:21:14+08:00",
+    "sha": "76260fc",
+    "subject": "docs(design): 定下方格选区与部位色阶",
+    "date": "2026-11-09T01:02:48+08:00",
     "branch": "main",
     "dirty": true
   },
@@ -544,61 +544,6 @@
       "testCount": 0
     },
     {
-      "path": "firmware/main/led_render.c",
-      "layer": "firmware",
-      "seam": "render",
-      "role": "一份快照 + 布局 + 场景 + 播放头 → 一帧像素。整帧亮度与 gamma 只做一次。",
-      "exists": false,
-      "fileCount": 0,
-      "lines": 0,
-      "files": [],
-      "testCount": 0
-    },
-    {
-      "path": "firmware/main/effects.c",
-      "layer": "firmware",
-      "seam": "render",
-      "role": "八种灯效的像素公式、层编解码、参数与形状校验、两层合成。",
-      "exists": false,
-      "fileCount": 0,
-      "lines": 0,
-      "files": [],
-      "testCount": 0
-    },
-    {
-      "path": "firmware/main/scene_compose.c",
-      "layer": "firmware",
-      "seam": "render",
-      "role": "渲染唯一入口：按链合成，推进播放头，判断是否需要出新帧。",
-      "exists": false,
-      "fileCount": 0,
-      "lines": 0,
-      "files": [],
-      "testCount": 0
-    },
-    {
-      "path": "firmware/main/layout_store.c",
-      "layer": "firmware",
-      "seam": null,
-      "role": "8 链 × 8 部位 × 8 段的布局表与相位，布局 blob 编解码。",
-      "exists": false,
-      "fileCount": 0,
-      "lines": 0,
-      "files": [],
-      "testCount": 0
-    },
-    {
-      "path": "firmware/main/scene_store.c",
-      "layer": "firmware",
-      "seam": null,
-      "role": "三个场景表、每部位 8 步，场景 blob 编解码。",
-      "exists": false,
-      "fileCount": 0,
-      "lines": 0,
-      "files": [],
-      "testCount": 0
-    },
-    {
       "path": "firmware/main/state_blob.c",
       "layer": "firmware",
       "seam": null,
@@ -648,17 +593,6 @@
       "files": [
         "firmware/main/chunk_reasm.c"
       ],
-      "testCount": 0
-    },
-    {
-      "path": "firmware/main/led_engine.c",
-      "layer": "firmware",
-      "seam": null,
-      "role": "共享状态唯一所有者、latest-wins 邮箱、渲染任务、布局与场景权威副本、64 个播放头。",
-      "exists": false,
-      "fileCount": 0,
-      "lines": 0,
-      "files": [],
       "testCount": 0
     },
     {
@@ -798,24 +732,13 @@
       "testCount": 0
     },
     {
-      "path": "miniprogram/components",
-      "layer": "miniprogram",
-      "seam": "page",
-      "role": "自建导航栏与 tabBar（含状态栏高度与胶囊避让）。",
-      "exists": false,
-      "fileCount": 0,
-      "lines": 0,
-      "files": [],
-      "testCount": 0
-    },
-    {
       "path": "scripts/map.mjs",
       "layer": "tooling",
       "seam": null,
       "role": "扫描仓库生成 docs/map.generated.json：文件、文档、测试、迭代、健康检查。",
       "exists": true,
       "fileCount": 1,
-      "lines": 827,
+      "lines": 840,
       "files": [
         "scripts/map.mjs"
       ],
@@ -1606,17 +1529,17 @@
     "unseamed": 0
   },
   "files": {
-    "total": 162,
+    "total": 166,
     "code": 107,
     "docs": 21,
     "tests": 24,
-    "binary": 10,
-    "lines": 19323,
+    "binary": 14,
+    "lines": 19294,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
       ".md": 24,
-      ".png": 10,
+      ".png": 14,
       ".svg": 4,
       ".json": 18,
       ".txt": 2,
@@ -1637,7 +1560,7 @@
       "docs": 9,
       "docs/adr": 4,
       "docs/agents": 2,
-      "docs/design": 19,
+      "docs/design": 23,
       "docs/design/v2": 5,
       "firmware": 2,
       "firmware/main": 26,
@@ -1858,6 +1781,32 @@
         "description": null
       },
       {
+        "path": "docs/design/device-detail-2.png",
+        "name": "device-detail-2.png",
+        "dir": "docs/design",
+        "ext": ".png",
+        "size": 169777,
+        "lines": null,
+        "binary": true,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": null
+      },
+      {
+        "path": "docs/design/device-detail-error-2.png",
+        "name": "device-detail-error-2.png",
+        "dir": "docs/design",
+        "ext": ".png",
+        "size": 161159,
+        "lines": null,
+        "binary": true,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": null
+      },
+      {
         "path": "docs/design/device-detail-error.md",
         "name": "device-detail-error.md",
         "dir": "docs/design",
@@ -1936,6 +1885,19 @@
         "description": null
       },
       {
+        "path": "docs/design/device-list-2.png",
+        "name": "device-list-2.png",
+        "dir": "docs/design",
+        "ext": ".png",
+        "size": 170560,
+        "lines": null,
+        "binary": true,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": null
+      },
+      {
         "path": "docs/design/device-list-add-menu.md",
         "name": "device-list-add-menu.md",
         "dir": "docs/design",
@@ -1954,6 +1916,19 @@
         "dir": "docs/design",
         "ext": ".png",
         "size": 38624,
+        "lines": null,
+        "binary": true,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": null
+      },
+      {
+        "path": "docs/design/device-list-empty-2.png",
+        "name": "device-list-empty-2.png",
+        "dir": "docs/design",
+        "ext": ".png",
+        "size": 95986,
         "lines": null,
         "binary": true,
         "isDoc": false,
@@ -2122,8 +2097,8 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 132784,
-        "lines": 4537,
+        "size": 131935,
+        "lines": 4512,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -2135,8 +2110,8 @@
         "name": "map.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 11509,
-        "lines": 366,
+        "size": 10388,
+        "lines": 324,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -3682,8 +3657,8 @@
         "name": "map.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 30473,
-        "lines": 827,
+        "size": 30914,
+        "lines": 840,
         "binary": false,
         "isDoc": false,
         "isTest": false,
