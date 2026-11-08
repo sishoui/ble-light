@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T17:20:57.066Z",
+  "generatedAt": "2026-11-08T17:23:24.359Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "95ad565",
-    "subject": "docs(design): v2 四页存档，删掉已被取代的 SVG 副本",
-    "date": "2026-11-09T01:11:08+08:00",
+    "sha": "ed722c5",
+    "subject": "fix(design): 方格一行 10 颗不是 12，补上可用宽反推规则",
+    "date": "2026-11-09T01:21:01+08:00",
     "branch": "main",
     "dirty": true
   },
@@ -1848,7 +1848,7 @@
         "name": "device-detail-2.png",
         "dir": "docs/design",
         "ext": ".png",
-        "size": 169777,
+        "size": 180576,
         "lines": null,
         "binary": true,
         "isDoc": false,
@@ -1874,7 +1874,7 @@
         "name": "device-detail-error-2.png",
         "dir": "docs/design",
         "ext": ".png",
-        "size": 161159,
+        "size": 167229,
         "lines": null,
         "binary": true,
         "isDoc": false,
@@ -1978,7 +1978,7 @@
         "name": "device-list-2.png",
         "dir": "docs/design",
         "ext": ".png",
-        "size": 170560,
+        "size": 187418,
         "lines": null,
         "binary": true,
         "isDoc": false,
@@ -2030,7 +2030,7 @@
         "name": "device-list-empty-2.png",
         "dir": "docs/design",
         "ext": ".png",
-        "size": 95986,
+        "size": 101145,
         "lines": null,
         "binary": true,
         "isDoc": false,
