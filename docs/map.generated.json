@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T05:56:09.169Z",
+  "generatedAt": "2026-11-08T06:57:06.740Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "241ef76",
-    "subject": "fix(miniprogram): 扫描失败时把原因显示出来",
-    "date": "2026-11-08T13:54:41+08:00",
+    "sha": "63956e1",
+    "subject": "chore: 同步面板",
+    "date": "2026-11-08T13:56:09+08:00",
     "branch": "spec-v1",
     "dirty": true
   },
@@ -737,7 +737,7 @@
       "role": "页面唯一门面：连接、状态镜像、命令语义、节流。页面不直接碰传输层。",
       "exists": true,
       "fileCount": 1,
-      "lines": 190,
+      "lines": 197,
       "files": [
         "miniprogram/utils/control/session.ts"
       ],
@@ -1510,9 +1510,9 @@
       "path": "miniprogram/tests/session/session.test.ts",
       "name": "session.test.ts",
       "description": null,
-      "lines": 158,
-      "cases": 12,
-      "asserts": 21,
+      "lines": 218,
+      "cases": 15,
+      "asserts": 27,
       "seam": "session",
       "violations": []
     },
@@ -1569,9 +1569,9 @@
   ],
   "testStats": {
     "files": 20,
-    "cases": 265,
-    "asserts": 354,
-    "lines": 3053,
+    "cases": 268,
+    "asserts": 360,
+    "lines": 3113,
     "bySeam": {
       "protocol": 4,
       "reducer": 3,
@@ -1583,18 +1583,18 @@
     "unseamed": 0
   },
   "files": {
-    "total": 153,
-    "code": 100,
+    "total": 154,
+    "code": 101,
     "docs": 21,
     "tests": 23,
     "binary": 9,
-    "lines": 18578,
+    "lines": 18681,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
       ".md": 24,
       ".png": 9,
-      ".json": 17,
+      ".json": 18,
       ".txt": 2,
       ".c": 17,
       ".h": 12,
@@ -1617,7 +1617,7 @@
       "firmware": 2,
       "firmware/main": 24,
       "firmware/test": 7,
-      "miniprogram": 7,
+      "miniprogram": 8,
       "miniprogram/pages/add-device": 4,
       "miniprogram/pages/device": 4,
       "miniprogram/pages/devices": 4,
@@ -2834,6 +2834,19 @@
         "description": "灯链详情页。"
       },
       {
+        "path": "miniprogram/project.config.json",
+        "name": "project.config.json",
+        "dir": "miniprogram",
+        "ext": ".json",
+        "size": 896,
+        "lines": 36,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": "BLE 灯带控制"
+      },
+      {
         "path": "miniprogram/sitemap.json",
         "name": "sitemap.json",
         "dir": "miniprogram",
@@ -2981,8 +2994,8 @@
         "name": "session.test.ts",
         "dir": "miniprogram/tests/session",
         "ext": ".ts",
-        "size": 4928,
-        "lines": 157,
+        "size": 6608,
+        "lines": 217,
         "binary": false,
         "isDoc": false,
         "isTest": true,
@@ -3098,8 +3111,8 @@
         "name": "session.ts",
         "dir": "miniprogram/utils/control",
         "ext": ".ts",
-        "size": 6057,
-        "lines": 190,
+        "size": 6342,
+        "lines": 197,
         "binary": false,
         "isDoc": false,
         "isTest": false,

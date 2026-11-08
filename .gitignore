@@ -13,3 +13,6 @@ firmware/sdkconfig.old
 firmware/managed_components/
 firmware/dependencies.lock
 miniprogram/node_modules/
+
+# 开发者工具本地配置（含本机 appid 与自动化端口）
+miniprogram/project.private.config.json

@@ -1,0 +1,36 @@
+{
+  "appid": "wx0a46668333178576",
+  "projectname": "ble-light",
+  "description": "BLE 灯带控制",
+  "compileType": "miniprogram",
+  "libVersion": "3.9.0",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "coverView": true,
+    "nodeModules": false,
+    "checkInvalidKey": true,
+    "checkSiteMap": false,
+    "uploadWithSourceMap": true,
+    "compileHotReLoad": true,
+    "useMultiFrameRuntime": true,
+    "useApiHook": true,
+    "useApiHostProcess": true,
+    "showShadowRootInWxmlPanel": true,
+    "useIsolateContext": true,
+    "userConfirmedBundleSwitch": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "useCompilerPlugins": ["typescript"]
+  },
+  "condition": {},
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  }
+}

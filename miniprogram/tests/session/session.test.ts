@@ -155,3 +155,63 @@ describe("状态镜像", () => {
     expect(s.state.connected).toBe(false);
   });
 });
+
+describe("写失败后的恢复", () => {
+  it("一次写失败不会毒化后续写：下一帧仍然发得出去", async () => {
+    const t = new FakeTransport();
+    const s = new ControlSession(t);
+    await s.connect("dev-1");
+
+    const realWrite = t.write.bind(t);
+    let failNext = true;
+    t.write = async (frame: Uint8Array) => {
+      if (failNext) {
+        failNext = false;
+        throw new Error("写失败");
+      }
+      await realWrite(frame);
+    };
+
+    await expect(s.setPower(true)).rejects.toThrow();
+
+    await s.setPower(false);
+    expect(t.writesOf(CMD.SetPower).at(-1)?.payload).toEqual([0]);
+  });
+
+  it("连续多次失败后仍能恢复", async () => {
+    const t = new FakeTransport();
+    const s = new ControlSession(t);
+    await s.connect("dev-1");
+
+    const realWrite = t.write.bind(t);
+    t.write = async () => {
+      throw new Error("写失败");
+    };
+    for (let i = 0; i < 3; i++) {
+      await expect(s.setPower(true)).rejects.toThrow();
+    }
+
+    t.write = realWrite;
+    await s.setPower(false);
+    expect(t.writesOf(CMD.SetPower).at(-1)?.payload).toEqual([0]);
+  });
+
+  it("写失败后队列里的下一帧不被跳过", async () => {
+    const t = new FakeTransport();
+    const s = new ControlSession(t);
+    await s.connect("dev-1");
+
+    const realWrite = t.write.bind(t);
+    let calls = 0;
+    t.write = async (frame: Uint8Array) => {
+      calls += 1;
+      if (calls === 1) throw new Error("写失败");
+      await realWrite(frame);
+    };
+
+    await expect(s.setPower(true)).rejects.toThrow();
+    await s.setBrightness(42);
+
+    expect(t.writesOf(CMD.SetBrightness).at(-1)?.payload).toEqual([42]);
+  });
+});

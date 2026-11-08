@@ -140,11 +140,18 @@ export class ControlSession {
     await this.send(CMD.SetBrightness, [v]);
   }
 
-  /** 写是串行的：一次只发一帧，发完再发下一帧。 */
+  /**
+   * 写是串行的：一次只发一帧，发完再发下一帧。
+   *
+   * 链尾必须吞掉失败再继续排队——否则一次写失败会让 writeChain 永久变红，
+   * 之后每一帧都在 `.then` 里直接炸，会话再也发不出东西。
+   * 本次调用的失败仍然抛给调用方。
+   */
   private async send(command: number, payload: number[]): Promise<void> {
     const frame = encodeFrame({ command, seq: this.nextSeq(), payload });
-    this.writeChain = this.writeChain.then(() => this.transport.write(frame));
-    await this.writeChain;
+    const task = this.writeChain.then(() => this.transport.write(frame));
+    this.writeChain = task.catch(() => undefined);
+    await task;
   }
 
   private nextSeq(): number {
