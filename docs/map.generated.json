@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T11:25:29.838Z",
+  "generatedAt": "2026-11-08T12:03:10.999Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "51c1e94",
-    "subject": "fix: 修正 GATT UUID 字节序，连接失败后释放设备",
-    "date": "2026-11-08T17:05:43+08:00",
+    "sha": "89746ee",
+    "subject": "feat(firmware): 八条链各自独立 GPIO，写入补上分片",
+    "date": "2026-11-08T19:25:46+08:00",
     "branch": "spec-v1",
     "dirty": true
   },
@@ -681,7 +681,7 @@
       "role": "链号 → GPIO 的固定表。纯函数，宿主机可测，不进 RMT 依赖。",
       "exists": true,
       "fileCount": 1,
-      "lines": 15,
+      "lines": 19,
       "files": [
         "firmware/main/strip_gpio.c"
       ],
@@ -1423,8 +1423,8 @@
       "path": "firmware/test/test_strip_gpio.c",
       "name": "test_strip_gpio.c",
       "description": "链号 → GPIO 表。这张表错了整条链接在错的脚上，而且现场很难查： 灯不亮时看不出是固件选错脚、线接错、还是灯带坏了。",
-      "lines": 46,
-      "cases": 4,
+      "lines": 58,
+      "cases": 5,
       "asserts": 0,
       "seam": "render",
       "violations": []
@@ -1592,9 +1592,9 @@
   ],
   "testStats": {
     "files": 21,
-    "cases": 282,
+    "cases": 283,
     "asserts": 384,
-    "lines": 3280,
+    "lines": 3292,
     "bySeam": {
       "protocol": 4,
       "reducer": 3,
@@ -1611,7 +1611,7 @@
     "docs": 21,
     "tests": 24,
     "binary": 9,
-    "lines": 19176,
+    "lines": 19240,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
@@ -2055,7 +2055,7 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 130701,
+        "size": 130703,
         "lines": 4462,
         "binary": false,
         "isDoc": false,
@@ -2471,8 +2471,8 @@
         "name": "strip_gpio.c",
         "dir": "firmware/main",
         "ext": ".c",
-        "size": 502,
-        "lines": 15,
+        "size": 802,
+        "lines": 19,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -2601,8 +2601,8 @@
         "name": "test_strip_gpio.c",
         "dir": "firmware/test",
         "ext": ".c",
-        "size": 1610,
-        "lines": 45,
+        "size": 2247,
+        "lines": 57,
         "binary": false,
         "isDoc": false,
         "isTest": true,
@@ -3537,8 +3537,8 @@
         "name": "build-firmware.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 4967,
-        "lines": 143,
+        "size": 6971,
+        "lines": 191,
         "binary": false,
         "isDoc": false,
         "isTest": false,

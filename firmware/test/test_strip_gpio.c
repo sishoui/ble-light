@@ -32,6 +32,17 @@ RUN_TEST(gpio_table_avoids_flash_and_usb_pins) {
     }
 }
 
+RUN_TEST(gpio_table_avoids_console_uart_pins) {
+    /* 控制台走 UART0，默认引脚是 GPIO20(RX)/GPIO21(TX)。
+     * 占用了照样能跑，但串口日志会变成乱码，刷机也更容易失败——
+     * 而且现场只会表现成「灯不对劲」，很难联想到控制台。
+     * 改 CONFIG_ESP_CONSOLE_UART_NUM 时，这条测试要跟着改。 */
+    for (uint8_t i = 0; i < PROTO_MAX_STRIPS; i++) {
+        ASSERT_TRUE(lumen_strip_gpio(i) != 20);
+        ASSERT_TRUE(lumen_strip_gpio(i) != 21);
+    }
+}
+
 RUN_TEST(gpio_out_of_range_returns_minus_one) {
     ASSERT_EQ_U8((uint8_t)(lumen_strip_gpio(PROTO_MAX_STRIPS) == -1 ? 1 : 0), 1);
     ASSERT_EQ_U8((uint8_t)(lumen_strip_gpio(200) == -1 ? 1 : 0), 1);
@@ -41,5 +52,6 @@ EXPORT_TESTS(strip_gpio) {
     RUN_CASE(gpio_table_covers_all_eight_strips);
     RUN_CASE(gpio_table_has_no_duplicates);
     RUN_CASE(gpio_table_avoids_flash_and_usb_pins);
+    RUN_CASE(gpio_table_avoids_console_uart_pins);
     RUN_CASE(gpio_out_of_range_returns_minus_one);
 }
