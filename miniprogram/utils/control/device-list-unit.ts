@@ -60,3 +60,40 @@ export function deviceListUnit(input: DeviceListInput): DeviceListView {
 
   return { cards, empty: cards.length === 0, summary };
 }
+
+/** 连接后拿到的设备配置。 */
+export interface DeviceConfig {
+  deviceId: string;
+  name: string;
+  ledCount: number[];
+  stripCount: number;
+}
+
+/**
+ * 把一台设备并进本机记录。
+ *
+ * 已有记录保留备注名（备注是人的数据，设备不知道），
+ * 灯珠数与链数一律用设备读回来的值覆盖——设备才是配置的唯一权威。
+ */
+export function mergeSavedDevice(saved: SavedDevice[], device: DeviceConfig): SavedDevice[] {
+  const at = saved.findIndex((d) => d.deviceId === device.deviceId);
+  const next = saved.slice();
+
+  if (at >= 0) {
+    next[at] = {
+      ...next[at],
+      name: device.name,
+      ledCount: device.ledCount.slice(),
+      stripCount: device.stripCount,
+    };
+  } else {
+    next.push({
+      deviceId: device.deviceId,
+      name: device.name,
+      note: "",
+      ledCount: device.ledCount.slice(),
+      stripCount: device.stripCount,
+    });
+  }
+  return next;
+}

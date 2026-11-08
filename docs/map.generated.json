@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T05:46:54.124Z",
+  "generatedAt": "2026-11-08T05:50:04.206Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "5449520",
-    "subject": "fix(miniprogram): 扫描计时从开始时刻算，停止后不再无限增长",
-    "date": "2026-11-08T13:44:24+08:00",
+    "sha": "2576d15",
+    "subject": "feat(miniprogram): 设备详情补错误卡与重试入口",
+    "date": "2026-11-08T13:46:59+08:00",
     "branch": "spec-v1",
     "dirty": true
   },
@@ -749,7 +749,7 @@
       "role": "页面：设备列表（tab）/ 设备详情 / 灯链详情 / 添加设备。页面只做视图与事件绑定。",
       "exists": true,
       "fileCount": 16,
-      "lines": 1198,
+      "lines": 1204,
       "files": [
         "miniprogram/pages/add-device/add-device.json",
         "miniprogram/pages/add-device/add-device.ts",
@@ -984,7 +984,7 @@
       "role": "设备列表视图模型：已保存设备 → 双列卡片（在线/开关/元信息）与摘要。",
       "exists": true,
       "fileCount": 1,
-      "lines": 62,
+      "lines": 99,
       "files": [
         "miniprogram/utils/control/device-list-unit.ts"
       ],
@@ -1036,7 +1036,7 @@
       "role": "本机数据：设备备注名与最近连接记录。只存人和设备的对应关系，不缓存灯光配置。",
       "exists": true,
       "fileCount": 2,
-      "lines": 57,
+      "lines": 46,
       "files": [
         "miniprogram/utils/local/devices.ts",
         "miniprogram/utils/local/session-ref.ts"
@@ -1406,9 +1406,9 @@
       "path": "miniprogram/tests/page/device-units.test.ts",
       "name": "device-units.test.ts",
       "description": null,
-      "lines": 153,
-      "cases": 21,
-      "asserts": 36,
+      "lines": 206,
+      "cases": 28,
+      "asserts": 47,
       "seam": "page",
       "violations": []
     },
@@ -1545,9 +1545,9 @@
   ],
   "testStats": {
     "files": 19,
-    "cases": 253,
-    "asserts": 337,
-    "lines": 2960,
+    "cases": 260,
+    "asserts": 348,
+    "lines": 3013,
     "bySeam": {
       "protocol": 4,
       "reducer": 3,
@@ -1564,7 +1564,7 @@
     "docs": 21,
     "tests": 22,
     "binary": 9,
-    "lines": 18436,
+    "lines": 18521,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
@@ -2008,7 +2008,7 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 126745,
+        "size": 126764,
         "lines": 4344,
         "binary": false,
         "isDoc": false,
@@ -2619,8 +2619,8 @@
         "name": "add-device.ts",
         "dir": "miniprogram/pages/add-device",
         "ext": ".ts",
-        "size": 3380,
-        "lines": 116,
+        "size": 3527,
+        "lines": 122,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -2840,8 +2840,8 @@
         "name": "device-units.test.ts",
         "dir": "miniprogram/tests/page",
         "ext": ".ts",
-        "size": 5484,
-        "lines": 152,
+        "size": 7339,
+        "lines": 205,
         "binary": false,
         "isDoc": false,
         "isTest": true,
@@ -3022,8 +3022,8 @@
         "name": "device-list-unit.ts",
         "dir": "miniprogram/utils/control",
         "ext": ".ts",
-        "size": 1657,
-        "lines": 62,
+        "size": 2609,
+        "lines": 99,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -3087,13 +3087,13 @@
         "name": "devices.ts",
         "dir": "miniprogram/utils/local",
         "ext": ".ts",
-        "size": 1352,
-        "lines": 46,
+        "size": 1149,
+        "lines": 35,
         "binary": false,
         "isDoc": false,
         "isTest": false,
         "module": null,
-        "description": "本机设备记录：只存「人和设备的对应关系」（备注名、设备号、上次看到的配置）。 灯光配置的唯一权威是设备本身，这里不缓存。"
+        "description": "本机设备记录：只存「人和设备的对应关系」（备注名、设备号）。 灯光配置的唯一权威是设备本身，这里不缓存——连上后按设备读回的值覆盖。"
       },
       {
         "path": "miniprogram/utils/local/session-ref.ts",

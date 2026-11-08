@@ -100,7 +100,13 @@ Page({
     void session
       .connect(id)
       .then(() => {
-        rememberDevice({ deviceId: id, name });
+        const st = session.state;
+        rememberDevice({
+          deviceId: id,
+          name,
+          ledCount: st.ledCount.slice(),
+          stripCount: st.stripCount,
+        });
         stopScan();
         this.stopTimer();
         wx.redirectTo({ url: `/pages/device/device?deviceId=${id}` });

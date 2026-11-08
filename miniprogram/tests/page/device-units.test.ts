@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { deviceListUnit } from "../../utils/control/device-list-unit";
+import { deviceListUnit, mergeSavedDevice } from "../../utils/control/device-list-unit";
 import { deviceDetailUnit } from "../../utils/control/device-detail-unit";
 
 describe("设备列表单元", () => {
@@ -59,6 +59,59 @@ describe("设备列表单元", () => {
   it("没有在线设备时摘要只报总数", () => {
     const vm = deviceListUnit({ saved, connectedId: null, power: false });
     expect(vm.summary).toBe("已保存 2 台");
+  });
+});
+
+describe("连接后合并本机记录", () => {
+  const config = {
+    deviceId: "aa",
+    name: "BleLight-3F2A",
+    ledCount: [30, 24, 0, 0, 0, 0, 0, 0],
+    stripCount: 3,
+  };
+
+  it("新设备入列时带上设备读回来的灯珠数", () => {
+    const next = mergeSavedDevice([], config);
+    expect(next).toHaveLength(1);
+    expect(next[0].ledCount[0]).toBe(30);
+    expect(next[0].stripCount).toBe(3);
+  });
+
+  it("新设备默认没有备注名", () => {
+    expect(mergeSavedDevice([], config)[0].note).toBe("");
+  });
+
+  it("已有记录保留备注名，不被设备广播名覆盖", () => {
+    const existing = [{ ...config, note: "客厅照明" }];
+    const next = mergeSavedDevice(existing, { ...config, name: "BleLight-XXXX" });
+    expect(next[0].note).toBe("客厅照明");
+    expect(next[0].name).toBe("BleLight-XXXX");
+  });
+
+  it("灯珠数一律用设备的值覆盖，不用本机旧值", () => {
+    const existing = [{ ...config, note: "", ledCount: [99, 0, 0, 0, 0, 0, 0, 0] }];
+    const next = mergeSavedDevice(existing, config);
+    expect(next[0].ledCount[0]).toBe(30);
+  });
+
+  it("同设备重复连接不会产生重复条目", () => {
+    const once = mergeSavedDevice([], config);
+    const twice = mergeSavedDevice(once, config);
+    expect(twice).toHaveLength(1);
+  });
+
+  it("不修改传入的数组", () => {
+    const saved = [{ ...config, note: "客厅" }];
+    const copy = JSON.parse(JSON.stringify(saved));
+    mergeSavedDevice(saved, config);
+    expect(saved).toEqual(copy);
+  });
+
+  it("连上后再看列表，已配置的链数是对的", () => {
+    const next = mergeSavedDevice([], config);
+    const vm = deviceListUnit({ saved: next, connectedId: "aa", power: true });
+    expect(vm.cards[0].meta).toBe("2 条灯链");
+    expect(vm.cards[0].configured).toBe(true);
   });
 });
 
