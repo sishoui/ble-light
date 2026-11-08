@@ -8,9 +8,11 @@
 #include "ble_link.h"
 #include "device_core.h"
 #include "esp_log.h"
-#include "esp_random.h"
+#include "esp_mac.h"
 #include "esp_system.h"
 #include "esp_timer.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 #include "led_strip_owner.h"
 #include "nvs.h"
 #include "nvs_flash.h"
@@ -88,6 +90,15 @@ static void notify_state(uint8_t seq) {
     uint8_t frame[PROTO_MAX_FRAME];
     const size_t n = lumen_encode_report(frame, sizeof(frame), RPT_STATE_REPORT, seq, payload, sizeof(payload));
     if (n > 0) lumen_ble_notify(frame, n);
+}
+
+/** 小程序连上后第一步读这个特征。布局与 StateReport 的 payload 完全相同。 */
+static bool read_state_blob(uint8_t *buf, size_t cap) {
+    if (cap < PROTO_STATE_BYTES) return false;
+    uint8_t blob[STATE_BLOB_BYTES];
+    if (lumen_state_blob_encode(&s_core.state, blob, sizeof(blob)) == 0) return false;
+    memcpy(buf, blob + STATE_BLOB_HEADER_BYTES, PROTO_STATE_BYTES);
+    return true;
 }
 
 static void notify_strip_config(uint8_t seq) {
@@ -232,9 +243,17 @@ void app_main(void) {
 
     lumen_strip_init(s_core.state.led_count, s_core.state.strip_count);
 
+    /* 广播名取 BT MAC 末两字节（docs/protocol.md §1）；随机数每次上电都变，
+     * 手机侧会把它当成另一台设备。 */
+    uint8_t mac[6] = { 0 };
     char name[24];
-    snprintf(name, sizeof(name), "BleLight-%02X%02X", (unsigned)(esp_random() & 0xFF), (unsigned)(esp_random() & 0xFF));
-    if (lumen_ble_start(name, handle_frame) != 0) {
+    if (esp_read_mac(mac, ESP_MAC_BT) == ESP_OK) {
+        snprintf(name, sizeof(name), "BleLight-%02X%02X", mac[4], mac[5]);
+    } else {
+        snprintf(name, sizeof(name), "BleLight-0000");
+    }
+    ESP_LOGI(TAG, "adv name=%s", name);
+    if (lumen_ble_start(name, handle_frame, read_state_blob) != 0) {
         ESP_LOGE(TAG, "ble start failed");
     }
 
@@ -243,7 +262,11 @@ void app_main(void) {
     uint32_t last = 0;
     while (true) {
         const uint32_t t = now_ms();
-        if (t - last < 20) continue;  /* 50 Hz 上限 */
+        if (t - last < 20) {
+            /* 让出 CPU：忙等会饿死 IDLE 任务，看门狗 5 秒就复位。 */
+            vTaskDelay(pdMS_TO_TICKS(5));
+            continue;
+        }
         last = t;
 
         if (device_core_selftest_tick(&s_core, t)) {

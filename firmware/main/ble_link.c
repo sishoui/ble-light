@@ -25,15 +25,21 @@ static const ble_uuid128_t g_rx_uuid =
 static const ble_uuid128_t g_tx_uuid =
     BLE_UUID128_INIT(0x03, 0x00, 0x00, 0x00, 0x3c, 0x9a, 0x1e, 0x4b,
                      0x00, 0x6e, 0x65, 0x6c, 0x75, 0x6d, 0x6c, 0x6c);
+static const ble_uuid128_t g_state_uuid =
+    BLE_UUID128_INIT(0x04, 0x00, 0x00, 0x00, 0x3c, 0x9a, 0x1e, 0x4b,
+                     0x00, 0x6e, 0x65, 0x6c, 0x75, 0x6d, 0x6c, 0x6c);
 
 static lumen_reasm_t s_reasm;
 static lumen_frame_cb_t s_on_frame;
+/** 读 State 特征时回调：把当前 32 字节状态填进 buf。 */
+static lumen_state_cb_t s_on_state_read;
 static uint16_t s_conn_handle = BLE_HS_CONN_HANDLE_NONE;
 static uint16_t s_tx_handle;
 static uint16_t s_mtu = 23;
 
 static int gatt_rx_access(uint16_t conn, uint16_t attr, struct ble_gatt_access_ctxt *ctxt, void *arg);
 static int gatt_tx_access(uint16_t conn, uint16_t attr, struct ble_gatt_access_ctxt *ctxt, void *arg);
+static int gatt_state_access(uint16_t conn, uint16_t attr, struct ble_gatt_access_ctxt *ctxt, void *arg);
 
 static const struct ble_gatt_svc_def g_services[] = {
     {
@@ -50,6 +56,11 @@ static const struct ble_gatt_svc_def g_services[] = {
                 .access_cb = gatt_tx_access,
                 .flags = BLE_GATT_CHR_F_NOTIFY,
                 .val_handle = &s_tx_handle,
+            },
+            {
+                .uuid = &g_state_uuid.u,
+                .access_cb = gatt_state_access,
+                .flags = BLE_GATT_CHR_F_READ,
             },
             { 0 },
         },
@@ -81,6 +92,19 @@ static int gatt_tx_access(uint16_t conn, uint16_t attr, struct ble_gatt_access_c
     (void)ctxt;
     (void)arg;
     return 0;
+}
+
+/** 小程序连接流水线的最后一步读这个特征。不实现它，连接会在 readState 处失败。 */
+static int gatt_state_access(uint16_t conn, uint16_t attr, struct ble_gatt_access_ctxt *ctxt, void *arg) {
+    (void)conn;
+    (void)attr;
+    (void)arg;
+    if (ctxt->op != BLE_GATT_ACCESS_OP_READ_CHR) return BLE_ATT_ERR_UNLIKELY;
+    if (s_on_state_read == NULL) return BLE_ATT_ERR_UNLIKELY;
+
+    uint8_t buf[PROTO_STATE_BYTES];
+    if (!s_on_state_read(buf, sizeof(buf))) return BLE_ATT_ERR_UNLIKELY;
+    return os_mbuf_append(ctxt->om, buf, sizeof(buf)) == 0 ? 0 : BLE_ATT_ERR_INSUFFICIENT_RES;
 }
 
 bool lumen_ble_notify(const uint8_t *frame, size_t len) {
@@ -177,8 +201,9 @@ static void host_task(void *param) {
     nimble_port_freertos_deinit();
 }
 
-int lumen_ble_start(const char *device_name, lumen_frame_cb_t on_frame) {
+int lumen_ble_start(const char *device_name, lumen_frame_cb_t on_frame, lumen_state_cb_t on_state_read) {
     s_on_frame = on_frame;
+    s_on_state_read = on_state_read;
     lumen_reasm_reset(&s_reasm);
 
     int rc = nimble_port_init();

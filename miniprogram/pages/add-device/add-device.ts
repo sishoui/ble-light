@@ -112,7 +112,14 @@ Page({
         wx.redirectTo({ url: `/pages/device/device?deviceId=${id}` });
       })
       .catch(() => {
-        this.setData({ connectingId: "" });
+        /* 连接失败必须说出原因：静默回到列表，用户只会以为「点了没反应」。
+         * 文案由传输层翻译（explainBleError），会话层原样存在 state.error。 */
+        this.setData({
+          connectingId: "",
+          statusText: "连接失败",
+          statusKind: "hot",
+          errorText: session.state.error ?? "连接没有成功。确认设备已通电且靠近手机。",
+        });
       });
   },
 

@@ -7,18 +7,23 @@
 #define MAX_LED_COUNT PROTO_MAX_LEDS
 #define MIN_LED_COUNT 1u
 
+/* 出厂默认拓扑：GPIO3 上接一条 20 颗 WS2812B 的灯带。
+ * 灯珠数为 0 的链在渲染里被跳过，设备看起来就像「接了却没反应」。 */
+#define DEFAULT_STRIP_COUNT 1u
+#define DEFAULT_LED_COUNT 20u
+
 lumen_state_t lumen_state_default(void) {
     lumen_state_t st;
     memset(&st, 0, sizeof(st));
     st.power = 0;
     st.max_brightness = BRIGHTNESS_DEFAULT;
     st.brightness = BRIGHTNESS_DEFAULT;
-    st.strip_count = PROTO_MAX_STRIPS;
+    st.strip_count = DEFAULT_STRIP_COUNT;
     st.strip_power_mask = 0;
     st.active_scene = 0;
     st.layout_valid = 0;
     for (int i = 0; i < (int)PROTO_MAX_STRIPS; i++) {
-        st.led_count[i] = 0;
+        st.led_count[i] = i == 0 ? DEFAULT_LED_COUNT : 0;
         st.part_count[i] = 0;
     }
     return st;

@@ -11,8 +11,11 @@
 
 typedef void (*lumen_frame_cb_t)(const uint8_t *frame, size_t len);
 
+/** 读 State 特征时调用：把 32 字节状态写进 buf。返回 false 表示当前取不到。 */
+typedef bool (*lumen_state_cb_t)(uint8_t *buf, size_t cap);
+
 /** 初始化 NimBLE、注册 GATT、开始广播。返回 0 成功。 */
-int lumen_ble_start(const char *device_name, lumen_frame_cb_t on_frame);
+int lumen_ble_start(const char *device_name, lumen_frame_cb_t on_frame, lumen_state_cb_t on_state_read);
 
 /** 发一帧通知。没有连接时返回 false。 */
 bool lumen_ble_notify(const uint8_t *frame, size_t len);

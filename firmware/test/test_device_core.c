@@ -64,6 +64,8 @@ RUN_TEST(core_query_state_wants_state_report) {
 RUN_TEST(core_set_led_count_asks_for_rebuild) {
     device_core_t dev;
     device_core_init(&dev, 0);
+    /* 第 3 条链要显式存在：出厂默认只有 1 条链，依赖默认值写会越来越脆。 */
+    dev.state.strip_count = 3;
     device_effects_t fx;
     const uint8_t payload[3] = { 2, 50, 0 };
     const lumen_cmd_t c = cmd(CMD_SET_LED_COUNT, payload, 3);
@@ -162,6 +164,7 @@ RUN_TEST(selftest_not_interrupted_by_invalid_command) {
 RUN_TEST(core_strip_power_updates_mask_and_saves) {
     device_core_t dev;
     device_core_init(&dev, 0);
+    dev.state.strip_count = 2;
     device_effects_t fx;
     const uint8_t payload[2] = { 1, 1 };
     const lumen_cmd_t c = cmd(CMD_SET_STRIP_POWER, payload, 2);
