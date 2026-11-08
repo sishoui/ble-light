@@ -3,22 +3,22 @@
  * 权威定义在 docs/design.md，这里只是它的可执行副本。
  * 改这里必须同步改文档，反之亦然。
  *
- * 风格：冰蓝柔光——冰蓝画布、纯白卡、柔和蓝灰投影、蓝色唯一强调。
+ * 风格：灰底柔光——浅灰画布、纯白卡、柔和投影、蓝色唯一强调。
  */
 
 page {
   /* 表面 */
-  --bg: #ebf4fe;
+  --bg: #f2f4f7;
   --surface: #ffffff;
-  --surface-nested: #e7f1fd;
+  --surface-nested: #edf0f4;
   --accent-wash: #ddebff;
-  --hairline: #dfebf8;
+  --hairline: #e4e8ee;
 
   /* 文字 */
   --text-primary: #17233d;
   --text-body: #33415e;
-  --text-secondary: #7c8ca6;
-  --text-tertiary: #aab8cb;
+  --text-secondary: #5f6f87;
+  --text-tertiary: #8d9cb2;
 
   /* 强调与语义 */
   --accent: #2f6bff;
@@ -41,8 +41,8 @@ page {
   --touch-min: 88rpx;
 
   /* 投影（三档，蓝灰调向下扩散） */
-  --shadow-card: 0 16rpx 40rpx rgba(93, 124, 179, 0.16);
-  --shadow-soft: 0 8rpx 24rpx rgba(93, 124, 179, 0.1);
+  --shadow-card: 0 16rpx 40rpx rgba(88, 100, 122, 0.14);
+  --shadow-soft: 0 8rpx 24rpx rgba(88, 100, 122, 0.09);
   --shadow-knob: 0 4rpx 10rpx rgba(23, 55, 94, 0.18);
 
   /* 动效 */

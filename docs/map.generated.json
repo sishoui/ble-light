@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T05:08:25.899Z",
+  "generatedAt": "2026-11-08T05:13:58.886Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "346285f",
-    "subject": "feat(design): 画布改 393×852，设备列表双列图片卡，添加设备独立搜索页",
-    "date": "2026-11-08T04:10:26+08:00",
+    "sha": "8b9c432",
+    "subject": "feat(design): 视觉换成冰蓝柔光，9 屏重绘",
+    "date": "2026-11-08T13:08:38+08:00",
     "branch": "spec-v1",
     "dirty": true
   },
@@ -1059,8 +1059,8 @@
       "status": "生效",
       "hasFrontmatter": true,
       "lines": 250,
-      "bytes": 10859,
-      "hash": "0fbf0ce38e532069",
+      "bytes": 10915,
+      "hash": "46b2d6071be844df",
       "isAdr": false,
       "isAgentDoc": false
     },
@@ -1098,8 +1098,8 @@
       "status": "生效",
       "hasFrontmatter": true,
       "lines": 44,
-      "bytes": 2299,
-      "hash": "31bac51a5d7d699a",
+      "bytes": 2336,
+      "hash": "f042f30ffa9b11c3",
       "isAdr": false,
       "isAgentDoc": false
     },
@@ -1470,7 +1470,7 @@
         "name": "design.md",
         "dir": "docs",
         "ext": ".md",
-        "size": 10859,
+        "size": 10915,
         "lines": 249,
         "binary": false,
         "isDoc": true,
@@ -1496,7 +1496,7 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 99588,
+        "size": 99552,
         "lines": 3416,
         "binary": false,
         "isDoc": false,
@@ -1561,7 +1561,7 @@
         "name": "status.md",
         "dir": "docs",
         "ext": ".md",
-        "size": 2299,
+        "size": 2336,
         "lines": 43,
         "binary": false,
         "isDoc": true,
@@ -2029,13 +2029,13 @@
         "name": "app.wxss",
         "dir": "miniprogram",
         "ext": ".wxss",
-        "size": 4313,
+        "size": 4308,
         "lines": 142,
         "binary": false,
         "isDoc": false,
         "isTest": false,
         "module": "miniprogram/app.wxss",
-        "description": "设计变量。全项目唯一的颜色与字号来源。 权威定义在 docs/design.md，这里只是它的可执行副本。 改这里必须同步改文档，反之亦然。 风格：冰蓝柔光——冰蓝画布、纯白卡、柔和蓝灰投影、蓝色唯一强调。"
+        "description": "设计变量。全项目唯一的颜色与字号来源。 权威定义在 docs/design.md，这里只是它的可执行副本。 改这里必须同步改文档，反之亦然。 风格：灰底柔光——浅灰画布、纯白卡、柔和投影、蓝色唯一强调。"
       },
       {
         "path": "miniprogram/package-lock.json",
