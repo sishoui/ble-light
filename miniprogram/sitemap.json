@@ -1,0 +1,9 @@
+{
+  "desc": "ble-light 小程序",
+  "rules": [
+    {
+      "action": "allow",
+      "page": "*"
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+<view class="page">
+  <view class="statusbar">
+    <text class="t-caption">{{statusBarTime}}</text>
+    <text class="t-caption statusbar-right">●●●</text>
+  </view>
+
+  <view class="nav">
+    <view class="tracked"><text>我的灯</text></view>
+    <view class="nav-row">
+      <text class="t-display">设备</text>
+      <view class="plus-btn {{menuOpen ? 'plus-btn-on' : ''}}" bindtap="onToggleMenu">
+        <view class="plus-h"></view>
+        <view class="plus-v"></view>
+      </view>
+    </view>
+    <view wx:if="{{menuOpen}}" class="add-menu shadow-soft">
+      <view class="menu-icon">
+        <view class="plus-h"></view>
+        <view class="plus-v"></view>
+      </view>
+      <view class="menu-text">
+        <text class="t-card">添加设备</text>
+        <text class="t-label menu-sub">搜索附近的灯控</text>
+      </view>
+      <view class="menu-hit" bindtap="onAddDevice"></view>
+    </view>
+  </view>
+
+  <view wx:if="{{empty}}" class="empty-card shadow-card">
+    <view class="empty-tile">
+      <view class="bulb">
+        <view class="bulb-glass"></view>
+        <view class="bulb-base"></view>
+      </view>
+    </view>
+    <text class="t-card empty-title">还没有设备</text>
+    <text class="t-secondary empty-sub">点右上角 + 添加附近的灯控</text>
+  </view>
+
+  <view wx:else>
+    <text class="t-label summary">{{summary}}</text>
+    <view class="grid">
+      <view
+        wx:for="{{cards}}"
+        wx:key="deviceId"
+        class="device-card shadow-card"
+        data-id="{{item.deviceId}}"
+        bindtap="onOpenDevice"
+      >
+        <view class="cover">
+          <view class="bulb">
+            <view class="bulb-glass"></view>
+            <view class="bulb-shine"></view>
+            <view class="bulb-base"></view>
+          </view>
+          <view wx:if="{{item.online}}" class="cover-tag t-label">已连接</view>
+        </view>
+        <text class="t-card card-name">{{item.title}}</text>
+        <view class="card-foot">
+          <view class="dot {{item.online ? 'dot-ok' : item.configured ? 'dot-hot' : 'dot-grey'}}"></view>
+          <text class="t-label card-meta">{{item.meta}}</text>
+          <switch
+            class="card-switch"
+            color="#2F6BFF"
+            checked="{{item.powerOn}}"
+            data-id="{{item.deviceId}}"
+            catchtap="noop"
+            bindchange="onTogglePower"
+          />
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="tabbar shadow-card">
+    <view wx:for="{{tabs}}" wx:key="id" class="tab">
+      <view wx:if="{{item.active}}" class="dot dot-accent"></view>
+      <text class="t-body tab-text {{item.active ? 'tab-active' : ''}}">{{item.label}}</text>
+    </view>
+  </view>
+</view>

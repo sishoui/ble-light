@@ -1,0 +1,56 @@
+<view class="page">
+  <view class="statusbar">
+    <text class="t-caption">{{statusBarTime}}</text>
+    <text class="t-caption statusbar-right">●●●</text>
+  </view>
+
+  <view class="nav">
+    <view class="back-row">
+      <text class="back" bindtap="onBack">‹</text>
+      <view class="tracked"><text>{{eyebrow}}</text></view>
+    </view>
+    <text class="t-display title">{{title}}</text>
+  </view>
+
+  <view class="hero shadow-card">
+    <view class="hero-top">
+      <view class="hero-tile">
+        <view class="bulb">
+          <view class="bulb-glass"></view>
+          <view class="bulb-shine"></view>
+          <view class="bulb-base"></view>
+        </view>
+      </view>
+      <view class="hero-text">
+        <text class="t-card hero-name">{{title}}</text>
+        <view class="tracked"><text>{{statusText}}</text></view>
+      </view>
+      <switch class="hero-switch" color="#2F6BFF" checked="{{powerOn}}" disabled="{{true}}" />
+    </view>
+    <text class="t-secondary hero-note">{{deviceNote}}</text>
+  </view>
+
+  <view class="section-head">
+    <text class="t-heading">部位</text>
+    <text class="t-label section-count">{{assignedText}}</text>
+  </view>
+
+  <view class="rows">
+    <view wx:for="{{parts}}" wx:key="name" class="row shadow-soft">
+      <view class="dot {{item.unassigned ? 'dot-grey' : 'dot-accent'}}"></view>
+      <view class="row-text">
+        <text class="t-card">{{item.name}}</text>
+        <text class="t-label row-meta">{{item.meta}}</text>
+      </view>
+    </view>
+  </view>
+
+  <text class="t-caption hint">部位划分在下一版开放。</text>
+
+  <view class="tabbar shadow-card">
+    <view wx:for="{{tabs}}" wx:key="id" class="tab">
+      <view wx:if="{{item.active}}" class="dot dot-accent"></view>
+      <text class="t-body tab-text {{item.active ? 'tab-active' : ''}}">{{item.label}}</text>
+    </view>
+  </view>
+</view>

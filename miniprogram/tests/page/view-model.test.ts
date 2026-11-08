@@ -8,6 +8,7 @@ function state(over: Partial<SessionState> = {}): SessionState {
     connected: true,
     connecting: false,
     error: null,
+    deviceId: null,
     power: false,
     brightness: 100,
     maxBrightness: 200,

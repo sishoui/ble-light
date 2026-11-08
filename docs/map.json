@@ -155,7 +155,7 @@
       "path": "miniprogram/pages",
       "layer": "miniprogram",
       "seam": "page",
-      "role": "页面：设备列表（tab）/ 设备详情 / 灯链详情 / 场景 / 我的。页面只做视图与事件绑定。"
+      "role": "页面：设备列表（tab）/ 设备详情 / 灯链详情 / 添加设备。页面只做视图与事件绑定。"
     },
     {
       "path": "miniprogram/app.wxss",
@@ -246,6 +246,42 @@
       "layer": "miniprogram",
       "seam": "session",
       "role": "假传输：记录设备收到了什么，可脚本化响应。测试只断言它的内容。"
+    },
+    {
+      "path": "miniprogram/utils/control/device-list-unit.ts",
+      "layer": "miniprogram",
+      "seam": "page",
+      "role": "设备列表视图模型：已保存设备 → 双列卡片（在线/开关/元信息）与摘要。"
+    },
+    {
+      "path": "miniprogram/utils/control/device-detail-unit.ts",
+      "layer": "miniprogram",
+      "seam": "page",
+      "role": "设备详情视图模型：状态 → 主卡、亮度百分比与灯链行。"
+    },
+    {
+      "path": "miniprogram/utils/control/brightness-unit.ts",
+      "layer": "miniprogram",
+      "seam": "page",
+      "role": "亮度拖动单元：20Hz latest-wins 节流与松手精确下发，纯状态机。"
+    },
+    {
+      "path": "miniprogram/utils/control/strip-detail-unit.ts",
+      "layer": "miniprogram",
+      "seam": "page",
+      "role": "灯链详情视图模型：部位段 → 可读区间、未分配段与已划分计数。"
+    },
+    {
+      "path": "miniprogram/utils/local",
+      "layer": "miniprogram",
+      "seam": null,
+      "role": "本机数据：设备备注名与最近连接记录。只存人和设备的对应关系，不缓存灯光配置。"
+    },
+    {
+      "path": "miniprogram/types",
+      "layer": "miniprogram",
+      "seam": null,
+      "role": "微信小程序全局 API 的最小类型声明，只声明本项目用到的成员。"
     }
   ],
   "rules": {

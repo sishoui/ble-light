@@ -26,6 +26,11 @@ page {
   --ok: #3fbf6f;
   --dot-active: #e5484d;
 
+  /* 封面插画（内容，不是界面；见 docs/design.md §11） */
+  --bulb: #ffd98a;
+  --bulb-shine: #fff3d0;
+  --bulb-base: #b9c6d8;
+
   /* 圆角 */
   --radius-card: 48rpx;
   --radius-row: 32rpx;

@@ -1,0 +1,147 @@
+/* 添加设备页。 */
+
+.page {
+  min-height: 100vh;
+  padding: 0 var(--space-page) calc(160rpx + env(safe-area-inset-bottom));
+  background: var(--bg);
+}
+
+.statusbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 88rpx;
+}
+.statusbar .t-caption { color: var(--text-secondary); }
+
+.nav { padding-bottom: 32rpx; }
+.back-row { display: flex; align-items: center; gap: 24rpx; height: 56rpx; }
+.back { font-size: 52rpx; color: var(--text-body); line-height: 1; }
+.title { display: block; margin-top: 16rpx; color: var(--text-primary); }
+
+.scan-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24rpx;
+}
+.count { color: var(--text-secondary); }
+
+.rows { display: flex; flex-direction: column; gap: 16rpx; }
+.row {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  height: 144rpx;
+  padding: 0 32rpx;
+  border-radius: var(--radius-row);
+  background: var(--surface);
+}
+.row-tile {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 20rpx;
+  background: var(--surface-nested);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+.row-tile .bulb { transform: scale(0.62); }
+.row-text { flex: 1; display: flex; flex-direction: column; gap: 8rpx; }
+.row-text .t-card { color: var(--text-body); }
+.row-meta { color: var(--text-secondary); }
+.chev { font-size: 40rpx; color: var(--text-tertiary); }
+
+.empty-card {
+  margin-top: 16rpx;
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  padding: 56rpx 32rpx 48rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24rpx;
+}
+.empty-tile {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 36rpx;
+  background: var(--surface-nested);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.empty-tile .bulb { transform: scale(0.9); }
+.empty-title { color: var(--text-primary); }
+.empty-sub { color: var(--text-secondary); }
+
+.hint-card {
+  margin-top: 48rpx;
+  border-radius: var(--radius-row);
+  background: var(--surface);
+  padding: 40rpx 32rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+.hint-body { color: var(--text-body); }
+.hint-link { color: var(--accent); }
+
+.text-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  margin-top: 32rpx;
+}
+.text-action .t-body { color: var(--accent); }
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  margin-top: 32rpx;
+  border-radius: var(--radius-pill);
+  font-size: 32rpx;
+  font-weight: 600;
+}
+
+.bulb { position: relative; width: 104rpx; height: 104rpx; }
+.bulb-glass {
+  position: absolute;
+  left: 12rpx;
+  top: 0;
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: var(--bulb);
+}
+.bulb-base {
+  position: absolute;
+  left: 38rpx;
+  top: 76rpx;
+  width: 28rpx;
+  height: 18rpx;
+  border-radius: 4rpx;
+  background: var(--bulb-base);
+}
+
+.tabbar {
+  position: fixed;
+  left: var(--space-page);
+  right: var(--space-page);
+  bottom: calc(24rpx + env(safe-area-inset-bottom));
+  height: 96rpx;
+  border-radius: 48rpx;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+}
+.tab { flex: 1; display: flex; align-items: center; justify-content: center; gap: 12rpx; }
+.tab-text { color: var(--text-secondary); }
+.tab-active { color: var(--text-body); }
+
+.dot { width: 12rpx; height: 12rpx; border-radius: 50%; flex: none; }
+.dot-accent { background: var(--accent); }

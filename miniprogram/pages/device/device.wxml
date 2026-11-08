@@ -1,0 +1,81 @@
+<view class="page">
+  <view class="statusbar">
+    <text class="t-caption">{{statusBarTime}}</text>
+    <text class="t-caption statusbar-right">●●●</text>
+  </view>
+
+  <view class="nav">
+    <view class="back-row">
+      <text class="back" bindtap="onBack">‹</text>
+      <view class="tracked {{canOperate ? '' : 'hot'}}"><text>{{eyebrow}}</text></view>
+    </view>
+    <text class="t-display title">{{title}}</text>
+  </view>
+
+  <view class="hero shadow-card">
+    <view class="hero-top">
+      <view class="hero-tile">
+        <view class="bulb">
+          <view class="bulb-glass"></view>
+          <view class="bulb-shine"></view>
+          <view class="bulb-base"></view>
+        </view>
+      </view>
+      <view class="hero-text">
+        <text class="t-card hero-name">{{title}}</text>
+        <view class="tracked {{canOperate ? 'ok' : 'hot'}}"><text>{{statusText}}</text></view>
+      </view>
+      <switch class="hero-switch" color="#2F6BFF" checked="{{powerOn}}" bindchange="onTogglePower" />
+    </view>
+
+    <block wx:if="{{showBrightness}}">
+      <view class="rule hero-rule"></view>
+      <view class="brightness-head">
+        <text class="t-label">亮度</text>
+        <text class="t-number brightness-value">{{brightnessText}}</text>
+      </view>
+      <slider
+        class="brightness-slider"
+        min="0"
+        max="100"
+        value="{{brightnessPercent}}"
+        block-size="20"
+        activeColor="#2F6BFF"
+        backgroundColor="#EDF0F4"
+        bindchanging="onBrightnessChanging"
+        bindchange="onBrightnessChange"
+      />
+      <text class="t-caption hero-note">{{deviceNote}}</text>
+    </block>
+
+    <text wx:else class="t-secondary hero-note">{{retainNote}}</text>
+  </view>
+
+  <view class="section-head">
+    <text class="t-heading">灯链</text>
+    <text class="t-label section-count">{{strips.length}} 条</text>
+  </view>
+
+  <view class="rows">
+    <view
+      wx:for="{{strips}}"
+      wx:key="index"
+      class="row shadow-soft"
+      data-index="{{item.index}}"
+      bindtap="onOpenStrip"
+    >
+      <view class="row-text">
+        <text class="t-card {{item.muted ? 'muted' : ''}}">{{item.title}}</text>
+        <text class="t-label row-meta">{{item.meta}}</text>
+      </view>
+      <text class="chev">›</text>
+    </view>
+  </view>
+
+  <view class="tabbar shadow-card">
+    <view wx:for="{{tabs}}" wx:key="id" class="tab">
+      <view wx:if="{{item.active}}" class="dot dot-accent"></view>
+      <text class="t-body tab-text {{item.active ? 'tab-active' : ''}}">{{item.label}}</text>
+    </view>
+  </view>
+</view>

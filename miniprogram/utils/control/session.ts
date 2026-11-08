@@ -27,6 +27,8 @@ export interface SessionState {
   connected: boolean;
   connecting: boolean;
   error: string | null;
+  /** 当前连接的设备号；未连接时为 null */
+  deviceId: string | null;
   power: boolean;
   brightness: number;
   maxBrightness: number;
@@ -50,6 +52,7 @@ export class ControlSession {
     connected: false,
     connecting: false,
     error: null,
+    deviceId: null,
     power: false,
     brightness: 0,
     maxBrightness: 200,
@@ -71,6 +74,7 @@ export class ControlSession {
   async connect(deviceId: string): Promise<void> {
     this.state.connecting = true;
     this.state.error = null;
+    this.state.deviceId = deviceId;
     try {
       await this.transport.connect(deviceId);
       const mtu = await this.transport.negotiateMtu(247);
@@ -84,6 +88,7 @@ export class ControlSession {
       this.state.connected = true;
     } catch (e) {
       this.state.connected = false;
+      this.state.deviceId = null;
       this.state.error = e instanceof Error ? e.message : String(e);
       throw e;
     } finally {
@@ -94,6 +99,7 @@ export class ControlSession {
   async disconnect(): Promise<void> {
     await this.transport.disconnect();
     this.state.connected = false;
+    this.state.deviceId = null;
   }
 
   async setPower(on: boolean): Promise<void> {

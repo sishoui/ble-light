@@ -30,6 +30,14 @@ export const LIMITS = {
   sceneNameBytes: 26,
 } as const;
 
+export const GATT = {
+  service: "6c756d65-6e00-4b1e-9a3c-000000000001",
+  rx: "6c756d65-6e00-4b1e-9a3c-000000000002",
+  tx: "6c756d65-6e00-4b1e-9a3c-000000000003",
+  state: "6c756d65-6e00-4b1e-9a3c-000000000004",
+  advertisedNamePrefix: "BleLight-",
+} as const;
+
 export const CMD = {
   SetPower: 0x01,
   SetBrightness: 0x02,

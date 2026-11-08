@@ -1,0 +1,15 @@
+{
+  "pages": [
+    "pages/devices/devices",
+    "pages/device/device",
+    "pages/strip/strip",
+    "pages/add-device/add-device"
+  ],
+  "window": {
+    "navigationStyle": "custom",
+    "backgroundColor": "#F2F4F7",
+    "backgroundTextStyle": "dark"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

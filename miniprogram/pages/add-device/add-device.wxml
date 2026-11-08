@@ -1,0 +1,75 @@
+<view class="page">
+  <view class="statusbar">
+    <text class="t-caption">{{statusBarTime}}</text>
+    <text class="t-caption statusbar-right">●●●</text>
+  </view>
+
+  <view class="nav">
+    <view class="back-row">
+      <text class="back" bindtap="onBack">‹</text>
+      <view class="tracked {{statusKind === 'on' ? '' : statusKind === 'hot' ? 'hot' : 'off'}}"><text>添加设备</text></view>
+    </view>
+    <text class="t-display title">附近的灯控</text>
+  </view>
+
+  <view class="scan-head">
+    <view class="tracked {{statusKind === 'on' ? '' : statusKind === 'hot' ? 'hot' : 'off'}}">
+      <text>{{statusText}}</text>
+    </view>
+    <text class="t-label count">{{countText}}</text>
+  </view>
+
+  <view wx:if="{{!empty}}" class="rows">
+    <view
+      wx:for="{{devices}}"
+      wx:key="deviceId"
+      class="row shadow-soft"
+      data-id="{{item.deviceId}}"
+      data-name="{{item.name}}"
+      bindtap="onPick"
+    >
+      <view class="row-tile">
+        <view class="bulb">
+          <view class="bulb-glass"></view>
+          <view class="bulb-base"></view>
+        </view>
+      </view>
+      <view class="row-text">
+        <text class="t-card">{{item.name}}</text>
+        <text class="t-label row-meta">{{connectingId === item.deviceId ? '正在连接…' : item.rssi + ' dBm'}}</text>
+      </view>
+      <text class="chev">›</text>
+    </view>
+  </view>
+
+  <view wx:else class="empty-card shadow-card">
+    <view class="empty-tile">
+      <view class="bulb">
+        <view class="bulb-glass"></view>
+        <view class="bulb-base"></view>
+      </view>
+    </view>
+    <text class="t-card empty-title">没有发现设备</text>
+    <text class="t-secondary empty-sub">确认灯控已通电并靠近手机</text>
+  </view>
+
+  <view wx:if="{{showPermissionHint}}" class="hint-card shadow-soft">
+    <view class="tracked hot"><text>检查定位与蓝牙权限</text></view>
+    <text class="t-body hint-body">微信需要定位权限才能扫描蓝牙设备，同时确认手机蓝牙已打开。</text>
+    <text class="t-label hint-link">去设置 →</text>
+  </view>
+
+  <view wx:if="{{scanning}}" class="text-action" bindtap="onStopScan">
+    <text class="t-body">停止扫描</text>
+  </view>
+  <view wx:else class="btn btn-primary" bindtap="onRescan">
+    <text>重新扫描</text>
+  </view>
+
+  <view class="tabbar shadow-card">
+    <view wx:for="{{tabs}}" wx:key="id" class="tab">
+      <view wx:if="{{item.active}}" class="dot dot-accent"></view>
+      <text class="t-body tab-text {{item.active ? 'tab-active' : ''}}">{{item.label}}</text>
+    </view>
+  </view>
+</view>

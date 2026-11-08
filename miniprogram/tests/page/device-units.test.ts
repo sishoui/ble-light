@@ -1,0 +1,136 @@
+import { describe, it, expect } from "vitest";
+import { deviceListUnit } from "../../utils/control/device-list-unit";
+import { deviceDetailUnit } from "../../utils/control/device-detail-unit";
+
+describe("设备列表单元", () => {
+  const saved = [
+    { deviceId: "aa", name: "BleLight-3F2A", note: "客厅照明", ledCount: [30, 24, 0, 0, 0, 0, 0, 0], stripCount: 3 },
+    { deviceId: "bb", name: "BleLight-91C0", note: "书房灯带", ledCount: [24, 0, 0, 0, 0, 0, 0, 0], stripCount: 1 },
+  ];
+
+  it("没有已保存设备时是空态", () => {
+    const vm = deviceListUnit({ saved: [], connectedId: null, power: false });
+    expect(vm.empty).toBe(true);
+    expect(vm.cards).toEqual([]);
+  });
+
+  it("有设备时按备注名显示，没有备注用广播名", () => {
+    const vm = deviceListUnit({
+      saved: [saved[0], { ...saved[1], note: "" }],
+      connectedId: null,
+      power: false,
+    });
+    expect(vm.cards[0].title).toBe("客厅照明");
+    expect(vm.cards[1].title).toBe("BleLight-91C0");
+  });
+
+  it("只有当前连接的那台显示在线，其余是离线", () => {
+    const vm = deviceListUnit({ saved, connectedId: "aa", power: true });
+    expect(vm.cards[0].online).toBe(true);
+    expect(vm.cards[1].online).toBe(false);
+  });
+
+  it("离线设备的开关显示为关，即使它上次是开的", () => {
+    const vm = deviceListUnit({ saved, connectedId: "bb", power: true });
+    expect(vm.cards[0].powerOn).toBe(false);
+    expect(vm.cards[1].powerOn).toBe(true);
+  });
+
+  it("已配置灯珠的链数写进元信息", () => {
+    const vm = deviceListUnit({ saved, connectedId: null, power: false });
+    expect(vm.cards[0].meta).toBe("2 条灯链");
+  });
+
+  it("未配置任何灯珠的设备标为未配置", () => {
+    const vm = deviceListUnit({
+      saved: [{ ...saved[1], ledCount: new Array(8).fill(0) }],
+      connectedId: null,
+      power: false,
+    });
+    expect(vm.cards[0].meta).toBe("未配置");
+    expect(vm.cards[0].configured).toBe(false);
+  });
+
+  it("摘要统计总数与在线数", () => {
+    const vm = deviceListUnit({ saved, connectedId: "aa", power: false });
+    expect(vm.summary).toBe("已保存 2 台 · 1 台在线");
+  });
+
+  it("没有在线设备时摘要只报总数", () => {
+    const vm = deviceListUnit({ saved, connectedId: null, power: false });
+    expect(vm.summary).toBe("已保存 2 台");
+  });
+});
+
+describe("设备详情单元", () => {
+  const base = {
+    deviceName: "客厅照明",
+    connected: true,
+    power: true,
+    brightness: 150,
+    maxBrightness: 200,
+    strips: [
+      { index: 0, ledCount: 30, partCount: 4 },
+      { index: 1, ledCount: 24, partCount: 3 },
+      { index: 2, ledCount: 0, partCount: 0 },
+    ],
+  };
+
+  it("连接正常时显示亮度区", () => {
+    const vm = deviceDetailUnit(base);
+    expect(vm.showBrightness).toBe(true);
+    expect(vm.brightnessPercent).toBe(75);
+  });
+
+  it("关灯时亮度区收起但保留数值", () => {
+    const vm = deviceDetailUnit({ ...base, power: false });
+    expect(vm.showBrightness).toBe(false);
+    expect(vm.retainNote).toContain("75%");
+  });
+
+  it("离线时开关禁用且亮度区收起", () => {
+    const vm = deviceDetailUnit({ ...base, connected: false });
+    expect(vm.powerOn).toBe(false);
+    expect(vm.showBrightness).toBe(false);
+    expect(vm.canOperate).toBe(false);
+  });
+
+  it("灯链行标出灯珠数与部位数", () => {
+    const vm = deviceDetailUnit(base);
+    expect(vm.strips[0].meta).toBe("30 颗 · 4 个部位");
+    expect(vm.strips[2].meta).toBe("未配置灯珠");
+  });
+
+  it("未配置的灯链行不可下钻", () => {
+    const vm = deviceDetailUnit(base);
+    expect(vm.strips[0].navigable).toBe(true);
+    expect(vm.strips[2].navigable).toBe(false);
+  });
+
+  it("亮度百分比不会超过 100", () => {
+    const vm = deviceDetailUnit({ ...base, brightness: 255, maxBrightness: 200 });
+    expect(vm.brightnessPercent).toBe(100);
+  });
+
+  it("上限为 0 时不除零", () => {
+    const vm = deviceDetailUnit({ ...base, maxBrightness: 0 });
+    expect(Number.isFinite(vm.brightnessPercent)).toBe(true);
+  });
+
+  it("滑块位置与百分比一致", () => {
+    const vm = deviceDetailUnit({ ...base, brightness: 50, maxBrightness: 200 });
+    expect(vm.brightnessPercent).toBe(25);
+    expect(vm.sliderLeftPercent).toBe(25);
+  });
+
+  it("状态文案随开关变化", () => {
+    expect(deviceDetailUnit(base).statusText).toBe("正在出光");
+    expect(deviceDetailUnit({ ...base, power: false }).statusText).toBe("已关闭");
+    expect(deviceDetailUnit({ ...base, connected: false }).statusText).toBe("设备离线");
+  });
+
+  it("元信息汇总灯珠总数与亮度上限", () => {
+    const vm = deviceDetailUnit(base);
+    expect(vm.deviceNote).toBe("54 颗灯珠 · 亮度上限 200");
+  });
+});

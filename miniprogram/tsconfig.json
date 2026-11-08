@@ -12,5 +12,5 @@
     "lib": ["ES2022", "DOM"],
     "types": []
   },
-  "include": ["utils/**/*.ts", "tests/**/*.ts"]
+  "include": ["utils/**/*.ts", "tests/**/*.ts", "types/**/*.d.ts"]
 }
