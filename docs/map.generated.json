@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T05:54:36.180Z",
+  "generatedAt": "2026-11-08T05:56:09.169Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "3501de4",
-    "subject": "fix(miniprogram): BLE 监听只注册一次",
-    "date": "2026-11-08T13:53:42+08:00",
+    "sha": "241ef76",
+    "subject": "fix(miniprogram): 扫描失败时把原因显示出来",
+    "date": "2026-11-08T13:54:41+08:00",
     "branch": "spec-v1",
     "dirty": true
   },
@@ -2032,7 +2032,7 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 128397,
+        "size": 128405,
         "lines": 4394,
         "binary": false,
         "isDoc": false,
