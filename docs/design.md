@@ -160,14 +160,23 @@ font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue",
 ### 设备卡（设备列表页，双列）
 
 **两列网格**，列宽 332rpx，列间距 24rpx。
-卡片高 366rpx，`--surface` 白卡，48rpx 圆角，`--shadow-card`，`overflow: hidden`。
+卡片 `--surface` 白卡，48rpx 圆角，`--shadow-card`，`overflow: hidden`。
 
-- **封面**：顶部 224rpx，内缩 24rpx 放一块图标砖（`--surface-nested`，24rpx 圆角），
-  砖内一枚灯泡图形（暖黄玻璃 + 灰座）。封面通栏底色 `--surface-nested` 的 8% 透明变体可省略——直接留白。
-- **信息区**：内边距 24rpx。设备名 32rpx 600 `--text-body`，单行截断。
-  状态行：8rpx 圆点（在线 `--ok` / 未连接 `--dot-active`）+ 元信息 24rpx `--text-label`；
-  右侧原生 switch。
+**卡片高度不写死，按可用空间反推。** 两行卡片 + 行间距正好填到 tabBar 上方：
+`cardH = (可用高 − 行间距) / 2`。固定高度在 852 画布上会留下近 250pt 空白，
+窄屏又会溢出。封面吃卡片减掉信息区后的剩余高度。
+
+- **封面**：内缩 24rpx 放一块图标砖（`--surface-nested`，24rpx 圆角），
+  砖内一枚灯泡图形（暖黄玻璃 + 灰座）。但灯泡固定 104rpx 见方，**不随封面放大**。
+- **状态 chip**：封面左上角一枚白底胶囊，写「已连接」（蓝字）或「离线」（次级字色）。
+  状态词只在这里出现一次。
+- **信息区**：内边距 24rpx。设备名 `--text-card` 600 `--text-body`，单行截断。
+  状态行：12rpx 圆点（在线 `--ok` / 离线 `--text-tertiary`）+ 灯链数 `--text-label`；
+  右侧原生 switch。**离线卡的 switch 画成禁用**。
 - 整卡可点进详情；switch 独立可点，不触发下钻。
+
+**为什么状态词在 chip 而不是状态行**：174pt 宽的卡扣掉内边距与 switch 后只剩约 95pt，
+放不下「2 条灯链 · 离线」。位置不够就换位置，不缩小字号也不裁字。
 
 ### 下钻行（灯链 / 部位）
 
@@ -192,8 +201,15 @@ font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue",
 ### 底部导航
 
 白底胶囊浮条（48rpx 圆角，`--shadow-card`），三项等距：设备 / 场景 / 我的。
-当前项文字 `--text-body` + 前 8rpx `--accent` 圆点，其余 `--text-secondary`。
-**红色不得用于当前选中。**
+**每项是「24pt 描边图标 + 间距 8pt + 微标签文字」的上下一小列，整组在高度内居中。**
+条高 128rpx（图标、间距、文字行、上下内边距各 16rpx 累加）。
+
+- 图标一律 1.5pt 描边、无填充、无渐变、不用 emoji。三个图标画在 20×20 安全区内，视野一致。
+- 选中项：图标 `--accent`，文字 `--text-body`；未选中：两者都 `--text-secondary`。
+- **红色不得用于当前选中。**
+- 选中不靠颜色单独表意：图标填色 + 文字字色是两个通道，且文字始终在场。
+
+图标语义：设备 = 灯泡轮廓；场景 = 三条长度递减的时间轴；我的 = 人像轮廓。
 
 ### 微标签（Tracked Label）
 
