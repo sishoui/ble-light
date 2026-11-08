@@ -1,11 +1,9 @@
 /** 设备详情页：只做视图与事件转发，逻辑在 device-detail-unit。 */
 import { deviceDetailUnit } from "../../utils/control/device-detail-unit";
-import { brightnessDragUnit } from "../../utils/control/brightness-unit";
+import { percentToBrightness } from "../../utils/control/brightness-unit";
 import { getSession } from "../../utils/local/session-ref";
 import { loadSavedDevices } from "../../utils/local/devices";
 import { NATIVE_COLORS } from "../../utils/ui/theme";
-
-const drag = brightnessDragUnit({ max: 200 });
 
 Page({
   data: {
@@ -41,7 +39,6 @@ Page({
   refresh() {
     const session = getSession();
     const st = session.state;
-    drag.setMax(st.maxBrightness > 0 ? st.maxBrightness : 255);
 
     const saved = loadSavedDevices().find((d) => d.deviceId === this.data.deviceId);
     const deviceName = saved?.note.trim() || saved?.name || "设备";
@@ -67,15 +64,21 @@ Page({
       .then(() => this.refresh());
   },
 
+  /** 拖动中：换算成设备值交给会话层节流（20Hz latest-wins 只有那一份实现）。 */
   onBrightnessChanging(e: { detail: { value: number } }) {
-    const step = drag.onInput(e.detail.value, Date.now());
-    this.setData({ brightnessPercent: step.value, sliderLeftPercent: step.value });
-    if (step.send) void getSession().queueBrightness(step.value, Date.now());
+    const session = getSession();
+    const percent = e.detail.value;
+    this.setData({ brightnessPercent: percent, sliderLeftPercent: percent });
+    session.queueBrightness(percentToBrightness(percent, session.state.maxBrightness), Date.now());
   },
 
+  /** 松手：把挂起的值精确下发一次。 */
   onBrightnessChange(e: { detail: { value: number } }) {
-    const step = drag.onRelease(e.detail.value);
-    if (step.send) void getSession().flush().then(() => this.refresh());
+    const session = getSession();
+    const percent = e.detail.value;
+    this.setData({ brightnessPercent: percent, sliderLeftPercent: percent });
+    session.queueBrightness(percentToBrightness(percent, session.state.maxBrightness), Date.now());
+    void session.flush().then(() => this.refresh());
   },
 
   onOpenStrip(e: { currentTarget: { dataset: { index: number } } }) {

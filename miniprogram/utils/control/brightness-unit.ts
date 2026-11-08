@@ -1,67 +1,20 @@
 /**
- * 亮度拖动单元：20Hz latest-wins 单通道，松手精确下发。
+ * 亮度百分比换算。纯函数。
  *
- * 页面只把滑块事件喂进来，拿 send/value 决定发不发。所有节流状态住在这里，
- * 不碰传输层——发不发由调用方执行。
+ * 滑块是 0–100 的百分比，设备要的是 0–maxBrightness 的绝对值。
+ * 节流不在这里——归会话层（docs/testing.md §4「20Hz latest-wins」），
+ * 否则同一个规则会有两份实现。
  */
 
-/** 两次下发之间至少 50ms（20Hz）。 */
-export const THROTTLE_MS = 50;
-
-export interface DragStep {
-  send: boolean;
-  value: number;
+/** 百分比 → 设备亮度值。四舍五入并钳在 [0, max]。 */
+export function percentToBrightness(percent: number, max: number): number {
+  const safeMax = max > 0 ? max : 0;
+  const clamped = Math.min(100, Math.max(0, percent));
+  return Math.round((clamped / 100) * safeMax);
 }
 
-export class BrightnessDragUnit {
-  private max: number;
-  private lastSentAt = -Infinity;
-  private pending: number | null = null;
-  private current = 0;
-
-  constructor(opts: { max: number }) {
-    this.max = opts.max;
-  }
-
-  /** 当前显示值（拖动中实时变，松手后保持）。 */
-  get value(): number {
-    return this.current;
-  }
-
-  setMax(max: number): void {
-    this.max = max;
-    this.current = this.clamp(this.current);
-    if (this.pending !== null) this.pending = this.clamp(this.pending);
-  }
-
-  /** 拖动中：50ms 内只发最新值，不排队不叠加。 */
-  onInput(value: number, nowMs: number): DragStep {
-    const v = this.clamp(value);
-    this.current = v;
-    this.pending = v;
-
-    if (nowMs - this.lastSentAt >= THROTTLE_MS) {
-      this.lastSentAt = nowMs;
-      this.pending = null;
-      return { send: true, value: v };
-    }
-    return { send: false, value: v };
-  }
-
-  /** 松手：把挂起的值精确下发一次；没有挂起值就不发。 */
-  onRelease(value: number): DragStep {
-    const v = this.clamp(value);
-    this.current = v;
-    if (this.pending === null) return { send: false, value: v };
-    this.pending = null;
-    return { send: true, value: v };
-  }
-
-  private clamp(value: number): number {
-    return Math.min(Math.max(0, Math.round(value)), this.max);
-  }
-}
-
-export function brightnessDragUnit(opts: { max: number }): BrightnessDragUnit {
-  return new BrightnessDragUnit(opts);
+/** 设备亮度值 → 百分比。max 为 0 时返回 0，不除零。 */
+export function brightnessToPercent(value: number, max: number): number {
+  if (max <= 0) return 0;
+  return Math.min(100, Math.max(0, Math.round((value / max) * 100)));
 }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T05:40:44.865Z",
+  "generatedAt": "2026-11-08T05:43:20.057Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "7fa75c5",
-    "subject": "fix(miniprogram): 删掉假状态栏，原生控件颜色收进 theme 常量",
-    "date": "2026-11-08T13:39:54+08:00",
+    "sha": "c87925b",
+    "subject": "fix(design): 补 tracked.ok 绿点变体（设备详情的已连接状态用得上）",
+    "date": "2026-11-08T13:40:51+08:00",
     "branch": "spec-v1",
     "dirty": true
   },
@@ -749,7 +749,7 @@
       "role": "页面：设备列表（tab）/ 设备详情 / 灯链详情 / 添加设备。页面只做视图与事件绑定。",
       "exists": true,
       "fileCount": 16,
-      "lines": 1171,
+      "lines": 1174,
       "files": [
         "miniprogram/pages/add-device/add-device.json",
         "miniprogram/pages/add-device/add-device.ts",
@@ -1007,10 +1007,10 @@
       "path": "miniprogram/utils/control/brightness-unit.ts",
       "layer": "miniprogram",
       "seam": "page",
-      "role": "亮度拖动单元：20Hz latest-wins 节流与松手精确下发，纯状态机。",
+      "role": "亮度百分比 ↔ 设备值换算。节流不在这里，归会话层。",
       "exists": true,
       "fileCount": 1,
-      "lines": 67,
+      "lines": 20,
       "files": [
         "miniprogram/utils/control/brightness-unit.ts"
       ],
@@ -1396,9 +1396,9 @@
       "path": "miniprogram/tests/page/brightness-unit.test.ts",
       "name": "brightness-unit.test.ts",
       "description": null,
-      "lines": 78,
-      "cases": 9,
-      "asserts": 11,
+      "lines": 47,
+      "cases": 8,
+      "asserts": 16,
       "seam": "page",
       "violations": []
     },
@@ -1545,9 +1545,9 @@
   ],
   "testStats": {
     "files": 19,
-    "cases": 251,
-    "asserts": 328,
-    "lines": 2975,
+    "cases": 250,
+    "asserts": 333,
+    "lines": 2944,
     "bySeam": {
       "protocol": 4,
       "reducer": 3,
@@ -1564,7 +1564,7 @@
     "docs": 21,
     "tests": 22,
     "binary": 9,
-    "lines": 18462,
+    "lines": 18387,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
@@ -2008,7 +2008,7 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 126736,
+        "size": 126773,
         "lines": 4344,
         "binary": false,
         "isDoc": false,
@@ -2021,7 +2021,7 @@
         "name": "map.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 11346,
+        "size": 11337,
         "lines": 352,
         "binary": false,
         "isDoc": false,
@@ -2671,8 +2671,8 @@
         "name": "device.ts",
         "dir": "miniprogram/pages/device",
         "ext": ".ts",
-        "size": 2969,
-        "lines": 98,
+        "size": 3230,
+        "lines": 101,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -2827,8 +2827,8 @@
         "name": "brightness-unit.test.ts",
         "dir": "miniprogram/tests/page",
         "ext": ".ts",
-        "size": 2378,
-        "lines": 77,
+        "size": 1572,
+        "lines": 46,
         "binary": false,
         "isDoc": false,
         "isTest": true,
@@ -2996,13 +2996,13 @@
         "name": "brightness-unit.ts",
         "dir": "miniprogram/utils/control",
         "ext": ".ts",
-        "size": 1851,
-        "lines": 67,
+        "size": 814,
+        "lines": 20,
         "binary": false,
         "isDoc": false,
         "isTest": false,
         "module": "miniprogram/utils/control/brightness-unit.ts",
-        "description": "亮度拖动单元：20Hz latest-wins 单通道，松手精确下发。 页面只把滑块事件喂进来，拿 send/value 决定发不发。所有节流状态住在这里， 不碰传输层——发不发由调用方执行。"
+        "description": "亮度百分比换算。纯函数。 滑块是 0–100 的百分比，设备要的是 0–maxBrightness 的绝对值。 节流不在这里——归会话层（docs/testing.md §4「20Hz latest-wins」）， 否则同一个规则会有两份实现。"
       },
       {
         "path": "miniprogram/utils/control/device-detail-unit.ts",
