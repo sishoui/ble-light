@@ -95,6 +95,7 @@ page {
   background: var(--accent);
 }
 .tracked.hot::before { background: var(--dot-active); }
+.tracked.ok::before { background: var(--ok); }
 .tracked.off::before { background: var(--text-tertiary); }
 
 /* 表面 */

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T05:39:49.687Z",
+  "generatedAt": "2026-11-08T05:40:44.865Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "52f51de",
-    "subject": "feat(miniprogram): 四个页面 + wx BLE 传输层，完成 #5",
-    "date": "2026-11-08T13:36:28+08:00",
+    "sha": "7fa75c5",
+    "subject": "fix(miniprogram): 删掉假状态栏，原生控件颜色收进 theme 常量",
+    "date": "2026-11-08T13:39:54+08:00",
     "branch": "spec-v1",
     "dirty": true
   },
@@ -777,7 +777,7 @@
       "role": "设计变量的可执行副本：颜色、圆角、间距、动效与字号表。权威定义在 docs/design.md。",
       "exists": true,
       "fileCount": 1,
-      "lines": 147,
+      "lines": 148,
       "files": [
         "miniprogram/app.wxss"
       ],
@@ -1564,7 +1564,7 @@
     "docs": 21,
     "tests": 22,
     "binary": 9,
-    "lines": 18461,
+    "lines": 18462,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
@@ -2567,8 +2567,8 @@
         "name": "app.wxss",
         "dir": "miniprogram",
         "ext": ".wxss",
-        "size": 4456,
-        "lines": 147,
+        "size": 4504,
+        "lines": 148,
         "binary": false,
         "isDoc": false,
         "isTest": false,
