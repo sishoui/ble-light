@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T17:07:19.527Z",
+  "generatedAt": "2026-11-08T17:10:52.454Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "76260fc",
-    "subject": "docs(design): 定下方格选区与部位色阶",
-    "date": "2026-11-09T01:02:48+08:00",
+    "sha": "f1167f8",
+    "subject": "fix(tooling): map:check 拦住声明了却不存在模块",
+    "date": "2026-11-09T01:09:48+08:00",
     "branch": "main",
     "dirty": true
   },
@@ -1152,6 +1152,32 @@
       "isAgentDoc": false
     },
     {
+      "path": "docs/design/device-detail-2.md",
+      "name": "device-detail-2.md",
+      "title": "设备详情 · 常态（v2）",
+      "purpose": null,
+      "status": null,
+      "hasFrontmatter": true,
+      "lines": 27,
+      "bytes": 773,
+      "hash": "23fd0f257bea633c",
+      "isAdr": false,
+      "isAgentDoc": false
+    },
+    {
+      "path": "docs/design/device-detail-error-2.md",
+      "name": "device-detail-error-2.md",
+      "title": "设备详情 · 错误态（v2）",
+      "purpose": null,
+      "status": null,
+      "hasFrontmatter": true,
+      "lines": 26,
+      "bytes": 555,
+      "hash": "faf66ac123d9b9de",
+      "isAdr": false,
+      "isAgentDoc": false
+    },
+    {
       "path": "docs/design/device-detail-error.md",
       "name": "device-detail-error.md",
       "title": "设备详情 · 错误（未连接）",
@@ -1191,6 +1217,19 @@
       "isAgentDoc": false
     },
     {
+      "path": "docs/design/device-list-2.md",
+      "name": "device-list-2.md",
+      "title": "设备列表 · 双列卡片（v2）",
+      "purpose": null,
+      "status": null,
+      "hasFrontmatter": true,
+      "lines": 26,
+      "bytes": 860,
+      "hash": "cebc0d93a8124470",
+      "isAdr": false,
+      "isAgentDoc": false
+    },
+    {
       "path": "docs/design/device-list-add-menu.md",
       "name": "device-list-add-menu.md",
       "title": "设备列表 · 添加菜单展开",
@@ -1200,6 +1239,19 @@
       "lines": 24,
       "bytes": 507,
       "hash": "34229f3b43ed6675",
+      "isAdr": false,
+      "isAgentDoc": false
+    },
+    {
+      "path": "docs/design/device-list-empty-2.md",
+      "name": "device-list-empty-2.md",
+      "title": "设备列表 · 空态（v2）",
+      "purpose": null,
+      "status": null,
+      "hasFrontmatter": true,
+      "lines": 25,
+      "bytes": 524,
+      "hash": "f8e2ade44975aea4",
       "isAdr": false,
       "isAgentDoc": false
     },
@@ -1296,8 +1348,8 @@
     }
   ],
   "docStats": {
-    "count": 21,
-    "lines": 1563,
+    "count": 25,
+    "lines": 1667,
     "withoutFrontmatter": 0,
     "adrCount": 4
   },
@@ -1529,18 +1581,17 @@
     "unseamed": 0
   },
   "files": {
-    "total": 166,
-    "code": 107,
-    "docs": 21,
+    "total": 165,
+    "code": 103,
+    "docs": 25,
     "tests": 24,
-    "binary": 14,
-    "lines": 19294,
+    "binary": 13,
+    "lines": 19393,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
-      ".md": 24,
-      ".png": 14,
-      ".svg": 4,
+      ".md": 28,
+      ".png": 13,
       ".json": 18,
       ".txt": 2,
       ".c": 19,
@@ -1560,8 +1611,7 @@
       "docs": 9,
       "docs/adr": 4,
       "docs/agents": 2,
-      "docs/design": 23,
-      "docs/design/v2": 5,
+      "docs/design": 27,
       "firmware": 2,
       "firmware/main": 26,
       "firmware/test": 8,
@@ -1781,6 +1831,19 @@
         "description": null
       },
       {
+        "path": "docs/design/device-detail-2.md",
+        "name": "device-detail-2.md",
+        "dir": "docs/design",
+        "ext": ".md",
+        "size": 773,
+        "lines": 26,
+        "binary": false,
+        "isDoc": true,
+        "isTest": false,
+        "module": null,
+        "description": "设备详情 · 常态（v2）"
+      },
+      {
         "path": "docs/design/device-detail-2.png",
         "name": "device-detail-2.png",
         "dir": "docs/design",
@@ -1792,6 +1855,19 @@
         "isTest": false,
         "module": null,
         "description": null
+      },
+      {
+        "path": "docs/design/device-detail-error-2.md",
+        "name": "device-detail-error-2.md",
+        "dir": "docs/design",
+        "ext": ".md",
+        "size": 555,
+        "lines": 25,
+        "binary": false,
+        "isDoc": true,
+        "isTest": false,
+        "module": null,
+        "description": "设备详情 · 错误态（v2）"
       },
       {
         "path": "docs/design/device-detail-error-2.png",
@@ -1885,6 +1961,19 @@
         "description": null
       },
       {
+        "path": "docs/design/device-list-2.md",
+        "name": "device-list-2.md",
+        "dir": "docs/design",
+        "ext": ".md",
+        "size": 860,
+        "lines": 25,
+        "binary": false,
+        "isDoc": true,
+        "isTest": false,
+        "module": null,
+        "description": "设备列表 · 双列卡片（v2）"
+      },
+      {
         "path": "docs/design/device-list-2.png",
         "name": "device-list-2.png",
         "dir": "docs/design",
@@ -1922,6 +2011,19 @@
         "isTest": false,
         "module": null,
         "description": null
+      },
+      {
+        "path": "docs/design/device-list-empty-2.md",
+        "name": "device-list-empty-2.md",
+        "dir": "docs/design",
+        "ext": ".md",
+        "size": 524,
+        "lines": 24,
+        "binary": false,
+        "isDoc": true,
+        "isTest": false,
+        "module": null,
+        "description": "设备列表 · 空态（v2）"
       },
       {
         "path": "docs/design/device-list-empty-2.png",
@@ -2028,77 +2130,12 @@
         "description": null
       },
       {
-        "path": "docs/design/v2/device-detail-error.svg",
-        "name": "device-detail-error.svg",
-        "dir": "docs/design/v2",
-        "ext": ".svg",
-        "size": 6889,
-        "lines": null,
-        "binary": false,
-        "isDoc": false,
-        "isTest": false,
-        "module": null,
-        "description": null
-      },
-      {
-        "path": "docs/design/v2/device-detail.svg",
-        "name": "device-detail.svg",
-        "dir": "docs/design/v2",
-        "ext": ".svg",
-        "size": 7212,
-        "lines": null,
-        "binary": false,
-        "isDoc": false,
-        "isTest": false,
-        "module": null,
-        "description": null
-      },
-      {
-        "path": "docs/design/v2/device-list-empty.svg",
-        "name": "device-list-empty.svg",
-        "dir": "docs/design/v2",
-        "ext": ".svg",
-        "size": 4137,
-        "lines": null,
-        "binary": false,
-        "isDoc": false,
-        "isTest": false,
-        "module": null,
-        "description": null
-      },
-      {
-        "path": "docs/design/v2/device-list.svg",
-        "name": "device-list.svg",
-        "dir": "docs/design/v2",
-        "ext": ".svg",
-        "size": 9065,
-        "lines": null,
-        "binary": false,
-        "isDoc": false,
-        "isTest": false,
-        "module": null,
-        "description": null
-      },
-      {
-        "path": "docs/design/v2/preview.png",
-        "name": "preview.png",
-        "dir": "docs/design/v2",
-        "ext": ".png",
-        "size": 287716,
-        "lines": null,
-        "binary": true,
-        "isDoc": false,
-        "isTest": false,
-        "module": null,
-        "description": null
-      },
-      {
         "path": "docs/map.generated.json",
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 131935,
-        "lines": 4512,
+        "size": 134771,
+        "lines": 4616,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -2110,8 +2147,8 @@
         "name": "map.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 10388,
-        "lines": 324,
+        "size": 10362,
+        "lines": 323,
         "binary": false,
         "isDoc": false,
         "isTest": false,

@@ -274,8 +274,7 @@
     ],
     "docsAllowedPrefixes": [
       "docs/adr/",
-      "docs/design/",
-      "docs/design/v2/"
+      "docs/design/"
     ],
     "bannedDocPatterns": [
       "handoff",
