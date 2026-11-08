@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T17:26:33.073Z",
+  "generatedAt": "2026-11-08T17:27:07.472Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "ef0cbc9",
-    "subject": "docs(design): v2 四页截图更新为改进版",
-    "date": "2026-11-09T01:23:29+08:00",
+    "sha": "df87991",
+    "subject": "docs(design): v2 存档换成基线校准后的导出",
+    "date": "2026-11-09T01:26:37+08:00",
     "branch": "main",
     "dirty": true
   },
@@ -1282,6 +1282,32 @@
       "isAgentDoc": false
     },
     {
+      "path": "docs/design/effect-panel.md",
+      "name": "effect-panel.md",
+      "title": "灯效参数面板 · 呼吸",
+      "purpose": null,
+      "status": null,
+      "hasFrontmatter": true,
+      "lines": 35,
+      "bytes": 935,
+      "hash": "61519dad12922de6",
+      "isAdr": false,
+      "isAgentDoc": false
+    },
+    {
+      "path": "docs/design/parts-editor.md",
+      "name": "parts-editor.md",
+      "title": "部位编辑器 · 常态",
+      "purpose": null,
+      "status": null,
+      "hasFrontmatter": true,
+      "lines": 37,
+      "bytes": 1133,
+      "hash": "d2ea50780939bb93",
+      "isAdr": false,
+      "isAgentDoc": false
+    },
+    {
       "path": "docs/design/README.md",
       "name": "README.md",
       "title": "设计稿存档",
@@ -1291,6 +1317,19 @@
       "lines": 44,
       "bytes": 1157,
       "hash": "c3570ef60c3262ea",
+      "isAdr": false,
+      "isAgentDoc": false
+    },
+    {
+      "path": "docs/design/scene-timeline.md",
+      "name": "scene-timeline.md",
+      "title": "场景时间轴 · 日常",
+      "purpose": null,
+      "status": null,
+      "hasFrontmatter": true,
+      "lines": 38,
+      "bytes": 1042,
+      "hash": "d5b91e21c6878015",
       "isAdr": false,
       "isAgentDoc": false
     },
@@ -1348,8 +1387,8 @@
     }
   ],
   "docStats": {
-    "count": 25,
-    "lines": 1676,
+    "count": 28,
+    "lines": 1786,
     "withoutFrontmatter": 0,
     "adrCount": 4
   },
@@ -1581,17 +1620,17 @@
     "unseamed": 0
   },
   "files": {
-    "total": 165,
+    "total": 171,
     "code": 103,
-    "docs": 25,
+    "docs": 28,
     "tests": 24,
-    "binary": 13,
-    "lines": 19402,
+    "binary": 16,
+    "lines": 19509,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
-      ".md": 28,
-      ".png": 13,
+      ".md": 31,
+      ".png": 16,
       ".json": 18,
       ".txt": 2,
       ".c": 19,
@@ -1611,7 +1650,7 @@
       "docs": 9,
       "docs/adr": 4,
       "docs/agents": 2,
-      "docs/design": 27,
+      "docs/design": 33,
       "firmware": 2,
       "firmware/main": 26,
       "firmware/test": 8,
@@ -2091,6 +2130,58 @@
         "description": null
       },
       {
+        "path": "docs/design/effect-panel.md",
+        "name": "effect-panel.md",
+        "dir": "docs/design",
+        "ext": ".md",
+        "size": 935,
+        "lines": 34,
+        "binary": false,
+        "isDoc": true,
+        "isTest": false,
+        "module": null,
+        "description": "灯效参数面板 · 呼吸"
+      },
+      {
+        "path": "docs/design/effect-panel.png",
+        "name": "effect-panel.png",
+        "dir": "docs/design",
+        "ext": ".png",
+        "size": 157675,
+        "lines": null,
+        "binary": true,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": null
+      },
+      {
+        "path": "docs/design/parts-editor.md",
+        "name": "parts-editor.md",
+        "dir": "docs/design",
+        "ext": ".md",
+        "size": 1133,
+        "lines": 36,
+        "binary": false,
+        "isDoc": true,
+        "isTest": false,
+        "module": null,
+        "description": "部位编辑器 · 常态"
+      },
+      {
+        "path": "docs/design/parts-editor.png",
+        "name": "parts-editor.png",
+        "dir": "docs/design",
+        "ext": ".png",
+        "size": 179230,
+        "lines": null,
+        "binary": true,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": null
+      },
+      {
         "path": "docs/design/README.md",
         "name": "README.md",
         "dir": "docs/design",
@@ -2102,6 +2193,32 @@
         "isTest": false,
         "module": null,
         "description": "设计稿存档"
+      },
+      {
+        "path": "docs/design/scene-timeline.md",
+        "name": "scene-timeline.md",
+        "dir": "docs/design",
+        "ext": ".md",
+        "size": 1042,
+        "lines": 37,
+        "binary": false,
+        "isDoc": true,
+        "isTest": false,
+        "module": null,
+        "description": "场景时间轴 · 日常"
+      },
+      {
+        "path": "docs/design/scene-timeline.png",
+        "name": "scene-timeline.png",
+        "dir": "docs/design",
+        "ext": ".png",
+        "size": 176414,
+        "lines": null,
+        "binary": true,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": null
       },
       {
         "path": "docs/design/strip-detail.md",
@@ -2134,7 +2251,7 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 133072,
+        "size": 133048,
         "lines": 4549,
         "binary": false,
         "isDoc": false,
