@@ -19,6 +19,9 @@ Page({
     brightnessText: "",
     retainNote: "",
     deviceNote: "",
+    showErrorCard: false,
+    errorTitle: "",
+    errorText: "",
     strips: [] as ReturnType<typeof deviceDetailUnit>["strips"],
     deviceId: "",
     tabs: [
@@ -49,6 +52,7 @@ Page({
       power: st.power,
       brightness: st.brightness,
       maxBrightness: st.maxBrightness,
+      error: st.error,
       strips: st.ledCount.map((ledCount, index) => ({
         index,
         ledCount,

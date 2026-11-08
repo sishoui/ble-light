@@ -46,6 +46,14 @@
     <text wx:else class="t-secondary hero-note">{{retainNote}}</text>
   </view>
 
+  <view wx:if="{{showErrorCard}}" class="error-card shadow-soft">
+    <view class="tracked hot"><text>{{errorTitle}}</text></view>
+    <text class="t-body error-text">{{errorText}}</text>
+    <view class="btn btn-primary retry" bindtap="onRetry">
+      <text>重新连接</text>
+    </view>
+  </view>
+
   <view class="section-head">
     <text class="t-heading">灯链</text>
     <text class="t-label section-count">{{strips.length}} 条</text>
@@ -55,7 +63,7 @@
     <view
       wx:for="{{strips}}"
       wx:key="index"
-      class="row shadow-soft"
+      class="row shadow-soft {{item.navigable ? '' : 'row-muted'}}"
       data-index="{{item.index}}"
       bindtap="onOpenStrip"
     >

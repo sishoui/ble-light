@@ -133,4 +133,20 @@ describe("设备详情单元", () => {
     const vm = deviceDetailUnit(base);
     expect(vm.deviceNote).toBe("54 颗灯珠 · 亮度上限 200");
   });
+
+  it("连不上且有过错误时显示错误卡与原因", () => {
+    const vm = deviceDetailUnit({ ...base, connected: false, error: "连接超时。检查设备是否通电，然后重试。" });
+    expect(vm.showErrorCard).toBe(true);
+    expect(vm.errorText).toContain("连接超时");
+  });
+
+  it("没连上但还没试过时不显示错误卡", () => {
+    const vm = deviceDetailUnit({ ...base, connected: false, error: null });
+    expect(vm.showErrorCard).toBe(false);
+  });
+
+  it("已连接时不显示错误卡", () => {
+    const vm = deviceDetailUnit({ ...base, error: "旧的错误" });
+    expect(vm.showErrorCard).toBe(false);
+  });
 });

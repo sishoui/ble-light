@@ -27,6 +27,10 @@ export interface DeviceDetailView {
   brightnessText: string;
   retainNote: string;
   deviceNote: string;
+  /** 离线且有过一次连接失败时，显示错误卡与重试入口 */
+  showErrorCard: boolean;
+  errorTitle: string;
+  errorText: string;
   strips: StripRowView[];
 }
 
@@ -36,6 +40,8 @@ export interface DeviceDetailInput {
   power: boolean;
   brightness: number;
   maxBrightness: number;
+  /** 会话层记下的最近一次错误；null 表示没出错 */
+  error?: string | null;
   strips: StripSummary[];
 }
 
@@ -62,6 +68,9 @@ export function deviceDetailUnit(input: DeviceDetailInput): DeviceDetailView {
     brightnessText: `${percent}%`,
     retainNote: `亮度保留为 ${percent}%，开灯即恢复。`,
     deviceNote: `${stripTotal} 颗灯珠 · 亮度上限 ${input.maxBrightness}`,
+    showErrorCard: !connected && !!input.error,
+    errorTitle: "连接失败",
+    errorText: input.error ?? "",
     strips: input.strips.map((s) => ({
       index: s.index,
       title: `灯链 ${s.index + 1}`,

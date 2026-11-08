@@ -39,6 +39,19 @@
 .brightness-slider { margin: 24rpx 0 0; }
 .hero-note { display: block; margin-top: 16rpx; color: var(--text-secondary); }
 
+/* 错误卡 */
+.error-card {
+  margin-top: 48rpx;
+  border-radius: var(--radius-row);
+  background: var(--surface);
+  padding: 40rpx 32rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+.error-text { color: var(--text-body); }
+.retry { margin-top: 16rpx; }
+
 /* 区块 */
 .section-head {
   display: flex;
@@ -61,6 +74,7 @@
 .row-text { flex: 1; display: flex; flex-direction: column; gap: 8rpx; }
 .row-text .t-card { color: var(--text-body); }
 .row-text .muted { color: var(--text-tertiary); }
+.row-muted { opacity: 0.72; }
 .row-meta { color: var(--text-secondary); }
 .chev { font-size: 40rpx; color: var(--text-tertiary); }
 
