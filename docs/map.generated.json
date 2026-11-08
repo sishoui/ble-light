@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T17:10:52.454Z",
+  "generatedAt": "2026-11-08T17:20:57.066Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "f1167f8",
-    "subject": "fix(tooling): map:check 拦住声明了却不存在模块",
-    "date": "2026-11-09T01:09:48+08:00",
+    "sha": "95ad565",
+    "subject": "docs(design): v2 四页存档，删掉已被取代的 SVG 副本",
+    "date": "2026-11-09T01:11:08+08:00",
     "branch": "main",
     "dirty": true
   },
@@ -1119,9 +1119,9 @@
       "purpose": "视觉语言的唯一权威。颜色、字体、间距、圆角、动效、文案与禁令。",
       "status": "生效",
       "hasFrontmatter": true,
-      "lines": 299,
-      "bytes": 13701,
-      "hash": "4e82adaa2d7cb1a1",
+      "lines": 308,
+      "bytes": 13995,
+      "hash": "918b04269494fb89",
       "isAdr": false,
       "isAgentDoc": false
     },
@@ -1349,7 +1349,7 @@
   ],
   "docStats": {
     "count": 25,
-    "lines": 1667,
+    "lines": 1676,
     "withoutFrontmatter": 0,
     "adrCount": 4
   },
@@ -1586,7 +1586,7 @@
     "docs": 25,
     "tests": 24,
     "binary": 13,
-    "lines": 19393,
+    "lines": 19402,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
@@ -1770,8 +1770,8 @@
         "name": "design.md",
         "dir": "docs",
         "ext": ".md",
-        "size": 13701,
-        "lines": 298,
+        "size": 13995,
+        "lines": 307,
         "binary": false,
         "isDoc": true,
         "isTest": false,
@@ -2134,8 +2134,8 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 134771,
-        "lines": 4616,
+        "size": 133064,
+        "lines": 4549,
         "binary": false,
         "isDoc": false,
         "isTest": false,
