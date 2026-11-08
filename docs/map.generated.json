@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T17:27:07.472Z",
+  "generatedAt": "2026-11-08T17:31:55.044Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "df87991",
-    "subject": "docs(design): v2 存档换成基线校准后的导出",
-    "date": "2026-11-09T01:26:37+08:00",
+    "sha": "bb454c7",
+    "subject": "docs(design): 三个新页出稿并存档（待确认）",
+    "date": "2026-11-09T01:27:18+08:00",
     "branch": "main",
     "dirty": true
   },
@@ -1119,9 +1119,9 @@
       "purpose": "视觉语言的唯一权威。颜色、字体、间距、圆角、动效、文案与禁令。",
       "status": "生效",
       "hasFrontmatter": true,
-      "lines": 308,
-      "bytes": 13995,
-      "hash": "918b04269494fb89",
+      "lines": 320,
+      "bytes": 14681,
+      "hash": "c10e7c328c51901b",
       "isAdr": false,
       "isAgentDoc": false
     },
@@ -1388,7 +1388,7 @@
   ],
   "docStats": {
     "count": 28,
-    "lines": 1786,
+    "lines": 1798,
     "withoutFrontmatter": 0,
     "adrCount": 4
   },
@@ -1625,7 +1625,7 @@
     "docs": 28,
     "tests": 24,
     "binary": 16,
-    "lines": 19509,
+    "lines": 19521,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
@@ -1809,8 +1809,8 @@
         "name": "design.md",
         "dir": "docs",
         "ext": ".md",
-        "size": 13995,
-        "lines": 307,
+        "size": 14681,
+        "lines": 319,
         "binary": false,
         "isDoc": true,
         "isTest": false,
@@ -2251,8 +2251,8 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 133048,
-        "lines": 4549,
+        "size": 136073,
+        "lines": 4666,
         "binary": false,
         "isDoc": false,
         "isTest": false,
