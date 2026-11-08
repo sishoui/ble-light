@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T05:52:42.685Z",
+  "generatedAt": "2026-11-08T05:53:37.257Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "4438000",
-    "subject": "fix(miniprogram): 连上设备后把设备读回的灯珠数存进本机记录",
-    "date": "2026-11-08T13:50:17+08:00",
+    "sha": "fc7974b",
+    "subject": "fix(miniprogram): BLE 读写改用 ArrayBuffer",
+    "date": "2026-11-08T13:52:47+08:00",
     "branch": "spec-v1",
     "dirty": true
   },
@@ -723,7 +723,7 @@
       "role": "扫描、连接、MTU 协商、串行写、ACK 等待、多帧收集、错误分诊、日志。",
       "exists": true,
       "fileCount": 2,
-      "lines": 193,
+      "lines": 198,
       "files": [
         "miniprogram/utils/ble/buffer.ts",
         "miniprogram/utils/ble/transport.ts"
@@ -1588,7 +1588,7 @@
     "docs": 21,
     "tests": 23,
     "binary": 9,
-    "lines": 18568,
+    "lines": 18573,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
@@ -2032,8 +2032,8 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 127995,
-        "lines": 4381,
+        "size": 128429,
+        "lines": 4394,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -3033,8 +3033,8 @@
         "name": "transport.ts",
         "dir": "miniprogram/utils/ble",
         "ext": ".ts",
-        "size": 6052,
-        "lines": 177,
+        "size": 6310,
+        "lines": 182,
         "binary": false,
         "isDoc": false,
         "isTest": false,

@@ -46,8 +46,6 @@ function call<T>(fn: (opts: { success: (r: T) => void; fail: (e: { errCode?: num
   });
 }
 
-
-
 export class WxBleTransport implements Transport {
   connected = false;
   onNotify: ((frame: Uint8Array) => void) | null = null;
@@ -58,10 +56,12 @@ export class WxBleTransport implements Transport {
   private rxId = "";
   private txId = "";
   private stateId = "";
+  /** wx 的监听是进程级的，只能注册一次；重连不能再挂一遍。 */
+  private listenersBound = false;
 
-  async connect(deviceId: string): Promise<void> {
-    this.deviceId = deviceId;
-    await call((o) => wx.createBLEConnection({ deviceId, ...o }));
+  private bindListeners(): void {
+    if (this.listenersBound) return;
+    this.listenersBound = true;
 
     wx.onBLEConnectionStateChange((res) => {
       if (res.deviceId === this.deviceId && !res.connected) {
@@ -70,6 +70,17 @@ export class WxBleTransport implements Transport {
       }
     });
 
+    wx.onBLECharacteristicValueChange((res) => {
+      if (res.characteristicId === this.txId) {
+        this.onNotify?.(bufferToBytes(res.value));
+      }
+    });
+  }
+
+  async connect(deviceId: string): Promise<void> {
+    this.deviceId = deviceId;
+    await call((o) => wx.createBLEConnection({ deviceId, ...o }));
+    this.bindListeners();
     this.connected = true;
   }
 
@@ -111,12 +122,6 @@ export class WxBleTransport implements Transport {
       state: true,
       ...o,
     }));
-
-    wx.onBLECharacteristicValueChange((res) => {
-      if (res.characteristicId === this.txId) {
-        this.onNotify?.(bufferToBytes(res.value));
-      }
-    });
   }
 
   async readState(): Promise<Uint8Array> {
