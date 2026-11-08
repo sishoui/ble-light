@@ -2,7 +2,7 @@
 import { deviceDetailUnit } from "../../utils/control/device-detail-unit";
 import { percentToBrightness } from "../../utils/control/brightness-unit";
 import { getSession } from "../../utils/local/session-ref";
-import { loadSavedDevices } from "../../utils/local/devices";
+import { loadSavedDevices, rememberDevice } from "../../utils/local/devices";
 import { NATIVE_COLORS } from "../../utils/ui/theme";
 
 Page({
@@ -37,6 +37,18 @@ Page({
 
   onShow() {
     this.refresh();
+    this.ensureConnected();
+  },
+
+  /** 从列表点进来时可能没有活动连接；有设备号就连上，连不上由错误卡兜底。 */
+  ensureConnected() {
+    const session = getSession();
+    const id = this.data.deviceId;
+    if (!id || session.state.connected || session.state.connecting) return;
+    void session
+      .connect(id)
+      .then(() => this.refresh())
+      .catch(() => this.refresh());
   },
 
   refresh() {
@@ -45,6 +57,17 @@ Page({
 
     const saved = loadSavedDevices().find((d) => d.deviceId === this.data.deviceId);
     const deviceName = saved?.note.trim() || saved?.name || "设备";
+
+    // 连上就把设备读回的配置写回本机记录——设备是配置的唯一权威，
+    // 本机只留「人和设备的对应关系」。
+    if (st.connected && saved) {
+      rememberDevice({
+        deviceId: saved.deviceId,
+        name: saved.name,
+        ledCount: st.ledCount.slice(),
+        stripCount: st.stripCount,
+      });
+    }
 
     const vm = deviceDetailUnit({
       deviceName,

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T06:57:06.740Z",
+  "generatedAt": "2026-11-08T07:01:38.702Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "63956e1",
-    "subject": "chore: 同步面板",
-    "date": "2026-11-08T13:56:09+08:00",
+    "sha": "68d2ef1",
+    "subject": "fix(miniprogram): 写失败不再毒化整条写链",
+    "date": "2026-11-08T14:57:34+08:00",
     "branch": "spec-v1",
     "dirty": true
   },
@@ -750,7 +750,7 @@
       "role": "页面：设备列表（tab）/ 设备详情 / 灯链详情 / 添加设备。页面只做视图与事件绑定。",
       "exists": true,
       "fileCount": 16,
-      "lines": 1209,
+      "lines": 1232,
       "files": [
         "miniprogram/pages/add-device/add-device.json",
         "miniprogram/pages/add-device/add-device.ts",
@@ -1588,7 +1588,7 @@
     "docs": 21,
     "tests": 23,
     "binary": 9,
-    "lines": 18681,
+    "lines": 18707,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
@@ -1655,8 +1655,8 @@
         "name": ".gitignore",
         "dir": ".",
         "ext": ".gitignore",
-        "size": 238,
-        "lines": 15,
+        "size": 349,
+        "lines": 18,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -2032,8 +2032,8 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 128405,
-        "lines": 4394,
+        "size": 128745,
+        "lines": 4407,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -2695,8 +2695,8 @@
         "name": "device.ts",
         "dir": "miniprogram/pages/device",
         "ext": ".ts",
-        "size": 3322,
-        "lines": 105,
+        "size": 4141,
+        "lines": 128,
         "binary": false,
         "isDoc": false,
         "isTest": false,
