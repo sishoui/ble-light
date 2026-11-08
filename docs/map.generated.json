@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T07:01:38.702Z",
+  "generatedAt": "2026-11-08T07:02:43.581Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "68d2ef1",
-    "subject": "fix(miniprogram): 写失败不再毒化整条写链",
-    "date": "2026-11-08T14:57:34+08:00",
+    "sha": "53b63ba",
+    "subject": "feat(miniprogram): 设备详情自动重连，并把设备配置回写本机记录",
+    "date": "2026-11-08T15:01:53+08:00",
     "branch": "spec-v1",
     "dirty": true
   },
@@ -1340,8 +1340,8 @@
       "status": "生效",
       "hasFrontmatter": true,
       "lines": 39,
-      "bytes": 1873,
-      "hash": "ddc23b0e1b642a45",
+      "bytes": 1871,
+      "hash": "40deff93bf87d526",
       "isAdr": false,
       "isAgentDoc": false
     },
@@ -2097,7 +2097,7 @@
         "name": "status.md",
         "dir": "docs",
         "ext": ".md",
-        "size": 1873,
+        "size": 1871,
         "lines": 38,
         "binary": false,
         "isDoc": true,
