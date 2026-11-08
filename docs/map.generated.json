@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T12:03:10.999Z",
+  "generatedAt": "2026-11-08T13:10:27.982Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "89746ee",
-    "subject": "feat(firmware): 八条链各自独立 GPIO，写入补上分片",
-    "date": "2026-11-08T19:25:46+08:00",
+    "sha": "a34daea",
+    "subject": "fix(firmware): 引脚表避开 UART0，构建脚本不再丢日志与产物",
+    "date": "2026-11-08T20:03:26+08:00",
     "branch": "spec-v1",
     "dirty": true
   },
@@ -1198,7 +1198,7 @@
       "hasFrontmatter": true,
       "lines": 250,
       "bytes": 10915,
-      "hash": "46b2d6071be844df",
+      "hash": "38cea3270b62f95c",
       "isAdr": false,
       "isAgentDoc": false
     },
@@ -1606,17 +1606,18 @@
     "unseamed": 0
   },
   "files": {
-    "total": 157,
-    "code": 103,
+    "total": 162,
+    "code": 107,
     "docs": 21,
     "tests": 24,
-    "binary": 9,
+    "binary": 10,
     "lines": 19240,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
       ".md": 24,
-      ".png": 9,
+      ".png": 10,
+      ".svg": 4,
       ".json": 18,
       ".txt": 2,
       ".c": 19,
@@ -1637,6 +1638,7 @@
       "docs/adr": 4,
       "docs/agents": 2,
       "docs/design": 19,
+      "docs/design/v2": 5,
       "firmware": 2,
       "firmware/main": 26,
       "firmware/test": 8,
@@ -2043,6 +2045,71 @@
         "dir": "docs/design",
         "ext": ".png",
         "size": 29357,
+        "lines": null,
+        "binary": true,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": null
+      },
+      {
+        "path": "docs/design/v2/device-detail-error.svg",
+        "name": "device-detail-error.svg",
+        "dir": "docs/design/v2",
+        "ext": ".svg",
+        "size": 5161,
+        "lines": null,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": null
+      },
+      {
+        "path": "docs/design/v2/device-detail.svg",
+        "name": "device-detail.svg",
+        "dir": "docs/design/v2",
+        "ext": ".svg",
+        "size": 5319,
+        "lines": null,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": null
+      },
+      {
+        "path": "docs/design/v2/device-list-empty.svg",
+        "name": "device-list-empty.svg",
+        "dir": "docs/design/v2",
+        "ext": ".svg",
+        "size": 2998,
+        "lines": null,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": null
+      },
+      {
+        "path": "docs/design/v2/device-list.svg",
+        "name": "device-list.svg",
+        "dir": "docs/design/v2",
+        "ext": ".svg",
+        "size": 6099,
+        "lines": null,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": null
+      },
+      {
+        "path": "docs/design/v2/preview.png",
+        "name": "preview.png",
+        "dir": "docs/design/v2",
+        "ext": ".png",
+        "size": 109082,
         "lines": null,
         "binary": true,
         "isDoc": false,
@@ -3290,13 +3357,13 @@
         "name": "theme.ts",
         "dir": "miniprogram/utils/ui",
         "ext": ".ts",
-        "size": 443,
+        "size": 456,
         "lines": 13,
         "binary": false,
         "isDoc": false,
         "isTest": false,
         "module": null,
-        "description": "原生控件颜色。 switch / slider 这类原生组件的属性只接受字面色值，读不到 CSS 变量， 所以在这里留一份唯一副本。值与 docs/design.md 的变量一致： accent = --accent #2F6BFF track = --surface-nested #EDF0F4 改设计时必须同时改 docs/design.md、app.wxss 和这里。"
+        "description": "原生控件颜色。 switch / slider 这类原生组件的属性只接受字面色值，读不到 CSS 变量， 所以在这里留一份唯一副本。值与 docs/design.md 的变量一致： accent = --accent #2A61E8 track = --surface-nested #EDF0F4 改设计时必须同时改 docs/design.md、app.wxss 和这里。"
       },
       {
         "path": "package-lock.json",

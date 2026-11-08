@@ -21,7 +21,7 @@ page {
   --text-tertiary: #8d9cb2;
 
   /* 强调与语义 */
-  --accent: #2f6bff;
+  --accent: #2a61e8;
   --accent-press: #2456d6;
   --ok: #3fbf6f;
   --dot-active: #e5484d;

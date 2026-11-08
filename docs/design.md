@@ -103,7 +103,7 @@ font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue",
 
 | 变量 | 值 | 用途 |
 |---|---|---|
-| `--accent` | `#2F6BFF` | 蓝：开关、滑块、选中描边、主按钮、导航当前点 |
+| `--accent` | `#2A61E8` | 蓝：开关、滑块、选中描边、主按钮、导航当前点 |
 | `--accent-press` | `#2456D6` | 蓝按下态 |
 | `--ok` | `#3FBF6F` | 绿：已连接、成功 |
 | `--dot-active` | `#E5484D` | 红：未连接、设备离线、错误（**只表故障**） |
