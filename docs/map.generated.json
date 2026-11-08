@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T05:43:20.057Z",
+  "generatedAt": "2026-11-08T05:44:19.596Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "c87925b",
-    "subject": "fix(design): 补 tracked.ok 绿点变体（设备详情的已连接状态用得上）",
-    "date": "2026-11-08T13:40:51+08:00",
+    "sha": "0766b57",
+    "subject": "fix(miniprogram): 亮度节流只留会话层一份实现",
+    "date": "2026-11-08T13:43:34+08:00",
     "branch": "spec-v1",
     "dirty": true
   },
@@ -749,7 +749,7 @@
       "role": "页面：设备列表（tab）/ 设备详情 / 灯链详情 / 添加设备。页面只做视图与事件绑定。",
       "exists": true,
       "fileCount": 16,
-      "lines": 1174,
+      "lines": 1172,
       "files": [
         "miniprogram/pages/add-device/add-device.json",
         "miniprogram/pages/add-device/add-device.ts",
@@ -1564,7 +1564,7 @@
     "docs": 21,
     "tests": 22,
     "binary": 9,
-    "lines": 18387,
+    "lines": 18385,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
@@ -2619,8 +2619,8 @@
         "name": "add-device.ts",
         "dir": "miniprogram/pages/add-device",
         "ext": ".ts",
-        "size": 3423,
-        "lines": 118,
+        "size": 3380,
+        "lines": 116,
         "binary": false,
         "isDoc": false,
         "isTest": false,

@@ -5,8 +5,6 @@ import { rememberDevice } from "../../utils/local/devices";
 import { getSession } from "../../utils/local/session-ref";
 import { NATIVE_COLORS } from "../../utils/ui/theme";
 
-const EMPTY_AFTER_MS = 10_000;
-
 Page({
   data: {
     theme: NATIVE_COLORS,
@@ -66,7 +64,7 @@ Page({
   },
 
   render() {
-    const elapsed = this.data.scanning ? Date.now() - this.scanStartedAt : EMPTY_AFTER_MS;
+    const elapsed = this.scanStartedAt > 0 ? Date.now() - this.scanStartedAt : 0;
     const vm = discoverView({
       devices: this.found,
       scanning: this.data.scanning,
