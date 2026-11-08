@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T09:05:27.466Z",
+  "generatedAt": "2026-11-08T11:25:29.838Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,9 +7,9 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "2b51ae3",
-    "subject": "fix(firmware): 补上 State GATT 特征，连接不再在最后一步失败",
-    "date": "2026-11-08T16:15:17+08:00",
+    "sha": "51c1e94",
+    "subject": "fix: 修正 GATT UUID 字节序，连接失败后释放设备",
+    "date": "2026-11-08T17:05:43+08:00",
     "branch": "spec-v1",
     "dirty": true
   },
@@ -537,7 +537,7 @@
       "role": "命令 reducer：校验命令字 / 长度 / 取值，输出新状态、结果码与意图。",
       "exists": true,
       "fileCount": 1,
-      "lines": 135,
+      "lines": 136,
       "files": [
         "firmware/main/command.c"
       ],
@@ -668,9 +668,22 @@
       "role": "灯带句柄唯一所有者；运行时切 GPIO；推送像素。",
       "exists": true,
       "fileCount": 1,
-      "lines": 94,
+      "lines": 102,
       "files": [
         "firmware/main/led_strip_owner.c"
+      ],
+      "testCount": 0
+    },
+    {
+      "path": "firmware/main/strip_gpio.c",
+      "layer": "firmware",
+      "seam": null,
+      "role": "链号 → GPIO 的固定表。纯函数，宿主机可测，不进 RMT 依赖。",
+      "exists": true,
+      "fileCount": 1,
+      "lines": 15,
+      "files": [
+        "firmware/main/strip_gpio.c"
       ],
       "testCount": 0
     },
@@ -723,7 +736,7 @@
       "role": "扫描、连接、MTU 协商、串行写、ACK 等待、多帧收集、错误分诊、日志。",
       "exists": true,
       "fileCount": 2,
-      "lines": 230,
+      "lines": 255,
       "files": [
         "miniprogram/utils/ble/buffer.ts",
         "miniprogram/utils/ble/transport.ts"
@@ -815,7 +828,7 @@
       "role": "测生成器本身：扫描正确性、六类健康检查、协议向量与常量一致性。",
       "exists": true,
       "fileCount": 1,
-      "lines": 448,
+      "lines": 464,
       "files": [
         "scripts/map.test.mjs"
       ],
@@ -1407,6 +1420,16 @@
       "violations": []
     },
     {
+      "path": "firmware/test/test_strip_gpio.c",
+      "name": "test_strip_gpio.c",
+      "description": "链号 → GPIO 表。这张表错了整条链接在错的脚上，而且现场很难查： 灯不亮时看不出是固件选错脚、线接错、还是灯带坏了。",
+      "lines": 46,
+      "cases": 4,
+      "asserts": 0,
+      "seam": "render",
+      "violations": []
+    },
+    {
       "path": "miniprogram/tests/page/brightness-unit.test.ts",
       "name": "brightness-unit.test.ts",
       "description": null,
@@ -1480,9 +1503,9 @@
       "path": "miniprogram/tests/session/ble-buffer.test.ts",
       "name": "ble-buffer.test.ts",
       "description": null,
-      "lines": 40,
-      "cases": 5,
-      "asserts": 6,
+      "lines": 76,
+      "cases": 8,
+      "asserts": 16,
       "seam": "session",
       "violations": []
     },
@@ -1540,9 +1563,9 @@
       "path": "scripts/map.test.mjs",
       "name": "map.test.mjs",
       "description": "scripts/map.mjs 的测试。 为什么必须测：面板上每个数字、每条健康检查结论都由它生成。它悄悄错了， 整个面板和所有门禁都是假的——而且不会有任何东西报错。 用法：node --test scripts/map.test.mjs",
-      "lines": 449,
-      "cases": 30,
-      "asserts": 52,
+      "lines": 465,
+      "cases": 31,
+      "asserts": 53,
       "seam": "tooling",
       "violations": []
     },
@@ -1568,14 +1591,14 @@
     }
   ],
   "testStats": {
-    "files": 20,
-    "cases": 274,
-    "asserts": 373,
-    "lines": 3182,
+    "files": 21,
+    "cases": 282,
+    "asserts": 384,
+    "lines": 3280,
     "bySeam": {
       "protocol": 4,
       "reducer": 3,
-      "render": 0,
+      "render": 1,
       "session": 4,
       "page": 4,
       "tooling": 5
@@ -1583,12 +1606,12 @@
     "unseamed": 0
   },
   "files": {
-    "total": 154,
-    "code": 101,
+    "total": 157,
+    "code": 103,
     "docs": 21,
-    "tests": 23,
+    "tests": 24,
     "binary": 9,
-    "lines": 18984,
+    "lines": 19176,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
@@ -1596,8 +1619,8 @@
       ".png": 9,
       ".json": 18,
       ".txt": 2,
-      ".c": 17,
-      ".h": 12,
+      ".c": 19,
+      ".h": 13,
       ".yml": 1,
       ".defaults": 1,
       ".ts": 36,
@@ -1615,8 +1638,8 @@
       "docs/agents": 2,
       "docs/design": 19,
       "firmware": 2,
-      "firmware/main": 24,
-      "firmware/test": 7,
+      "firmware/main": 26,
+      "firmware/test": 8,
       "miniprogram": 8,
       "miniprogram/pages/add-device": 4,
       "miniprogram/pages/device": 4,
@@ -2032,8 +2055,8 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 128771,
-        "lines": 4407,
+        "size": 130701,
+        "lines": 4462,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -2045,8 +2068,8 @@
         "name": "map.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 11595,
-        "lines": 358,
+        "size": 11484,
+        "lines": 365,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -2188,8 +2211,8 @@
         "name": "CMakeLists.txt",
         "dir": "firmware/main",
         "ext": ".txt",
-        "size": 367,
-        "lines": 16,
+        "size": 374,
+        "lines": 17,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -2201,8 +2224,8 @@
         "name": "command.c",
         "dir": "firmware/main",
         "ext": ".c",
-        "size": 4624,
-        "lines": 135,
+        "size": 4702,
+        "lines": 136,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -2292,8 +2315,8 @@
         "name": "led_strip_owner.c",
         "dir": "firmware/main",
         "ext": ".c",
-        "size": 2942,
-        "lines": 94,
+        "size": 3357,
+        "lines": 102,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -2305,8 +2328,8 @@
         "name": "led_strip_owner.h",
         "dir": "firmware/main",
         "ext": ".h",
-        "size": 938,
-        "lines": 32,
+        "size": 999,
+        "lines": 35,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -2318,8 +2341,8 @@
         "name": "main.c",
         "dir": "firmware/main",
         "ext": ".c",
-        "size": 9995,
-        "lines": 286,
+        "size": 11125,
+        "lines": 302,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -2444,6 +2467,32 @@
         "description": "32 字节 State blob 的编解码。纯函数。 持久化格式：'L''M''E''N' + version(1) + 32 字节 State。解码失败整份拒绝。"
       },
       {
+        "path": "firmware/main/strip_gpio.c",
+        "name": "strip_gpio.c",
+        "dir": "firmware/main",
+        "ext": ".c",
+        "size": 502,
+        "lines": 15,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": "firmware/main/strip_gpio.c",
+        "description": "链号 → GPIO 表。纯函数，宿主机可测。"
+      },
+      {
+        "path": "firmware/main/strip_gpio.h",
+        "name": "strip_gpio.h",
+        "dir": "firmware/main",
+        "ext": ".h",
+        "size": 467,
+        "lines": 16,
+        "binary": false,
+        "isDoc": false,
+        "isTest": false,
+        "module": null,
+        "description": "链号 → GPIO 的固定表。 单独成文件是为了能在宿主机上测：led_strip_owner.c 依赖 RMT 头文件， 进不了宿主机测试，而这张表错了会让整条链接在错的脚上，很难查。"
+      },
+      {
         "path": "firmware/sdkconfig.defaults",
         "name": "sdkconfig.defaults",
         "dir": "firmware",
@@ -2461,8 +2510,8 @@
         "name": "main.c",
         "dir": "firmware/test",
         "ext": ".c",
-        "size": 470,
-        "lines": 16,
+        "size": 559,
+        "lines": 18,
         "binary": false,
         "isDoc": false,
         "isTest": true,
@@ -2546,6 +2595,19 @@
         "isTest": true,
         "module": null,
         "description": "持久化结构的编解码。坏数据、版本不匹配、超容量、写失败都算行为。"
+      },
+      {
+        "path": "firmware/test/test_strip_gpio.c",
+        "name": "test_strip_gpio.c",
+        "dir": "firmware/test",
+        "ext": ".c",
+        "size": 1610,
+        "lines": 45,
+        "binary": false,
+        "isDoc": false,
+        "isTest": true,
+        "module": null,
+        "description": "链号 → GPIO 表。这张表错了整条链接在错的脚上，而且现场很难查： 灯不亮时看不出是固件选错脚、线接错、还是灯带坏了。"
       },
       {
         "path": "GLOSSARY.md",
@@ -2955,8 +3017,8 @@
         "name": "ble-buffer.test.ts",
         "dir": "miniprogram/tests/session",
         "ext": ".ts",
-        "size": 1509,
-        "lines": 39,
+        "size": 3156,
+        "lines": 75,
         "binary": false,
         "isDoc": false,
         "isTest": true,
@@ -3046,8 +3108,8 @@
         "name": "transport.ts",
         "dir": "miniprogram/utils/ble",
         "ext": ".ts",
-        "size": 7973,
-        "lines": 214,
+        "size": 9140,
+        "lines": 239,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -3566,8 +3628,8 @@
         "name": "map.test.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 16807,
-        "lines": 448,
+        "size": 17621,
+        "lines": 464,
         "binary": false,
         "isDoc": false,
         "isTest": true,
@@ -3631,8 +3693,8 @@
         "name": "test-firmware.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 3802,
-        "lines": 113,
+        "size": 3820,
+        "lines": 114,
         "binary": false,
         "isDoc": false,
         "isTest": false,
@@ -4392,16 +4454,9 @@
     "todo": 21
   },
   "health": {
-    "issues": [
-      {
-        "level": "warn",
-        "kind": "seam-untested",
-        "path": null,
-        "message": "接缝「渲染合成」(render) 暂无测试（还没有产品代码，门禁未启用）"
-      }
-    ],
+    "issues": [],
     "errors": 0,
-    "warnings": 1,
+    "warnings": 0,
     "ok": true
   }
 }

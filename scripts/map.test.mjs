@@ -161,21 +161,37 @@ test("健康检查：已有产品代码的接缝缺测试是 error，没开始�
 });
 
 test("健康检查：给没测试的接缝写产品代码会让门禁从 warn 升为 error", () => {
-  // render 接缝尚未实现，先造一个最小模块，它必须立刻变红
-  const probe = join(REPO, "firmware", "main", "led_render.c");
+  /* 挑一个有产品代码的接缝（session 有 miniprogram/utils/ble 与 control），
+   * 临时把它的测试路径指向不存在的文件：测试集合里不再有它，而代码还在，
+   * 门禁就该从 warn 升为 error。 */
+  const cfgPath = join(REPO, "docs", "map.json");
+  const original = readFileSync(cfgPath, "utf8");
   try {
-    writeFileSync(probe, "void probe(void) {}\n", "utf8");
+    const cfg = JSON.parse(original);
+    cfg.rules.testSeamPaths.session = ["miniprogram/tests/_不存在_/"];
+    writeFileSync(cfgPath, JSON.stringify(cfg, null, 2) + "\n", "utf8");
+
     const map = runMap();
-    const render = map.health.issues.find(
-      (i) => i.kind === "seam-untested" && i.message.includes("(render)"),
+    const issue = map.health.issues.find(
+      (i) => i.kind === "seam-untested" && i.message.includes("(session)"),
     );
-    assert.ok(render, "render 接缝有代码后应被点名");
-    assert.equal(render.level, "error", "有产品代码的接缝缺测试必须是 error");
+    assert.ok(issue, "session 接缝丢掉测试后应被点名");
+    assert.equal(issue.level, "error", "有产品代码的接缝缺测试必须是 error");
     assert.ok(map.health.errors > 0, "有代码时健康检查应报错");
   } finally {
-    rmSync(probe, { force: true });
+    writeFileSync(cfgPath, original, "utf8");
     runMap();
   }
+});
+
+test("健康检查：render 还没写产品代码时只给 warn，不逼人写空测试", () => {
+  const map = runMap();
+  const issue = map.health.issues.find(
+    (i) => i.kind === "seam-untested" && i.message.includes("(render)"),
+  );
+  /* strip_gpio 的测试已经挂到 render 接缝，所以它不该再被点名；
+   * 真正没实现的是 led_render / effects / scene_compose。 */
+  assert.equal(issue, undefined, "render 已有测试，不该被点名");
 });
 
 test("健康检查：生成物与协议源一致时不报 generated-stale", () => {

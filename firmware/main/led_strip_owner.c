@@ -11,6 +11,7 @@
 #include "esp_log.h"
 #include "led_strip.h"
 #include "protocol_gen.h"
+#include "strip_gpio.h"
 
 static const char *TAG = "strip";
 
@@ -21,9 +22,12 @@ typedef struct {
 
 static strip_slot_t s_strips[PROTO_MAX_STRIPS];
 
-static esp_err_t create_handle(uint16_t count, led_strip_handle_t *out) {
+static esp_err_t create_handle(uint8_t strip_id, uint16_t count, led_strip_handle_t *out) {
+    const int gpio = lumen_strip_gpio(strip_id);
+    if (gpio < 0) return ESP_ERR_INVALID_ARG;
+
     led_strip_config_t cfg = {
-        .strip_gpio_num = LED_STRIP_GPIO,
+        .strip_gpio_num = gpio,
         .max_leds = count,
         .led_model = LED_MODEL_WS2812,
         .color_component_format = LED_STRIP_COLOR_COMPONENT_FMT_GRB,
@@ -37,29 +41,33 @@ static esp_err_t create_handle(uint16_t count, led_strip_handle_t *out) {
         .flags.with_dma = false,
 #endif
     };
-    return led_strip_new_rmt_device(&cfg, &rmt, out);
+    const esp_err_t err = led_strip_new_rmt_device(&cfg, &rmt, out);
+    if (err != ESP_OK) {
+        ESP_LOGE(TAG, "strip %u gpio %d create failed (%d)", strip_id, gpio, err);
+    }
+    return err;
 }
 
 void lumen_strip_init(const uint16_t *led_count, int strip_count) {
     memset(s_strips, 0, sizeof(s_strips));
-    for (int i = 0; i < strip_count && i < 8; i++) {
+    for (int i = 0; i < strip_count && i < PROTO_MAX_STRIPS; i++) {
         if (led_count[i] == 0) continue;
         led_strip_handle_t h = NULL;
-        if (create_handle(led_count[i], &h) == ESP_OK) {
+        if (create_handle((uint8_t)i, led_count[i], &h) == ESP_OK) {
             s_strips[i].handle = h;
             s_strips[i].count = led_count[i];
             led_strip_clear(h);
-        } else {
-            ESP_LOGE(TAG, "strip %d create failed", i);
+            ESP_LOGI(TAG, "strip %d ready: %u leds on gpio %d",
+                     i, led_count[i], lumen_strip_gpio((uint8_t)i));
         }
     }
 }
 
 bool lumen_strip_rebuild(uint8_t strip_id, uint16_t led_count) {
-    if (strip_id >= 8 || led_count == 0) return false;
+    if (strip_id >= PROTO_MAX_STRIPS || led_count == 0) return false;
 
     led_strip_handle_t fresh = NULL;
-    if (create_handle(led_count, &fresh) != ESP_OK) {
+    if (create_handle(strip_id, led_count, &fresh) != ESP_OK) {
         ESP_LOGE(TAG, "strip %u rebuild failed", strip_id);
         return false;
     }
@@ -73,7 +81,7 @@ bool lumen_strip_rebuild(uint8_t strip_id, uint16_t led_count) {
 }
 
 bool lumen_strip_show(uint8_t strip_id, const lumen_rgb_t *pixels, uint16_t count) {
-    if (strip_id >= 8) return false;
+    if (strip_id >= PROTO_MAX_STRIPS) return false;
     strip_slot_t *s = &s_strips[strip_id];
     if (s->handle == NULL) return false;
     const uint16_t n = count < s->count ? count : s->count;
@@ -84,7 +92,7 @@ bool lumen_strip_show(uint8_t strip_id, const lumen_rgb_t *pixels, uint16_t coun
 }
 
 void lumen_strip_fill(uint8_t strip_id, lumen_rgb_t color) {
-    if (strip_id >= 8) return;
+    if (strip_id >= PROTO_MAX_STRIPS) return;
     strip_slot_t *s = &s_strips[strip_id];
     if (s->handle == NULL) return;
     for (uint16_t i = 0; i < s->count; i++) {

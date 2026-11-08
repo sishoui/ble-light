@@ -107,7 +107,7 @@ static void notify_strip_config(uint8_t seq) {
     memset(payload, 0, sizeof(payload));
     for (int i = 0; i < PROTO_MAX_STRIPS; i++) {
         payload[i * 3 + 0] = (uint8_t)i;
-        payload[i * 3 + 1] = (uint8_t)LED_STRIP_GPIO;
+        payload[i * 3 + 1] = (uint8_t)lumen_strip_gpio((uint8_t)i);
         payload[i * 3 + 2] = (uint8_t)(i < s_core.state.strip_count ? 1 : 0);
     }
     uint8_t frame[PROTO_MAX_FRAME];
@@ -159,8 +159,16 @@ static void render_solid(void) {
     };
     for (int i = 0; i < s_core.state.strip_count && i < PROTO_MAX_STRIPS; i++) {
         if (s_core.state.led_count[i] == 0) continue;
-        const bool strip_on = (s_core.state.strip_power_mask & (1u << i)) != 0;
-        lumen_strip_fill((uint8_t)i, strip_on ? scaled : (lumen_rgb_t){ 0, 0, 0 });
+        /* 整机开关是总闸：关灯全黑。开灯时各链看自己的位，但掩码为 0
+         * 表示「没有单独关过任何链」，按全亮处理——出厂状态 mask 就是 0，
+         * 若按「有位才算开」解释，开了总闸也一片黑，单链开关反而挡住总闸。 */
+        const bool strip_on = s_core.state.strip_power_mask == 0
+            || (s_core.state.strip_power_mask & (1u << i)) != 0;
+        const lumen_rgb_t out = strip_on ? scaled : (lumen_rgb_t){ 0, 0, 0 };
+        ESP_LOGI(TAG, "render strip%u on=%d rgb=%u,%u,%u (power=%u bright=%u mask=0x%02X)",
+                 i, strip_on, out.r, out.g, out.b,
+                 s_core.state.power, s_core.state.brightness, s_core.state.strip_power_mask);
+        lumen_strip_fill((uint8_t)i, out);
     }
 }
 
@@ -242,6 +250,8 @@ void app_main(void) {
     s_last_out_color[2] = 120;
 
     lumen_strip_init(s_core.state.led_count, s_core.state.strip_count);
+    ESP_LOGI(TAG, "strips=%u leds[0]=%u gpio[0]=%d",
+             s_core.state.strip_count, s_core.state.led_count[0], lumen_strip_gpio(0));
 
     /* 广播名取 BT MAC 末两字节（docs/protocol.md §1）；随机数每次上电都变，
      * 手机侧会把它当成另一台设备。 */
@@ -258,6 +268,12 @@ void app_main(void) {
     }
 
     render_solid();
+
+    /* 开机自检：红／绿／蓝／白各 500ms。不依赖手机就能判断灯带通不通——
+     * 全灭说明接线、供电或数据线有问题，不是协议或小程序的问题。 */
+    s_core.selftest = DEVICE_SELFTEST_RUNNING;
+    s_core.selftest_started_ms = now_ms();
+    ESP_LOGI(TAG, "boot selftest: R/G/B/W");
 
     uint32_t last = 0;
     while (true) {

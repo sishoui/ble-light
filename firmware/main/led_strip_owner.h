@@ -8,7 +8,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define LED_STRIP_GPIO 3
+#include "protocol_gen.h"
+#include "strip_gpio.h"
+
+/** 单条链的灯珠上限。 */
 #define LED_STRIP_MAX 100
 
 typedef struct {

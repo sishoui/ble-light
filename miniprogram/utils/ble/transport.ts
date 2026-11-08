@@ -6,6 +6,7 @@
  */
 import type { Transport } from "../control/session";
 import { GATT } from "../protocol/constants.gen";
+import { chunkFrame } from "../protocol/chunk";
 import { bytesToBuffer, bufferToBytes } from "./buffer";
 
 /** 微信 BLE 错误码 → 人话。文案规则见 docs/design.md §9。 */
@@ -56,6 +57,8 @@ export class WxBleTransport implements Transport {
   private rxId = "";
   private txId = "";
   private stateId = "";
+  /** 协商后的 MTU；决定单片能带多少数据。未协商时用 BLE 默认值。 */
+  private mtu = 23;
   /** wx 的监听是进程级的，只能注册一次；重连不能再挂一遍。 */
   private listenersBound = false;
 
@@ -94,12 +97,13 @@ export class WxBleTransport implements Transport {
       const res = await call<{ mtu: number }>((o) =>
         wx.setBLEMTU({ deviceId: this.deviceId, mtu: requested, ...o }),
       );
-      return res.mtu;
+      this.mtu = res.mtu;
     } catch {
       /* 有些安卓机不支持协商，而小帧（≤20 字节）本来也不需要。
        * 退回默认 MTU 23，让连接继续；分片层会按实际 MTU 切片。 */
-      return 23;
+      this.mtu = 23;
     }
+    return this.mtu;
   }
 
   async discoverServices(): Promise<string[]> {
@@ -149,14 +153,35 @@ export class WxBleTransport implements Transport {
   }
 
   async write(frame: Uint8Array): Promise<void> {
-    await call((o) => wx.writeBLECharacteristicValue({
-      deviceId: this.deviceId,
-      serviceId: this.serviceId,
-      characteristicId: this.rxId,
-      value: bytesToBuffer(frame),
-      ...o,
-    }));
+    /* 必须分片：固件把每次写入的第一个字节当 ctrl（bit7 FIRST / bit6 LAST /
+     * 低 6 位序号）。直接发裸帧的话，magic 0xA6 会被当成 ctrl 解析，
+     * 设备一直等后续分片直到超时——帧被静默丢弃，灯永远不亮。 */
+    for (const chunk of framesForWrite(frame, this.mtu)) {
+      await call((o) => wx.writeBLECharacteristicValue({
+        deviceId: this.deviceId,
+        serviceId: this.serviceId,
+        characteristicId: this.rxId,
+        value: bytesToBuffer(chunk),
+        ...o,
+      }));
+    }
   }
+}
+
+/** 单片可携带的数据字节：min(mtu-3, 180) - 1（给 ctrl 留 1 字节），下限 19。 */
+export function chunkDataSize(mtu: number): number {
+  const capacity = Math.min(mtu - 3, 180);
+  return Math.max(capacity - 1, 19);
+}
+
+/**
+ * 一次 write 实际要发出去的分片。
+ *
+ * 抽成纯函数是为了能直接断言：固件把每片首字节当 ctrl，
+ * 拿裸帧去写会被当成不完整分片丢掉，而且没有任何报错。
+ */
+export function framesForWrite(frame: Uint8Array, mtu: number): Uint8Array[] {
+  return chunkFrame(frame, chunkDataSize(mtu));
 }
 
 /** UUID 大小写与长短格式都可能不同，按后 12 位比较。 */

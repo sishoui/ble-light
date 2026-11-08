@@ -122,6 +122,12 @@
       "role": "灯带句柄唯一所有者；运行时切 GPIO；推送像素。"
     },
     {
+      "path": "firmware/main/strip_gpio.c",
+      "layer": "firmware",
+      "seam": null,
+      "role": "链号 → GPIO 的固定表。纯函数，宿主机可测，不进 RMT 依赖。"
+    },
+    {
       "path": "firmware/main/gamma.c",
       "layer": "firmware",
       "seam": null,
@@ -345,7 +351,8 @@
         "firmware/test/test_storage.c"
       ],
       "render": [
-        "firmware/test/test_render.c"
+        "firmware/test/test_render.c",
+        "firmware/test/test_strip_gpio.c"
       ],
       "session": [
         "miniprogram/tests/session/"

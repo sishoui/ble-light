@@ -33,6 +33,7 @@ const HOST_SOURCES = [
   "effects.c",
   "led_render.c",
   "scene_compose.c",
+  "strip_gpio.c",
 ];
 
 const CC = process.env.CC || (process.platform === "win32" ? "gcc" : "cc");
