@@ -122,6 +122,7 @@ describe("设备详情单元", () => {
     power: true,
     brightness: 150,
     maxBrightness: 200,
+    stripCount: 3,
     strips: [
       { index: 0, ledCount: 30, partCount: 4 },
       { index: 1, ledCount: 24, partCount: 3 },
@@ -158,6 +159,31 @@ describe("设备详情单元", () => {
     const vm = deviceDetailUnit(base);
     expect(vm.strips[0].navigable).toBe(true);
     expect(vm.strips[2].navigable).toBe(false);
+  });
+
+  it("只列设备启用的链：1 条链的设备不显示 7 行「未配置」", () => {
+    /* 设备只声明 1 条链时，ledCount 里剩下的 7 项是占位，
+     * 显示出来就是纯噪声，用户会以为设备有 8 条坏掉的灯链。 */
+    const eight = Array.from({ length: 8 }, (_, index) => ({
+      index,
+      ledCount: index === 0 ? 20 : 0,
+      partCount: 0,
+    }));
+    const vm = deviceDetailUnit({ ...base, stripCount: 1, strips: eight });
+    expect(vm.strips).toHaveLength(1);
+    expect(vm.strips[0].meta).toBe("20 颗 · 0 个部位");
+    expect(vm.deviceNote).toContain("20 颗灯珠");
+  });
+
+  it("启用的链即使没配灯珠也列出来，好让用户知道要设置", () => {
+    const two = [
+      { index: 0, ledCount: 0, partCount: 0 },
+      { index: 1, ledCount: 0, partCount: 0 },
+      { index: 2, ledCount: 0, partCount: 0 },
+    ];
+    const vm = deviceDetailUnit({ ...base, stripCount: 2, strips: two });
+    expect(vm.strips).toHaveLength(2);
+    expect(vm.strips[0].meta).toBe("未配置灯珠");
   });
 
   it("亮度百分比不会超过 100", () => {

@@ -76,6 +76,7 @@ Page({
       brightness: st.brightness,
       maxBrightness: st.maxBrightness,
       error: st.error,
+      stripCount: st.stripCount,
       strips: st.ledCount.map((ledCount, index) => ({
         index,
         ledCount,

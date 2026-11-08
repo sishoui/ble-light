@@ -90,17 +90,27 @@ export class WxBleTransport implements Transport {
   }
 
   async negotiateMtu(requested: number): Promise<number> {
-    const res = await call<{ mtu: number }>((o) =>
-      wx.setBLEMTU({ deviceId: this.deviceId, mtu: requested, ...o }),
-    );
-    return res.mtu;
+    try {
+      const res = await call<{ mtu: number }>((o) =>
+        wx.setBLEMTU({ deviceId: this.deviceId, mtu: requested, ...o }),
+      );
+      return res.mtu;
+    } catch {
+      /* 有些安卓机不支持协商，而小帧（≤20 字节）本来也不需要。
+       * 退回默认 MTU 23，让连接继续；分片层会按实际 MTU 切片。 */
+      return 23;
+    }
   }
 
   async discoverServices(): Promise<string[]> {
     const res = await call<{ services: Array<{ uuid: string }> }>((o) =>
       wx.getBLEDeviceServices({ deviceId: this.deviceId, ...o }),
     );
-    return res.services.map((s) => s.uuid);
+    const uuids = res.services.map((s) => s.uuid);
+    /* 用设备实际报上来的字符串，不要拿规格里的写死值：大小写与长短格式
+     * 各家系统不一样，后续所有调用都必须带完全相同的 serviceId。 */
+    this.serviceId = require_(uuids, GATT.service, "服务");
+    return uuids;
   }
 
   async discoverCharacteristics(): Promise<string[]> {
@@ -108,9 +118,11 @@ export class WxBleTransport implements Transport {
       wx.getBLEDeviceCharacteristics({ deviceId: this.deviceId, serviceId: this.serviceId, ...o }),
     );
     const uuids = res.characteristics.map((c) => c.uuid);
-    this.rxId = pick(uuids, GATT.rx);
-    this.txId = pick(uuids, GATT.tx);
-    this.stateId = pick(uuids, GATT.state);
+    /* 找不到就抛错，不能退回规格里的 UUID：拿着设备上不存在的 UUID 去读写，
+     * 只会换来一句看不懂的系统错误，把真正的原因（UUID 对不上）盖住。 */
+    this.rxId = require_(uuids, GATT.rx, "写入");
+    this.txId = require_(uuids, GATT.tx, "通知");
+    this.stateId = require_(uuids, GATT.state, "状态");
     return uuids;
   }
 
@@ -147,23 +159,42 @@ export class WxBleTransport implements Transport {
   }
 }
 
-/** UUID 大小写与长短格式都可能不同，按后 8 位比较。 */
-function pick(uuids: string[], want: string): string {
+/** UUID 大小写与长短格式都可能不同，按后 12 位比较。 */
+function findUuid(uuids: string[], want: string): string | null {
   const tail = want.slice(-12).toLowerCase();
-  return uuids.find((u) => u.toLowerCase().endsWith(tail)) ?? want;
+  return uuids.find((u) => u.toLowerCase().endsWith(tail)) ?? null;
 }
 
-/** 扫描附近的灯控设备。返回设备 id 与广播名。 */
+/** 缺少必需的特征就抛错，并说明缺哪个、设备实际提供了什么。 */
+function require_(uuids: string[], want: string, role: string): string {
+  const found = findUuid(uuids, want);
+  if (found) return found;
+  throw new Error(`设备上没有${role}特征（缺 ${want.slice(-12)}）。确认固件版本。`);
+}
+
+/** 扫描附近的灯控设备。返回设备 id 与广播名。
+ *
+ * 监听只注册一次：wx.onBluetoothDeviceFound 是进程级的，每次扫描都挂一个
+ * 会让回调叠加，同一台设备被报多次、旧页面的回调也不会消失。 */
+let scanHandlerBound = false;
+let lastScanOnFound: ((d: { deviceId: string; name: string; rssi: number }) => void) | null = null;
+
 export function startScan(onFound: (d: { deviceId: string; name: string; rssi: number }) => void): Promise<void> {
+  lastScanOnFound = onFound;
+
   return new Promise((resolve, reject) => {
-    wx.onBluetoothDeviceFound((res) => {
-      for (const d of res.devices) {
-        const name = (d.name || d.localName || "").trim();
-        if (name.startsWith(GATT.advertisedNamePrefix)) {
-          onFound({ deviceId: d.deviceId, name, rssi: d.RSSI ?? 0 });
+    if (!scanHandlerBound) {
+      scanHandlerBound = true;
+      wx.onBluetoothDeviceFound((res) => {
+        if (lastScanOnFound === null) return;
+        for (const d of res.devices) {
+          const name = (d.name || d.localName || "").trim();
+          if (name.startsWith(GATT.advertisedNamePrefix)) {
+            lastScanOnFound({ deviceId: d.deviceId, name, rssi: d.RSSI ?? 0 });
+          }
         }
-      }
-    });
+      });
+    }
     wx.openBluetoothAdapter({
       success: () => {
         wx.startBluetoothDevicesDiscovery({
@@ -178,5 +209,6 @@ export function startScan(onFound: (d: { deviceId: string; name: string; rssi: n
 }
 
 export function stopScan(): void {
+  lastScanOnFound = null;
   wx.stopBluetoothDevicesDiscovery({});
 }

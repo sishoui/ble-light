@@ -30,6 +30,28 @@ describe("连接流水线", () => {
     }
   });
 
+  it("连接建立后任一步失败都主动断开，不占着设备", async () => {
+    /* 设备只接受 1 个连接，且连接期间停止广播。失败后不放手，
+     * 用户再扫描就永远搜不到这台设备——真机上表现为「点了没反应，再搜就没了」。 */
+    for (const step of ["mtu", "services", "characteristics", "subscribe", "readState"]) {
+      const t = new FakeTransport();
+      t.failAt = step;
+      const s = new ControlSession(t);
+      await expect(s.connect("dev-1")).rejects.toThrow();
+      expect(t.steps.at(-1)).toBe("disconnect");
+      expect(t.connected).toBe(false);
+    }
+  });
+
+  it("物理连接本身失败时不去断开，以免覆盖原始错误", async () => {
+    const t = new FakeTransport();
+    t.failAt = "connect";
+    const s = new ControlSession(t);
+    await expect(s.connect("dev-1")).rejects.toThrow();
+    expect(t.steps).toEqual(["connect:dev-1"]);
+    expect(s.state.error).toContain("connect failed");
+  });
+
   it("连上后用读到的状态，不用本地缓存", async () => {
     const t = new FakeTransport();
     t.readState = async () => {

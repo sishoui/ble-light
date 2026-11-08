@@ -42,6 +42,8 @@ export interface DeviceDetailInput {
   maxBrightness: number;
   /** 会话层记下的最近一次错误；null 表示没出错 */
   error?: string | null;
+  /** 设备实际启用的链数。ledCount 固定 8 项，只显示用到的那些。 */
+  stripCount: number;
   strips: StripSummary[];
 }
 
@@ -54,7 +56,11 @@ export function deviceDetailUnit(input: DeviceDetailInput): DeviceDetailView {
   const connected = input.connected;
   const powerOn = connected && input.power;
   const percent = clampPercent(input.brightness, input.maxBrightness);
-  const stripTotal = input.strips.reduce((sum, s) => sum + s.ledCount, 0);
+
+  /* 只列设备真正启用的链。设备声明的空链要留着——用户得知道它存在、
+   * 还得去配灯珠；超出 stripCount 的才是纯占位。 */
+  const shown = input.strips.filter((s) => s.index < input.stripCount);
+  const stripTotal = shown.reduce((sum, s) => sum + s.ledCount, 0);
 
   return {
     title: input.deviceName,
@@ -71,7 +77,7 @@ export function deviceDetailUnit(input: DeviceDetailInput): DeviceDetailView {
     showErrorCard: !connected && !!input.error,
     errorTitle: "连接失败",
     errorText: input.error ?? "",
-    strips: input.strips.map((s) => ({
+    strips: shown.map((s) => ({
       index: s.index,
       title: `灯链 ${s.index + 1}`,
       meta: s.ledCount > 0 ? `${s.ledCount} 颗 · ${s.partCount} 个部位` : "未配置灯珠",

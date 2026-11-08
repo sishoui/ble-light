@@ -67,6 +67,24 @@ test("node_modules 与 dist 不被计入", () => {
   assert.deepEqual(bad.map((f) => f.path), []);
 });
 
+test(".gitignore 忽略的文件不被计入", () => {
+  /* 构建产物散在源码目录里（firmware/sdkconfig、firmware/dependencies.lock），
+   * 只按目录名跳过管不到它们，面板的文件数与用例数会虚高。 */
+  const map = runMap();
+  const paths = map.files.list.map((f) => f.path);
+  for (const ignored of ["firmware/sdkconfig", "firmware/dependencies.lock"]) {
+    assert.ok(!paths.includes(ignored), `${ignored} 被 .gitignore 忽略，不该计入`);
+  }
+});
+
+test("手写的 sdkconfig.defaults 仍然计入", () => {
+  const map = runMap();
+  assert.ok(
+    map.files.list.some((f) => f.path === "firmware/sdkconfig.defaults"),
+    "sdkconfig.defaults 是源文件，不是构建产物",
+  );
+});
+
 test("文档扫描出 frontmatter 的 purpose", () => {
   const map = runMap();
   const protocol = map.docs.find((d) => d.path === "docs/protocol.md");

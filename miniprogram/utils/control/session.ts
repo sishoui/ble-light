@@ -75,8 +75,12 @@ export class ControlSession {
     this.state.connecting = true;
     this.state.error = null;
     this.state.deviceId = deviceId;
+    /* 物理连接建立之后才需要清理：前面失败时设备根本没连上，
+     * 再去 disconnect 只会产生一个多余的失败回调。 */
+    let linkUp = false;
     try {
       await this.transport.connect(deviceId);
+      linkUp = true;
       const mtu = await this.transport.negotiateMtu(247);
       if (mtu < 23) throw new Error(`协商出的 MTU ${mtu} 太小`);
       await this.transport.discoverServices();
@@ -87,6 +91,15 @@ export class ControlSession {
 
       this.state.connected = true;
     } catch (e) {
+      /* 设备只接受 1 个连接，且连接期间停止广播。失败后不放手，
+       * 用户再扫描就永远搜不到这台设备——真机上表现为「点了没反应，再搜就没了」。 */
+      if (linkUp) {
+        try {
+          await this.transport.disconnect();
+        } catch {
+          /* 断开失败不覆盖原始错误 */
+        }
+      }
       this.state.connected = false;
       this.state.deviceId = null;
       this.state.error = e instanceof Error ? e.message : String(e);

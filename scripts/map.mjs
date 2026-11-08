@@ -68,6 +68,38 @@ function walk(dir, out = []) {
   return out;
 }
 
+/** .gitignore 忽略掉的文件绝对路径。按目录名跳过管不到散落在源码目录里的构建产物。 */
+let gitIgnoredFiles = null;
+
+/**
+ * 被 .gitignore 忽略的文件集合。
+ *
+ * 只按目录名跳过是不够的：构建产物就散在源码目录里（firmware/sdkconfig、
+ * firmware/dependencies.lock），不排除就会算进文件数与用例数，面板数字虚高。
+ */
+function ignoredFiles() {
+  if (gitIgnoredFiles) return gitIgnoredFiles;
+  gitIgnoredFiles = new Set();
+  if (!gitAvailable()) return gitIgnoredFiles;
+
+  const known = new Set(
+    git(["ls-files", "-z", "--cached", "--others", "--exclude-standard"])
+      .split("\0")
+      .filter(Boolean)
+      .map((p) => join(ROOT, p)),
+  );
+  for (const abs of walk(ROOT)) {
+    if (!known.has(abs)) gitIgnoredFiles.add(abs);
+  }
+  return gitIgnoredFiles;
+}
+
+/** 仓库里所有该计入的文件：跳过目录黑名单与 .gitignore 忽略项。 */
+function trackedWalk(dir) {
+  const ignored = ignoredFiles();
+  return walk(dir).filter((abs) => !ignored.has(abs));
+}
+
 function sha256(text) {
   return createHash("sha256").update(text).digest("hex").slice(0, 16);
 }
@@ -353,7 +385,7 @@ function collectTests(config) {
   const toolingSeam = config.rules?.toolingTestSeam ?? null;
   const files = [];
   for (const r of roots) {
-    for (const abs of walk(join(ROOT, r))) {
+    for (const abs of trackedWalk(join(ROOT, r))) {
       const p = rel(abs);
       if (TEST_HINT.test(p) && !TEST_SUPPORT.test(p)) files.push(abs);
     }
@@ -407,7 +439,7 @@ function collectTests(config) {
 
 function collectFiles(config) {
   const modulePaths = new Set(config.modules.map((m) => m.path));
-  const files = walk(ROOT).map((abs) => {
+  const files = trackedWalk(ROOT).map((abs) => {
     const path = rel(abs);
     const lastSlash = path.lastIndexOf("/");
     const ext = path.slice(path.lastIndexOf("."));
