@@ -2,17 +2,9 @@
 
 .page {
   min-height: 100vh;
-  padding: 0 var(--space-page) calc(160rpx + env(safe-area-inset-bottom));
+  padding: env(safe-area-inset-top) var(--space-page) calc(160rpx + env(safe-area-inset-bottom));
   background: var(--bg);
 }
-
-.statusbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 88rpx;
-}
-.statusbar .t-caption { color: var(--text-secondary); }
 
 .nav { padding-bottom: 32rpx; }
 .back-row { display: flex; align-items: center; gap: 24rpx; height: 56rpx; }

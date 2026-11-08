@@ -1,9 +1,4 @@
 <view class="page">
-  <view class="statusbar">
-    <text class="t-caption">{{statusBarTime}}</text>
-    <text class="t-caption statusbar-right">●●●</text>
-  </view>
-
   <view class="nav">
     <view class="back-row">
       <text class="back" bindtap="onBack">‹</text>
@@ -25,7 +20,7 @@
         <text class="t-card hero-name">{{title}}</text>
         <view class="tracked {{canOperate ? 'ok' : 'hot'}}"><text>{{statusText}}</text></view>
       </view>
-      <switch class="hero-switch" color="#2F6BFF" checked="{{powerOn}}" bindchange="onTogglePower" />
+      <switch class="hero-switch" color="{{theme.accent}}" checked="{{powerOn}}" bindchange="onTogglePower" />
     </view>
 
     <block wx:if="{{showBrightness}}">
@@ -40,8 +35,8 @@
         max="100"
         value="{{brightnessPercent}}"
         block-size="20"
-        activeColor="#2F6BFF"
-        backgroundColor="#EDF0F4"
+        activeColor="{{theme.accent}}"
+        backgroundColor="{{theme.track}}"
         bindchanging="onBrightnessChanging"
         bindchange="onBrightnessChange"
       />

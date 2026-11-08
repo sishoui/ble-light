@@ -2,9 +2,11 @@
 import { deviceListUnit } from "../../utils/control/device-list-unit";
 import { loadSavedDevices } from "../../utils/local/devices";
 import { getSession } from "../../utils/local/session-ref";
+import { NATIVE_COLORS } from "../../utils/ui/theme";
 
 Page({
   data: {
+    theme: NATIVE_COLORS,
     cards: [] as ReturnType<typeof deviceListUnit>["cards"],
     empty: true,
     summary: "",

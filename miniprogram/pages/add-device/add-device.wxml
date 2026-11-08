@@ -1,9 +1,4 @@
 <view class="page">
-  <view class="statusbar">
-    <text class="t-caption">{{statusBarTime}}</text>
-    <text class="t-caption statusbar-right">●●●</text>
-  </view>
-
   <view class="nav">
     <view class="back-row">
       <text class="back" bindtap="onBack">‹</text>

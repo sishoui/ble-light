@@ -2,9 +2,11 @@
 import { stripDetailUnit } from "../../utils/control/strip-detail-unit";
 import { getSession } from "../../utils/local/session-ref";
 import { loadSavedDevices } from "../../utils/local/devices";
+import { NATIVE_COLORS } from "../../utils/ui/theme";
 
 Page({
   data: {
+    theme: NATIVE_COLORS,
     title: "",
     eyebrow: "",
     statusText: "",

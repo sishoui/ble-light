@@ -3,11 +3,13 @@ import { deviceDetailUnit } from "../../utils/control/device-detail-unit";
 import { brightnessDragUnit } from "../../utils/control/brightness-unit";
 import { getSession } from "../../utils/local/session-ref";
 import { loadSavedDevices } from "../../utils/local/devices";
+import { NATIVE_COLORS } from "../../utils/ui/theme";
 
 const drag = brightnessDragUnit({ max: 200 });
 
 Page({
   data: {
+    theme: NATIVE_COLORS,
     title: "",
     eyebrow: "",
     statusText: "",

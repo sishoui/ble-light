@@ -2,19 +2,9 @@
 
 .page {
   min-height: 100vh;
-  padding: 0 var(--space-page) calc(160rpx + env(safe-area-inset-bottom));
+  padding: env(safe-area-inset-top) var(--space-page) calc(160rpx + env(safe-area-inset-bottom));
   background: var(--bg);
 }
-
-/* 状态栏 */
-.statusbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 88rpx;
-  color: var(--text-secondary);
-}
-.statusbar .t-caption { color: var(--text-secondary); }
 
 /* 导航栏 */
 .nav { position: relative; padding-bottom: 32rpx; }

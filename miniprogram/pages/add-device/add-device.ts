@@ -3,11 +3,13 @@ import { discoverView, deviceLabel } from "../../utils/control/discover-unit";
 import { startScan, stopScan } from "../../utils/ble/transport";
 import { rememberDevice } from "../../utils/local/devices";
 import { getSession } from "../../utils/local/session-ref";
+import { NATIVE_COLORS } from "../../utils/ui/theme";
 
 const EMPTY_AFTER_MS = 10_000;
 
 Page({
   data: {
+    theme: NATIVE_COLORS,
     devices: [] as ReturnType<typeof discoverView>["devices"],
     empty: true,
     showPermissionHint: false,
