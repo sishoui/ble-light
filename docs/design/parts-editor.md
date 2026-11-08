@@ -1,6 +1,6 @@
 ---
 page: pages/strip/parts
-pixso_node: "11:755"
+pixso_node: "12:385"
 confirmed: 待确认
 ---
 
