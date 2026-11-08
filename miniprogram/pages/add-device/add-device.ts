@@ -41,7 +41,7 @@ Page({
   startScanning() {
     this.found = [];
     this.scanStartedAt = Date.now();
-    this.setData({ scanning: true, statusText: "正在搜索…", statusKind: "on" });
+    this.setData({ scanning: true, statusText: "正在搜索…", statusKind: "on", errorText: "" });
     this.render();
 
     void startScan((d) => {

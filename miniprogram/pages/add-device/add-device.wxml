@@ -48,6 +48,11 @@
     <text class="t-secondary empty-sub">确认灯控已通电并靠近手机</text>
   </view>
 
+  <view wx:if="{{errorText}}" class="hint-card shadow-soft">
+    <view class="tracked hot"><text>扫描没有开始</text></view>
+    <text class="t-body hint-body">{{errorText}}</text>
+  </view>
+
   <view wx:if="{{showPermissionHint}}" class="hint-card shadow-soft">
     <view class="tracked hot"><text>检查定位与蓝牙权限</text></view>
     <text class="t-body hint-body">微信需要定位权限才能扫描蓝牙设备，同时确认手机蓝牙已打开。</text>
