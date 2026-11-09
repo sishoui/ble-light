@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T01:20:11.415Z",
+  "generatedAt": "2026-11-09T01:28:38.201Z",
   "generator": "scripts/map.mjs",
   "project": {
     "name": "ble-light",
@@ -7,15 +7,478 @@
     "repo": "sishoui/ble-light"
   },
   "head": {
-    "sha": "1ae7ad0",
-    "subject": "docs(design): 三页稿几何清零，存档换新截图与节点",
-    "date": "2026-11-09T01:58:50+08:00",
+    "sha": "02924c7",
+    "subject": "docs(design): 三页补齐 tabBar 与灯效图标，矢量归位",
+    "date": "2026-11-09T09:20:14+08:00",
     "branch": "main",
     "dirty": true
   },
   "tasks": {
-    "ok": false,
-    "error": "gh 未登录，任务图不可用"
+    "ok": true,
+    "tasks": [
+      {
+        "number": 1,
+        "title": "规格 v1：BLE 灯带控制（部位 · 场景 · 两层灯效）",
+        "state": "OPEN",
+        "labels": [
+          "ready-for-agent"
+        ],
+        "parent": null,
+        "blockedBy": [],
+        "blocking": [],
+        "openBlockers": 0,
+        "ready": false,
+        "isParent": true,
+        "children": {
+          "completed": 3,
+          "percentCompleted": 25,
+          "total": 12
+        },
+        "closedAt": null,
+        "updatedAt": "2026-11-07T15:18:59Z",
+        "url": "https://github.com/sishoui/ble-light/issues/1"
+      },
+      {
+        "number": 2,
+        "title": "01 协议 payload 逐字节定义（prefactor）",
+        "state": "CLOSED",
+        "labels": [
+          "ready-for-agent"
+        ],
+        "parent": {
+          "number": 1,
+          "title": "规格 v1：BLE 灯带控制（部位 · 场景 · 两层灯效）"
+        },
+        "blockedBy": [],
+        "blocking": [
+          {
+            "number": 3,
+            "title": "02 固件 host 内核：编解码 + 命令 reducer",
+            "state": "CLOSED"
+          }
+        ],
+        "openBlockers": 0,
+        "ready": false,
+        "isParent": false,
+        "children": {
+          "completed": 0,
+          "percentCompleted": 0,
+          "total": 0
+        },
+        "closedAt": "2026-11-07T16:04:50Z",
+        "updatedAt": "2026-11-07T16:04:50Z",
+        "url": "https://github.com/sishoui/ble-light/issues/2"
+      },
+      {
+        "number": 3,
+        "title": "02 固件 host 内核：编解码 + 命令 reducer",
+        "state": "CLOSED",
+        "labels": [
+          "ready-for-agent"
+        ],
+        "parent": {
+          "number": 1,
+          "title": "规格 v1：BLE 灯带控制（部位 · 场景 · 两层灯效）"
+        },
+        "blockedBy": [
+          {
+            "number": 2,
+            "title": "01 协议 payload 逐字节定义（prefactor）",
+            "state": "CLOSED"
+          }
+        ],
+        "blocking": [
+          {
+            "number": 4,
+            "title": "03 固件：BLE 链路 + 单色出光",
+            "state": "CLOSED"
+          }
+        ],
+        "openBlockers": 0,
+        "ready": false,
+        "isParent": false,
+        "children": {
+          "completed": 0,
+          "percentCompleted": 0,
+          "total": 0
+        },
+        "closedAt": "2026-11-07T16:04:55Z",
+        "updatedAt": "2026-11-07T16:04:55Z",
+        "url": "https://github.com/sishoui/ble-light/issues/3"
+      },
+      {
+        "number": 4,
+        "title": "03 固件：BLE 链路 + 单色出光",
+        "state": "CLOSED",
+        "labels": [
+          "ready-for-agent"
+        ],
+        "parent": {
+          "number": 1,
+          "title": "规格 v1：BLE 灯带控制（部位 · 场景 · 两层灯效）"
+        },
+        "blockedBy": [
+          {
+            "number": 3,
+            "title": "02 固件 host 内核：编解码 + 命令 reducer",
+            "state": "CLOSED"
+          }
+        ],
+        "blocking": [
+          {
+            "number": 13,
+            "title": "05 部位划分端到端",
+            "state": "OPEN"
+          },
+          {
+            "number": 5,
+            "title": "04 小程序：连接、状态镜像、总闸与亮度",
+            "state": "OPEN"
+          }
+        ],
+        "openBlockers": 0,
+        "ready": false,
+        "isParent": false,
+        "children": {
+          "completed": 0,
+          "percentCompleted": 0,
+          "total": 0
+        },
+        "closedAt": "2026-11-07T16:28:12Z",
+        "updatedAt": "2026-11-07T16:28:12Z",
+        "url": "https://github.com/sishoui/ble-light/issues/4"
+      },
+      {
+        "number": 5,
+        "title": "04 小程序：连接、状态镜像、总闸与亮度",
+        "state": "OPEN",
+        "labels": [
+          "ready-for-agent"
+        ],
+        "parent": {
+          "number": 1,
+          "title": "规格 v1：BLE 灯带控制（部位 · 场景 · 两层灯效）"
+        },
+        "blockedBy": [
+          {
+            "number": 4,
+            "title": "03 固件：BLE 链路 + 单色出光",
+            "state": "CLOSED"
+          }
+        ],
+        "blocking": [
+          {
+            "number": 11,
+            "title": "11 本机数据：备注 / 封面 / 删除 / 演示设备 / 主题",
+            "state": "OPEN"
+          },
+          {
+            "number": 10,
+            "title": "10 诊断：自检 + 协议日志面板",
+            "state": "OPEN"
+          },
+          {
+            "number": 9,
+            "title": "09 断线重连与错误分诊",
+            "state": "OPEN"
+          }
+        ],
+        "openBlockers": 0,
+        "ready": true,
+        "isParent": false,
+        "children": {
+          "completed": 0,
+          "percentCompleted": 0,
+          "total": 0
+        },
+        "closedAt": null,
+        "updatedAt": "2026-11-08T16:19:20Z",
+        "url": "https://github.com/sishoui/ble-light/issues/5"
+      },
+      {
+        "number": 6,
+        "title": "06 八种灯效 + 两层叠加",
+        "state": "OPEN",
+        "labels": [
+          "ready-for-agent"
+        ],
+        "parent": {
+          "number": 1,
+          "title": "规格 v1：BLE 灯带控制（部位 · 场景 · 两层灯效）"
+        },
+        "blockedBy": [
+          {
+            "number": 13,
+            "title": "05 部位划分端到端",
+            "state": "OPEN"
+          }
+        ],
+        "blocking": [
+          {
+            "number": 7,
+            "title": "07 三场景 + 每部位时间轴",
+            "state": "OPEN"
+          }
+        ],
+        "openBlockers": 1,
+        "ready": false,
+        "isParent": false,
+        "children": {
+          "completed": 0,
+          "percentCompleted": 0,
+          "total": 0
+        },
+        "closedAt": null,
+        "updatedAt": "2026-11-07T15:19:45Z",
+        "url": "https://github.com/sishoui/ble-light/issues/6"
+      },
+      {
+        "number": 7,
+        "title": "07 三场景 + 每部位时间轴",
+        "state": "OPEN",
+        "labels": [
+          "ready-for-agent"
+        ],
+        "parent": {
+          "number": 1,
+          "title": "规格 v1：BLE 灯带控制（部位 · 场景 · 两层灯效）"
+        },
+        "blockedBy": [
+          {
+            "number": 6,
+            "title": "06 八种灯效 + 两层叠加",
+            "state": "OPEN"
+          }
+        ],
+        "blocking": [
+          {
+            "number": 8,
+            "title": "08 断电恢复与存储健壮性",
+            "state": "OPEN"
+          }
+        ],
+        "openBlockers": 1,
+        "ready": false,
+        "isParent": false,
+        "children": {
+          "completed": 0,
+          "percentCompleted": 0,
+          "total": 0
+        },
+        "closedAt": null,
+        "updatedAt": "2026-11-07T15:19:48Z",
+        "url": "https://github.com/sishoui/ble-light/issues/7"
+      },
+      {
+        "number": 8,
+        "title": "08 断电恢复与存储健壮性",
+        "state": "OPEN",
+        "labels": [
+          "ready-for-agent"
+        ],
+        "parent": {
+          "number": 1,
+          "title": "规格 v1：BLE 灯带控制（部位 · 场景 · 两层灯效）"
+        },
+        "blockedBy": [
+          {
+            "number": 7,
+            "title": "07 三场景 + 每部位时间轴",
+            "state": "OPEN"
+          }
+        ],
+        "blocking": [
+          {
+            "number": 12,
+            "title": "12 真机验收：物理层验证",
+            "state": "OPEN"
+          }
+        ],
+        "openBlockers": 1,
+        "ready": false,
+        "isParent": false,
+        "children": {
+          "completed": 0,
+          "percentCompleted": 0,
+          "total": 0
+        },
+        "closedAt": null,
+        "updatedAt": "2026-11-07T14:13:18Z",
+        "url": "https://github.com/sishoui/ble-light/issues/8"
+      },
+      {
+        "number": 9,
+        "title": "09 断线重连与错误分诊",
+        "state": "OPEN",
+        "labels": [
+          "ready-for-agent"
+        ],
+        "parent": {
+          "number": 1,
+          "title": "规格 v1：BLE 灯带控制（部位 · 场景 · 两层灯效）"
+        },
+        "blockedBy": [
+          {
+            "number": 5,
+            "title": "04 小程序：连接、状态镜像、总闸与亮度",
+            "state": "OPEN"
+          }
+        ],
+        "blocking": [],
+        "openBlockers": 1,
+        "ready": false,
+        "isParent": false,
+        "children": {
+          "completed": 0,
+          "percentCompleted": 0,
+          "total": 0
+        },
+        "closedAt": null,
+        "updatedAt": "2026-11-07T15:19:51Z",
+        "url": "https://github.com/sishoui/ble-light/issues/9"
+      },
+      {
+        "number": 10,
+        "title": "10 诊断：自检 + 协议日志面板",
+        "state": "OPEN",
+        "labels": [
+          "ready-for-agent"
+        ],
+        "parent": {
+          "number": 1,
+          "title": "规格 v1：BLE 灯带控制（部位 · 场景 · 两层灯效）"
+        },
+        "blockedBy": [
+          {
+            "number": 5,
+            "title": "04 小程序：连接、状态镜像、总闸与亮度",
+            "state": "OPEN"
+          }
+        ],
+        "blocking": [],
+        "openBlockers": 1,
+        "ready": false,
+        "isParent": false,
+        "children": {
+          "completed": 0,
+          "percentCompleted": 0,
+          "total": 0
+        },
+        "closedAt": null,
+        "updatedAt": "2026-11-07T15:19:54Z",
+        "url": "https://github.com/sishoui/ble-light/issues/10"
+      },
+      {
+        "number": 11,
+        "title": "11 本机数据：备注 / 封面 / 删除 / 演示设备 / 主题",
+        "state": "OPEN",
+        "labels": [
+          "ready-for-agent"
+        ],
+        "parent": {
+          "number": 1,
+          "title": "规格 v1：BLE 灯带控制（部位 · 场景 · 两层灯效）"
+        },
+        "blockedBy": [
+          {
+            "number": 5,
+            "title": "04 小程序：连接、状态镜像、总闸与亮度",
+            "state": "OPEN"
+          }
+        ],
+        "blocking": [],
+        "openBlockers": 1,
+        "ready": false,
+        "isParent": false,
+        "children": {
+          "completed": 0,
+          "percentCompleted": 0,
+          "total": 0
+        },
+        "closedAt": null,
+        "updatedAt": "2026-11-07T15:19:56Z",
+        "url": "https://github.com/sishoui/ble-light/issues/11"
+      },
+      {
+        "number": 12,
+        "title": "12 真机验收：物理层验证",
+        "state": "OPEN",
+        "labels": [
+          "ready-for-agent"
+        ],
+        "parent": {
+          "number": 1,
+          "title": "规格 v1：BLE 灯带控制（部位 · 场景 · 两层灯效）"
+        },
+        "blockedBy": [
+          {
+            "number": 8,
+            "title": "08 断电恢复与存储健壮性",
+            "state": "OPEN"
+          }
+        ],
+        "blocking": [],
+        "openBlockers": 1,
+        "ready": false,
+        "isParent": false,
+        "children": {
+          "completed": 0,
+          "percentCompleted": 0,
+          "total": 0
+        },
+        "closedAt": null,
+        "updatedAt": "2026-11-07T14:13:33Z",
+        "url": "https://github.com/sishoui/ble-light/issues/12"
+      },
+      {
+        "number": 13,
+        "title": "05 部位划分端到端",
+        "state": "OPEN",
+        "labels": [
+          "ready-for-agent"
+        ],
+        "parent": {
+          "number": 1,
+          "title": "规格 v1：BLE 灯带控制（部位 · 场景 · 两层灯效）"
+        },
+        "blockedBy": [
+          {
+            "number": 4,
+            "title": "03 固件：BLE 链路 + 单色出光",
+            "state": "CLOSED"
+          }
+        ],
+        "blocking": [
+          {
+            "number": 6,
+            "title": "06 八种灯效 + 两层叠加",
+            "state": "OPEN"
+          }
+        ],
+        "openBlockers": 0,
+        "ready": true,
+        "isParent": false,
+        "children": {
+          "completed": 0,
+          "percentCompleted": 0,
+          "total": 0
+        },
+        "closedAt": null,
+        "updatedAt": "2026-11-07T15:19:41Z",
+        "url": "https://github.com/sishoui/ble-light/issues/13"
+      }
+    ],
+    "stats": {
+      "total": 13,
+      "open": 10,
+      "closed": 3,
+      "ready": 2,
+      "readyList": [
+        5,
+        13
+      ],
+      "progress": 23
+    }
   },
   "layers": [
     {
@@ -275,7 +738,7 @@
       "role": "扫描仓库生成 docs/map.generated.json：文件、文档、测试、迭代、健康检查。",
       "exists": true,
       "fileCount": 1,
-      "lines": 840,
+      "lines": 843,
       "files": [
         "scripts/map.mjs"
       ],
@@ -1162,7 +1625,7 @@
     "docs": 28,
     "tests": 24,
     "binary": 16,
-    "lines": 19523,
+    "lines": 19526,
     "byExt": {
       ".gitattributes": 1,
       ".gitignore": 1,
@@ -1788,7 +2251,7 @@
         "name": "map.generated.json",
         "dir": "docs",
         "ext": ".json",
-        "size": 136084,
+        "size": 136083,
         "lines": 4666,
         "binary": false,
         "isDoc": false,
@@ -3348,8 +3811,8 @@
         "name": "map.mjs",
         "dir": "scripts",
         "ext": ".mjs",
-        "size": 30914,
-        "lines": 840,
+        "size": 31182,
+        "lines": 843,
         "binary": false,
         "isDoc": false,
         "isTest": false,

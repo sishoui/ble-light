@@ -806,7 +806,10 @@ function staleSummary(previousJson, fresh) {
   cmp("测试文件", prev.testStats?.files, fresh.testStats?.files);
   cmp("用例数", prev.testStats?.cases, fresh.testStats?.cases);
   cmp("迭代数", prev.iterations?.length, fresh.iterations?.length);
-  cmp("任务数", prev.tasks?.stats?.total, fresh.tasks?.stats?.total);
+  /* 任务图来自 GitHub API。取不到时 fresh.tasks.ok 为 false，
+   * 这一项没得比——比了就是拿「网络失败」当「面板落后」，会让
+   * 每次 npm test 随机飘红。文件与测试的比对不受影响。 */
+  if (fresh.tasks?.ok) cmp("任务数", prev.tasks?.stats?.total, fresh.tasks?.stats?.total);
   cmp("健康错误", prev.health?.errors, fresh.health?.errors);
 
 
