@@ -1,6 +1,6 @@
 ---
 page: pages/strip/effect
-pixso_node: "12:474"
+pixso_node: "12:925"
 confirmed: 待确认
 ---
 

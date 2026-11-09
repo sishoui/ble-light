@@ -1,6 +1,6 @@
 ---
 page: pages/strip/parts
-pixso_node: "12:385"
+pixso_node: "12:824"
 confirmed: 待确认
 ---
 
@@ -23,6 +23,7 @@ confirmed: 待确认
 - 方格区：9 列 × 4 行，格子按部位着色，未分配用 `--surface-nested`
 - 线视图：30 个色块一行排开，未分配处用 `--text-tertiary`
 - 部位区块：标题「部位」+ 部位行（色点 + 名称 + 段数/颗数/相位 + `›`）
+- 底部 tabBar（几何与 v2 四页一致，128rpx 高）
 - 底部悬浮操作条：次按钮「添加部位」+ 主按钮「保存布局」
 
 ## 待补的态
